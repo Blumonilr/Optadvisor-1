@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(preferences.getBoolean("isChecked",true)) {
+                if(preferences.getBoolean("isChecked",false)) {
                    initF2();
                 }else{
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);

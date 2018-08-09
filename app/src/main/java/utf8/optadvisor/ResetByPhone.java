@@ -50,7 +50,7 @@ public class ResetByPhone extends AppCompatActivity {
                 //发送验证码
                if(true){
                    //如果正确
-                   Intent intent = new Intent(ResetByPhone.this, MainActivity.class);
+                   Intent intent = new Intent(ResetByPhone.this, Forget_ResetPwd.class);
                    startActivity(intent);
                }
                else{
