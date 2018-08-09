@@ -28,7 +28,9 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".FogetPassword" />
         <activity android:name=".ResetByPhone" />
-        <activity android:name=".ResetByEmail"></activity>
+        <activity android:name=".ResetByEmail" />
+        <activity android:name=".ResetPwd" />
+        <activity android:name=".Forget_ResetPwd"></activity>
     </application>
 
 </manifest>
