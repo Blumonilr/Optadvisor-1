@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -72,6 +73,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor SPeditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -319,8 +322,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String userName;
-        private final String password;
+        private  String userName;
+        private  String password;
 
         UserLoginTask(String email, String password) {
             userName = email;
@@ -350,6 +353,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                          .build();
                  Response response = client.newCall(request).execute();
                  String toGson=response.body().string();//状态码，message需要添加代码
+
+
+
+
+
+
+                if(true){
+                    //如果登陆成功
+                    preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
+                    SPeditor=preferences.edit();
+                    SPeditor.putString("userName",userName);
+                    SPeditor.putString("password",password);
+                    SPeditor.putBoolean("isChecked",true);
+                }
+                else{
+                    //如果失败
+                }
+
+
+
+
+
                  }catch(Exception e){
                 e.printStackTrace();
             }
