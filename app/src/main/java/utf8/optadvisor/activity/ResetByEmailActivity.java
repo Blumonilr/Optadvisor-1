@@ -1,9 +1,9 @@
-package utf8.optadvisor;
+package utf8.optadvisor.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,11 +15,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import utf8.optadvisor.R;
+import utf8.optadvisor.util.TimeCounter;
 
 /**
  * 通过邮箱重置密码
  */
-public class ResetByEmail extends AppCompatActivity {
+public class ResetByEmailActivity extends AppCompatActivity {
     private Button sendEmail;
     private Button sendCode_email;
     private TimeCounter time;
@@ -92,7 +94,7 @@ public class ResetByEmail extends AppCompatActivity {
                 //发送验证码
                 if(true){
                     //如果正确
-                    Intent intent = new Intent(ResetByEmail.this,Forget_ResetPwd.class);
+                    Intent intent = new Intent(ResetByEmailActivity.this,ForgetResetPwdActivity.class);
                     startActivity(intent);
                 }
                 else{

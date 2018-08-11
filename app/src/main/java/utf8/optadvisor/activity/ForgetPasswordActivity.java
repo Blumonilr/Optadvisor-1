@@ -1,13 +1,15 @@
-package utf8.optadvisor;
+package utf8.optadvisor.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class FogetPassword extends AppCompatActivity {
+import utf8.optadvisor.R;
+
+public class ForgetPasswordActivity extends AppCompatActivity {
 
     @Override
     /**
@@ -25,14 +27,14 @@ public class FogetPassword extends AppCompatActivity {
         way1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FogetPassword.this, ResetByEmail.class);
+                Intent intent = new Intent(ForgetPasswordActivity.this, ResetByEmailActivity.class);
                 startActivity(intent);
             }
         });
         way2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FogetPassword.this, ResetByPhone.class);
+                Intent intent = new Intent(ForgetPasswordActivity.this, ResetByPhoneActivity.class);
                 startActivity(intent);
             }
         });

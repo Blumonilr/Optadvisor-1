@@ -1,21 +1,19 @@
-package utf8.optadvisor;
+package utf8.optadvisor.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import utf8.optadvisor.R;
 
 
 public class OptionShow extends Fragment {
-    private showCallOption f1;
-    private showPutOption f2;
+    private ShowCallOption f1;
+    private ShowPutOption f2;
 
     @Override
     /**
@@ -46,7 +44,7 @@ public class OptionShow extends Fragment {
     private void initCallOption(){
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         if(f1==null){
-            f1=new showCallOption();
+            f1=new ShowCallOption();
             transaction.add(R.id.show, f1);
         }
         hideFragment(transaction);
@@ -56,7 +54,7 @@ public class OptionShow extends Fragment {
     private void initPutOption(){
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         if(f2==null){
-            f2=new showPutOption();
+            f2=new ShowPutOption();
             transaction.add(R.id.show, f2);
         }
         hideFragment(transaction);

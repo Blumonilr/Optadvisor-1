@@ -1,12 +1,14 @@
-package utf8.optadvisor;
+package utf8.optadvisor.fragment;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import utf8.optadvisor.R;
 
 /**经过验证后，输入重置的密码
  *
  */
-public class Forget_ResetPwd extends AppCompatActivity {
+public class ForgetResetPwd extends AppCompatActivity {
 
     @Override
     /**

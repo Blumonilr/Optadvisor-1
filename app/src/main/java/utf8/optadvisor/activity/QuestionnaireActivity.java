@@ -1,12 +1,11 @@
-package utf8.optadvisor;
+package utf8.optadvisor.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.support.v7.app.AppCompatActivity;
 
-public class Questionnaire extends AppCompatActivity {
-    private LinearLayout test_layout;
+import utf8.optadvisor.R;
 
+public class QuestionnaireActivity extends AppCompatActivity {
 
     @Override
     /**
@@ -16,6 +15,7 @@ public class Questionnaire extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
     }
+
     class item{
         private String question;
         private String[] answers;

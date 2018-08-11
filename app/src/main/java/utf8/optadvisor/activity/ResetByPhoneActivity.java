@@ -1,16 +1,12 @@
-package utf8.optadvisor;
+package utf8.optadvisor.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
@@ -20,11 +16,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import utf8.optadvisor.R;
+import utf8.optadvisor.util.TimeCounter;
 
 /**
  * 通过手机重置密码
  */
-public class ResetByPhone extends AppCompatActivity {
+public class ResetByPhoneActivity extends AppCompatActivity {
     private Button sendMessage;
     private Button sendCode_phone;
     private TimeCounter time;
@@ -44,7 +42,7 @@ public class ResetByPhone extends AppCompatActivity {
     private void ConfirmPhone(){
         sendMessage=(Button) findViewById(R.id.sendPhone);
         time= new TimeCounter(60000,1000,sendMessage);
-        sendMessage.setOnClickListener(new View.OnClickListener(){
+        sendMessage.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v) {
                 try {
@@ -74,7 +72,7 @@ public class ResetByPhone extends AppCompatActivity {
 
     private void ConfirmCode(){
         sendCode_phone=(Button) findViewById(R.id.sendCode_phone);
-        sendCode_phone.setOnClickListener(new View.OnClickListener(){
+        sendCode_phone.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v){
                 try {
@@ -95,19 +93,10 @@ public class ResetByPhone extends AppCompatActivity {
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-
-
-
-
-
-
-
-
-
                 //发送验证码
                if(true){
                    //如果正确
-                   Intent intent = new Intent(ResetByPhone.this, Forget_ResetPwd.class);
+                   Intent intent = new Intent(ResetByPhoneActivity.this, ForgetResetPwdActivity.class);
                    startActivity(intent);
                }
                else{

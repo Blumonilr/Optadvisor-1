@@ -1,4 +1,4 @@
-package utf8.optadvisor;
+package utf8.optadvisor.domain;
 
 public class RegisterInfo {
     private String year=null;

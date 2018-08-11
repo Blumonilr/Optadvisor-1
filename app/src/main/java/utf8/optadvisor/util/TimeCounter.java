@@ -1,6 +1,6 @@
-package utf8.optadvisor;
+package utf8.optadvisor.util;
 
-import android.os.*;
+import android.os.CountDownTimer;
 import android.widget.Button;
 
 /**计时工具

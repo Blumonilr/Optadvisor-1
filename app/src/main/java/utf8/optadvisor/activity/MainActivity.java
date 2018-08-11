@@ -1,14 +1,19 @@
-package utf8.optadvisor;
+package utf8.optadvisor.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.content.*;
+
+import utf8.optadvisor.R;
+import utf8.optadvisor.fragment.BuildPortfolio;
+import utf8.optadvisor.fragment.MyCombination;
+import utf8.optadvisor.fragment.OptionShow;
+import utf8.optadvisor.fragment.UserCenter;
 
 public class MainActivity extends AppCompatActivity {
     /**
