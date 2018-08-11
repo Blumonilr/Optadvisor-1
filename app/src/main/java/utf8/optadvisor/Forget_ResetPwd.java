@@ -9,6 +9,9 @@ import android.os.Bundle;
 public class Forget_ResetPwd extends AppCompatActivity {
 
     @Override
+    /**
+     * 重置密码
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget__reset_pwd);

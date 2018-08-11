@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 
 public class UserCenter extends Fragment {
+    /**个人中心
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

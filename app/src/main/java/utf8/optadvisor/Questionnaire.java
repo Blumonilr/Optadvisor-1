@@ -6,6 +6,9 @@ import android.os.Bundle;
 public class Questionnaire extends AppCompatActivity {
 
     @Override
+    /**
+     * 注册时填写的调查问卷
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);

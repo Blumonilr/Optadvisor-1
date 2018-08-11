@@ -2,7 +2,10 @@ package utf8.optadvisor;
 
 import android.os.*;
 import android.widget.Button;
-//计时
+
+/**计时工具
+ *
+ */
 public class TimeCounter extends CountDownTimer {
     private Button button;
     public TimeCounter(long millisInFuture, long countDownInterval, Button bt) {

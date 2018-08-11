@@ -47,11 +47,11 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * 登陆界面
- */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+ /**
+  * 登陆界面
+  */
     /**
      * Id to identity READ_CONTACTS permission request.
      */

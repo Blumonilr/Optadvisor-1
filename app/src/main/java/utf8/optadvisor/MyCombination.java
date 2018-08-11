@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 public class MyCombination extends Fragment {
 
     @Override
+    /**
+     * 对我的组合的管理
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment

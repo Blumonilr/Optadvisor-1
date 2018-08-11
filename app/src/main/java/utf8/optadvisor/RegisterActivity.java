@@ -20,6 +20,9 @@ import java.util.List;
 public class RegisterActivity extends AppCompatActivity {
     private RegisterInfo Info=new RegisterInfo();
     @Override
+    /**
+     * 注册界面
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);

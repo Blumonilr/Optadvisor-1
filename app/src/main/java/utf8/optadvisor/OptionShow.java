@@ -18,6 +18,9 @@ public class OptionShow extends Fragment {
     private showPutOption f2;
 
     @Override
+    /**
+     * 展示行情信息
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_option_show, container, false);

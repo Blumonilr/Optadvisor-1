@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-/**
- * 忘记密码，决定以何种方式重置
- */
 public class FogetPassword extends AppCompatActivity {
 
     @Override
+    /**
+     * 选择方式重置密码
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foget_password);

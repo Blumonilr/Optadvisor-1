@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.content.*;
 
 public class MainActivity extends AppCompatActivity {
+    /**
+     * 主界面
+     */
     private SharedPreferences preferences;
     private SharedPreferences.Editor SPeditor;
     private OptionShow f1;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    /**
+     * 4个fragment切换
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -89,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 碎片初始化
+     */
     private void initF1(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if(f1==null){
@@ -129,6 +138,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.show(f4);
         transaction.commit();
     }
+
+    /**
+     * 隐藏碎片
+     */
      private void hideFragment(FragmentTransaction transaction){
         if(f1 != null){
             transaction.hide(f1);

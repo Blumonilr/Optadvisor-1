@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 public class BuildPortfolio extends Fragment {
 
     @Override
+    /**
+     * 构建组合页面
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
