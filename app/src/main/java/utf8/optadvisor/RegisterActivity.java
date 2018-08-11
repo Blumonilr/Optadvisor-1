@@ -14,7 +14,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 注册界面
+ */
 public class RegisterActivity extends AppCompatActivity {
     private RegisterInfo Info=new RegisterInfo();
     @Override

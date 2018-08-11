@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * 忘记密码，决定以何种方式重置
+ */
 public class FogetPassword extends AppCompatActivity {
 
     @Override

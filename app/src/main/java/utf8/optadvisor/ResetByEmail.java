@@ -16,6 +16,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+/**
+ * 通过邮箱重置密码
+ */
 public class ResetByEmail extends AppCompatActivity {
     private Button sendEmail;
     private Button sendCode_email;

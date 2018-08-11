@@ -21,7 +21,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
+/**
+ * 通过手机重置密码
+ */
 public class ResetByPhone extends AppCompatActivity {
     private Button sendMessage;
     private Button sendCode_phone;
