@@ -346,6 +346,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
             try{
+                System.out.println("start");
                  MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                  OkHttpClient client=new OkHttpClient();
                  GsonBuilder builder=new GsonBuilder();
@@ -353,12 +354,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                  String gsonText=gson.toJson(this,UserLoginTask.class);
                  RequestBody requestBody=RequestBody.create(JSON,gsonText);
                  Request request = new Request.Builder()
-                         .url("http://111.111.11")
+                         .url("http://localhost:8088/login")
                          .post(requestBody)
                          .build();
                  Response response = client.newCall(request).execute();
                  String toGson=response.body().string();//状态码，message需要添加代码
-
+                System.out.println(toGson+"finish");
 
 
 
