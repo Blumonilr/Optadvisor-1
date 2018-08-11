@@ -30,7 +30,8 @@
         <activity android:name=".ResetByPhone" />
         <activity android:name=".ResetByEmail" />
         <activity android:name=".ResetPwd" />
-        <activity android:name=".Forget_ResetPwd"></activity>
+        <activity android:name=".Forget_ResetPwd" />
+        <activity android:name=".Questionnaire"></activity>
     </application>
 
 </manifest>
