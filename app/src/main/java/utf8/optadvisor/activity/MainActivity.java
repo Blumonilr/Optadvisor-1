@@ -9,12 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import utf8.optadvisor.BuildPortfolio;
-import utf8.optadvisor.LoginActivity;
-import utf8.optadvisor.MyCombination;
-import utf8.optadvisor.OptionShow;
 import utf8.optadvisor.R;
-import utf8.optadvisor.UserCenter;
+import utf8.optadvisor.fragment.BuildPortfolio;
+import utf8.optadvisor.fragment.MyCombination;
+import utf8.optadvisor.fragment.OptionShow;
+import utf8.optadvisor.fragment.UserCenter;
 
 public class MainActivity extends AppCompatActivity {
     /**

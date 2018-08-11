@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import utf8.optadvisor.R;
-import utf8.optadvisor.RegisterInfo;
+import utf8.optadvisor.domain.RegisterInfo;
 
 /**
  * 注册界面

@@ -16,9 +16,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import utf8.optadvisor.Forget_ResetPwd;
 import utf8.optadvisor.R;
-import utf8.optadvisor.TimeCounter;
+import utf8.optadvisor.util.TimeCounter;
 
 /**
  * 通过手机重置密码
@@ -94,19 +93,10 @@ public class ResetByPhoneActivity extends AppCompatActivity {
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-
-
-
-
-
-
-
-
-
                 //发送验证码
                if(true){
                    //如果正确
-                   Intent intent = new Intent(ResetByPhoneActivity.this, Forget_ResetPwd.class);
+                   Intent intent = new Intent(ResetByPhoneActivity.this, ForgetResetPwdActivity.class);
                    startActivity(intent);
                }
                else{

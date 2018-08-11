@@ -41,9 +41,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import utf8.optadvisor.FogetPassword;
 import utf8.optadvisor.R;
-import utf8.optadvisor.RegisterActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -123,11 +121,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button fogetBotton=(Button) findViewById(R.id.forgetPassword);
-        fogetBotton.setOnClickListener(new OnClickListener() {
+        Button forgetBotton=(Button) findViewById(R.id.forgetPassword);
+        forgetBotton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,FogetPassword.class);
+                Intent intent = new Intent(LoginActivity.this,ForgetPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -360,9 +358,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 System.out.println(toGson+"finish");
 
 
-
-
-
                 if(true){
                     //如果登陆成功
                     preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
@@ -374,11 +369,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 else{
                     //如果失败
                 }
-
-
-
-
-
                  }catch(Exception e){
                 e.printStackTrace();
             }

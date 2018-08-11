@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import utf8.optadvisor.R;
-import utf8.optadvisor.ResetByEmail;
-import utf8.optadvisor.ResetByPhone;
+import utf8.optadvisor.activity.ResetByEmailActivity;
+import utf8.optadvisor.activity.ResetByPhoneActivity;
 
 public class ForgetPassword extends AppCompatActivity {
 
@@ -29,14 +29,14 @@ public class ForgetPassword extends AppCompatActivity {
         way1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgetPassword.this, ResetByEmail.class);
+                Intent intent = new Intent(ForgetPassword.this, ResetByEmailActivity.class);
                 startActivity(intent);
             }
         });
         way2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgetPassword.this, ResetByPhone.class);
+                Intent intent = new Intent(ForgetPassword.this, ResetByPhoneActivity.class);
                 startActivity(intent);
             }
         });
