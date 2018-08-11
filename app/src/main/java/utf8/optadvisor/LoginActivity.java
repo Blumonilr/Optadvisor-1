@@ -327,12 +327,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private  String userName;
-        private  String password;
+        private  UserLoginInfo info;
 
         UserLoginTask(String email, String password) {
-            userName = email;
-            this.password = password;
+           info= new UserLoginInfo(email,password);
         }
 
         @Override
@@ -350,11 +348,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                  MediaType JSON = MediaType.parse("application/json; charset=utf-8");
                  OkHttpClient client=new OkHttpClient();
                  GsonBuilder builder=new GsonBuilder();
-                 Gson gson=builder.create();
-                 String gsonText=gson.toJson(this,UserLoginTask.class);
+                 Gson gson=new Gson();
+                 String gsonText=gson.toJson(info);
                  RequestBody requestBody=RequestBody.create(JSON,gsonText);
                  Request request = new Request.Builder()
-                         .url("http://localhost:8088/login")
+                         .url("http://192.168.1.110:8088/login")
                          .post(requestBody)
                          .build();
                  Response response = client.newCall(request).execute();
@@ -369,8 +367,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     //如果登陆成功
                     preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
                     SPeditor=preferences.edit();
-                    SPeditor.putString("userName",userName);
-                    SPeditor.putString("password",password);
+                    SPeditor.putString("userName",info.username);
+                    SPeditor.putString("password",info.password);
                     SPeditor.putBoolean("isChecked",true);
                 }
                 else{
@@ -405,6 +403,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+    class UserLoginInfo{
+        private  String username;
+        private  String password;
+        public UserLoginInfo(String userName,String password){
+            this.username=userName;
+            this.password=password;
+        }
+
+        public String getUserName() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
         }
     }
 }
