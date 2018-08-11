@@ -6,9 +6,24 @@
     tools:context=".BuildPortfolio">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="这是用来构建组合的" />
-
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/portfolio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="定制投资方案"/>
+        <Button
+            android:id="@+id/hedge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="套期保值"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/DIY"
+            android:text="DIY"/>
+    </LinearLayout>
 </FrameLayout>
