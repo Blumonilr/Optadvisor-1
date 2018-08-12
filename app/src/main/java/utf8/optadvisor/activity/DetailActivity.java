@@ -28,7 +28,8 @@ public class DetailActivity extends AppCompatActivity {
         if (actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        collapsingToolbar.setTitle("OptAdviser");
+
+        collapsingToolbar.setTitle("Test");
         String content="";
         for(int i=0;i<100;i++){
             content+="test";
