@@ -29,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -99,6 +100,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
+        mEmailView.setText(preferences.getString("userName",""));
+        mPasswordView.setText(preferences.getString("password",""));
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -130,6 +135,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        if (!mPasswordView.getText().toString().isEmpty())
+            attemptLogin();
     }
 
     private void populateAutoComplete() {
@@ -190,9 +197,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
+        String email="";
+        String password="";
+
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        email = mEmailView.getText().toString();
+        password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -343,31 +353,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             try{
                 System.out.println("start");
-                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                 OkHttpClient client=new OkHttpClient();
-                 GsonBuilder builder=new GsonBuilder();
-                 Gson gson=new Gson();
-                 String gsonText=gson.toJson(info);
-                 RequestBody requestBody=RequestBody.create(JSON,gsonText);
-                 Request request = new Request.Builder()
-                         .url("http://192.168.1.110:8088/login")
-                         .post(requestBody)
-                         .build();
-                 Response response = client.newCall(request).execute();
-                 String toGson=response.body().string();//状态码，message需要添加代码
-                System.out.println(toGson+"finish");
+//                 MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//                 OkHttpClient client=new OkHttpClient();
+//                 GsonBuilder builder=new GsonBuilder();
+//                 Gson gson=new Gson();
+//                 String gsonText=gson.toJson(info);
+//                 RequestBody requestBody=RequestBody.create(JSON,gsonText);
+//                 Request request = new Request.Builder()
+//                         .url("http://192.168.1.110:8088/login")
+//                         .post(requestBody)
+//                         .build();
+//                 Response response = client.newCall(request).execute();
+//                 String toGson=response.body().string();//状态码，message需要添加代码
+//                System.out.println(toGson+"finish");
 
 
-                if(true){
+                if(info.getUserName().equals("admin")&&info.getPassword().equals("admin")){
                     //如果登陆成功
                     preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
                     SPeditor=preferences.edit();
                     SPeditor.putString("userName",info.username);
                     SPeditor.putString("password",info.password);
                     SPeditor.putBoolean("isChecked",true);
+                    SPeditor.commit();
+                    Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                    LoginActivity.this.startActivity(intent);
                 }
                 else{
                     //如果失败
+                    Toast.makeText(LoginActivity.this,"用户名或密码错误，请重新登录", Toast.LENGTH_LONG).show();
                 }
                  }catch(Exception e){
                 e.printStackTrace();
