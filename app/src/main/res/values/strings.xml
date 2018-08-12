@@ -112,7 +112,7 @@
     <string name="CH_telephone">手机号码：</string>
     <string name="email">e-mail：</string>
     <string name="CH_gender">性别</string>
-    <string name="CH_finish">填写完成</string>
+    <string name="CH_finish">填 写 完 成</string>
     <string name="login_username_hint_text">请输入账号</string>
     <string name="login_pwd_hint_text">请输入密码</string>
     <string name="login_button_text">登 录</string>
