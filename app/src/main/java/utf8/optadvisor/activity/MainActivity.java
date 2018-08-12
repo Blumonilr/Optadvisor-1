@@ -3,9 +3,13 @@ package utf8.optadvisor.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,7 +17,6 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.fragment.BuildPortfolio;
 import utf8.optadvisor.fragment.MyCombination;
 import utf8.optadvisor.fragment.OptionShow;
-import utf8.optadvisor.fragment.UserCenter;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -24,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private OptionShow f1;
     private BuildPortfolio f2;
     private MyCombination f3;
-    private UserCenter f4;
+    private DrawerLayout mDrawerLayout;
 
 
 
@@ -35,10 +38,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.hide();
-        }
+        mDrawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout) ;
+        NavigationView navView=(NavigationView) findViewById(R.id.nav_view) ;
+        navView.setCheckedItem(R.id.personal_info);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
         preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
         SPeditor=preferences.edit();
         initF1();
