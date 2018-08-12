@@ -10,10 +10,11 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import utf8.optadvisor.R;
 
@@ -26,6 +27,7 @@ public class InfoActivity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolBar);
         CollapsingToolbarLayout collapsingToolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         ImageView background=(ImageView)findViewById(R.id.background);
+        LinearLayout content=(LinearLayout)findViewById(R.id.content);
         TextView textView=(TextView)findViewById(R.id.content_text);
         ImageView imageView=(ImageView)findViewById(R.id.content_image);
         setSupportActionBar(toolbar);
@@ -33,29 +35,16 @@ public class InfoActivity extends AppCompatActivity {
         if (actionBar!=null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        Glide.with(this).load(R.drawable.pic_logo).into(imageView);
+        Glide.with(content.getContext()).load(R.drawable.pic_logo).override(this.getWindowManager().getDefaultDisplay().getWidth(),this.getWindowManager().getDefaultDisplay().getHeight()/8).into(imageView);
         collapsingToolbar.setExpandedTitleGravity(Gravity.CENTER);
         collapsingToolbar.setTitle("Test");
-        String content="";
+        String context="";
         for(int i=0;i<100;i++){
-            content+="test";
+            context+="test";
         }
-        textView.setText(content);
+        textView.setText(context);
 
     }
 
-    RequestListener mRequestListener = new RequestListener() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
-            Log.d(TAG, "onException: " + e.toString()+"  model:"+model+" isFirstResource: "+isFirstResource);
-            imageView.setImageResource(R.mipmap.ic_launcher);
-            return false;
-        }
 
-        @Override
-        public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
-            Log.e(TAG,  "model:"+model+" isFirstResource: "+isFirstResource);
-            return false;
-        }
-    };
 }
