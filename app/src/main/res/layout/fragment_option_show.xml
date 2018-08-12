@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/option_show"
     android:layout_height="match_parent"
-    tools:context=".OptionShow">
+    tools:context=".fragment.OptionShow">
 
 
     <LinearLayout
