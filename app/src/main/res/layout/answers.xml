@@ -10,21 +10,16 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         >
-        <TextView
+        <CheckBox
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="5dp"
             android:id="@+id/answer_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="#595757"
-            android:layout_gravity="center_vertical"
-            />
+            android:textSize="18sp"
+            android:textColor="#595757"/>
     </LinearLayout>
-    <View
-        android:id="@+id/vw_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#9EA0A0"
-        >
 
-    </View>
+
 </LinearLayout>

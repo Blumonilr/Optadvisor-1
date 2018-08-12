@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     /**
-     * 4个fragment切换
+     * 3个fragment切换
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,20 +84,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        Button button4 = (Button) findViewById(R.id.bt4);
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(preferences.getBoolean("isChecked",true)) {
-                    initF4();
-
-                }else{
-                    Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
     /**
@@ -133,16 +119,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.show(f3);
         transaction.commit();
     }
-    private void initF4(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if(f4==null){
-            f4=new UserCenter();
-            transaction.add(R.id.main_frame_layout, f4);
-        }
-        hideFragment(transaction);
-        transaction.show(f4);
-        transaction.commit();
-    }
+
 
     /**
      * 隐藏碎片
@@ -156,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if(f3 != null){
             transaction.hide(f3);
-        }
-        if(f4 !=null){
-            transaction.hide(f4);
         }
     }
 
