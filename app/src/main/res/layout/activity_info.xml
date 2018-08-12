@@ -43,25 +43,33 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/content_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp" />
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:id="@+id/content_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_margin="5dp" />
+            </android.support.v7.widget.CardView>
 
             <ImageView
                 android:id="@+id/content_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"/>
+                />
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
