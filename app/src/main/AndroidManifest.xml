@@ -15,14 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.QuestionnaireActivity"></activity>
-        <activity android:name=".activity.ResetByPhoneActivity"></activity>
-        <activity android:name=".activity.ResetByEmailActivity"></activity>
-        <activity android:name=".activity.ForgetResetPwdActivity"></activity>
-        <activity android:name=".activity.ForgetPasswordActivity"></activity>
-        <activity android:name=".activity.LoginActivity"></activity>
-        <activity android:name=".activity.MainActivity"></activity>
-        <activity android:name=".activity.RegisterActivity"></activity>
+        <activity android:name=".activity.QuestionnaireActivity" />
+        <activity android:name=".activity.ResetByPhoneActivity" />
+        <activity android:name=".activity.ResetByEmailActivity" />
+        <activity android:name=".activity.ForgetResetPwdActivity" />
+        <activity android:name=".activity.ForgetPasswordActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.DetailActivity"/>
     </application>
 
 </manifest>
