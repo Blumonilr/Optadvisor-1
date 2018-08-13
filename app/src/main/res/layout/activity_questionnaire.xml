@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<ScrollView
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:id="@+id/app_bar"
+        android:layout_height="wrap_content">
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/tb"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="@drawable/pic_title_bg"
+          app:title="投资调查"
+          app:titleMarginStart="0dp"
+          app:titleTextColor="@color/colorLightWhite"
+          app:layout_scrollFlags="scroll|enterAlways|snap"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF0F5">
-    <LinearLayout
+    android:layout_below="@id/app_bar"
+        android:paddingHorizontal="8dp"
+    android:background="@color/colorButton">
+      <LinearLayout
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +37,8 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/q1"/>
@@ -28,22 +47,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q1a1"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q1a2"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q1a3"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q1a4"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q1a5"/>
@@ -58,7 +82,8 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/q2"/>
@@ -67,22 +92,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q2a1"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q2a2"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q2a3"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q2a4"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q2a5"/>
@@ -96,7 +126,8 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/q3"/>
@@ -105,18 +136,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q3a1"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q3a2"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q3a3"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q3a4"/>
@@ -132,7 +167,8 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/q4"/>
@@ -141,14 +177,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q4a1"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q4a2"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q4a3"/>
@@ -162,7 +201,8 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:textSize="15sp"
+                android:lineSpacingExtra="5dp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/q5"/>
@@ -171,18 +211,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q5a1"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q5a2"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q5a3"/>
                 <RadioButton
+                    android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q5a4"/>
@@ -198,52 +242,56 @@
                 android:orientation="vertical"
                 android:padding="20dp">
                 <TextView
-                    android:textSize="15sp"
+                    android:lineSpacingExtra="8dp"
+                    android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/q6"/>
                 <RadioGroup
+                    android:layout_marginBottom="50dp"
                     android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <RadioButton
+                        android:textSize="17sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/q6a1"/>
                     <RadioButton
+                        android:textSize="17sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/q6a2"/>
                     <RadioButton
+                        android:textSize="17sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/q6a3"/>
                     <RadioButton
+                        android:textSize="17sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/q6a4"/>
                     <RadioButton
+                        android:textSize="17sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/q6a5"/>
                 </RadioGroup>
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"></LinearLayout>
-
+                    android:layout_height="50dp" />
             </LinearLayout>
-    </LinearLayout>
-
-
-</ScrollView>
+      </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
     <Button
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/CH_finish"
-        android:textSize="19sp"
-        android:layout_marginHorizontal="5dp"
+        style="@style/BlueButtonStyle"
+        android:layout_margin="0dp"
         android:textColor="#FFFFFF"
         android:alpha="0.8"
         android:background="@drawable/shape_corner_button"/>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
