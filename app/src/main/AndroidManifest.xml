@@ -20,13 +20,13 @@
         <activity android:name=".activity.ResetByEmailActivity" />
         <activity android:name=".activity.ForgetResetPwdActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
-        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.DetailActivity" />
-        <activity android:name=".activity.InfoActivity" >
+        <activity android:name=".activity.InfoActivity"></activity>
+        <activity android:name=".activity.ShopActivity">
         </activity>
-        <activity android:name=".activity.ShopActivity"></activity>
     </application>
 
 </manifest>

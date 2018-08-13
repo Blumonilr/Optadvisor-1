@@ -43,6 +43,7 @@ public class ShopBean {
         private int proId;
         private String proName;
         private String info;
+        private double price;
         private int count;
         private String defaultPic;
         private boolean isSelect=true;
@@ -135,6 +136,14 @@ public class ShopBean {
 
         public void setShopSelect(boolean shopSelect) {
             isShopSelect = shopSelect;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
         }
     }
 }
