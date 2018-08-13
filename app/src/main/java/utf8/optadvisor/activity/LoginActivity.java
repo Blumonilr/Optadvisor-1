@@ -3,6 +3,8 @@ package utf8.optadvisor.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -43,6 +45,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.util.ActivityJumper;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -121,8 +124,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         registerBotton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+
+/*                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_right_enter,R.anim.activity_left_exit);*/
+                ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,RegisterActivity.class);
             }
         });
 
@@ -130,14 +136,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         forgetBotton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this,ForgetPasswordActivity.class);
+/*                Intent intent = new Intent(LoginActivity.this,ForgetPasswordActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_left_enter,R.anim.activity_right_exit);*/
+                ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,ForgetPasswordActivity.class);
             }
         });
 
         if (!mPasswordView.getText().toString().isEmpty())
             attemptLogin();
     }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {

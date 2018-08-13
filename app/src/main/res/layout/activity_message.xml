@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/pic_title_bg"
-            app:title="消息"
+            app:title="@string/message"
             app:titleMarginStart="0dp"
             app:titleTextColor="@color/colorLightWhite"
             app:layout_scrollFlags="scroll|enterAlways|snap"/>

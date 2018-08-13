@@ -1,13 +1,13 @@
 package utf8.optadvisor.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import utf8.optadvisor.R;
+import utf8.optadvisor.util.ActivityJumper;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
 
@@ -17,26 +17,37 @@ public class ForgetPasswordActivity extends AppCompatActivity {
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_foget_password);
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
-            actionBar.hide();
+        setContentView(R.layout.activity_forget_password);
+        //设置标题栏
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        Button way1Button=(Button) findViewById(R.id.way1);
-        Button way2Button=(Button) findViewById(R.id.way2);
-        way1Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ForgetPasswordActivity.this, ResetByEmailActivity.class);
-                startActivity(intent);
-            }
-        });
-        way2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ForgetPasswordActivity.this, ResetByPhoneActivity.class);
-                startActivity(intent);
-            }
-        });
     }
+
+
+    @Override
+    public void onBackPressed() {
+        backToLogin();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                backToLogin();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    private void backToLogin(){
+        finish();
+        ActivityJumper.leftEnterRightExit(ForgetPasswordActivity.this,ForgetPasswordActivity.this,LoginActivity.class);
+    }
+
 }

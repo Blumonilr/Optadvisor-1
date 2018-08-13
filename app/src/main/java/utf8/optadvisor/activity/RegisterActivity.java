@@ -12,6 +12,7 @@ import android.widget.Spinner;
 
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.RegisterInfo;
+import utf8.optadvisor.util.ActivityJumper;
 
 /**
  * 注册界面
@@ -90,8 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-
-       Button button=(Button) findViewById(R.id.button1);
+        Button button=(Button) findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,13 +103,15 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        backToLogin();
+    }
 
-
-
-
-
-
-
+    private void backToLogin(){
+        finish();
+        ActivityJumper.leftEnterRightExit(RegisterActivity.this,RegisterActivity.this,LoginActivity.class);
     }
 }
