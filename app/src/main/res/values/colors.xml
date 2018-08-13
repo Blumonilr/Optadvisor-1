@@ -5,4 +5,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#7EC0EE</color>
     <color name="colorButtnDark">#3EC1FF</color>
+    <color name="colorLightWhite">#FEFEE0</color>
 </resources>
