@@ -129,8 +129,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_right_enter,R.anim.activity_left_exit);*/
                 ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,RegisterActivity.class);
-            }
-        });
+    }
+});
 
         Button forgetBotton=(Button) findViewById(R.id.forgetPassword);
         forgetBotton.setOnClickListener(new OnClickListener() {
