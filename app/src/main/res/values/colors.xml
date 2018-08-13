@@ -4,7 +4,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#7EC0EE</color>
-    <color name="colorButtnDark">#3EC1FF</color>
     <color name="colorLightWhite">#FEFEE0</color>
+    <color name="colorButtnDark">#3EC1FF</color>
+    <color name="textWhite">#ffffff</color>
+    <color name="pressedIcon">#e53e42</color>
+    <color name="background_color">#f6f6f6</color>
+    <color name="splitline_color">#dddddd</color>
     <color name="transParent">#01000000</color>
+
+
 </resources>
