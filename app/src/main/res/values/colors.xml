@@ -9,4 +9,5 @@
     <color name="pressedIcon">#e53e42</color>
     <color name="background_color">#f6f6f6</color>
     <color name="splitline_color">#dddddd</color>
+    <color name="colorGreen">#66FF66</color>
 </resources>
