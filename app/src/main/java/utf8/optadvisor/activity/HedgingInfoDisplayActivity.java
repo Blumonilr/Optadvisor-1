@@ -1,10 +1,12 @@
 package utf8.optadvisor.activity;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,19 +143,33 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
         HedgingMenuItem maxLoss=findViewById(R.id.hedging_maxloss);
 
         id.setMenuTextRight("null");
+        id.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         name.setMenuTextRight("null");
+        name.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         purchase.setMenuTextRight("null");
+        purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         wave.setMenuTextRight("null");
+        wave.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         date.setMenuTextRight("null");
+        date.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         soldPrice.setMenuTextRight("null");
+        soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         finalPrice.setMenuTextRight("null");
+        finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         portion.setMenuTextRight("null");
+        portion.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         delta.setMenuTextRight("null");
+        delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         gamma.setMenuTextRight("null");
+        gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         theta.setMenuTextRight("null");
+        theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         vega.setMenuTextRight("null");
+        vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         rho.setMenuTextRight("null");
+        rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
         maxLoss.setMenuTextRight("null");
+        maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
 
     }
 }

@@ -1,8 +1,11 @@
 package utf8.optadvisor.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -33,6 +36,7 @@ public class HedgingMenuItem extends RelativeLayout {
         iconLeft = getView(R.id.icon_left);
         menuTextLeft = getView(R.id.menu_text_left);
         menuTextRight = getView(R.id.menu_text_right);
+
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MenuItemView);
         int rightTextColor = ta.getColor(R.styleable.MenuItemView_rightTextColor, Color.GRAY);
@@ -71,5 +75,9 @@ public class HedgingMenuItem extends RelativeLayout {
 
     public <T extends View> T getView(int id) {
         return (T) findViewById(id);
+    }
+
+    public TextView getMenuLeft(){
+        return menuTextLeft;
     }
 }
