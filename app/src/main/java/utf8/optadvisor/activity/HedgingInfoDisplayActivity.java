@@ -27,6 +27,7 @@ import utf8.optadvisor.util.HedgingMenuItem;
 public class HedgingInfoDisplayActivity extends AppCompatActivity {
 
     private LineChartView lineChart;
+    int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
     String[] date = {"5-23","5-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","1-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","4-22","9-22","10-22","11-22","zxc"};//X轴的标注
     int[] score= {74,22,18,79,20,74,20,74,42,90,74,42,90,50,42,90,33,10,74,22,18,79,20,74,22,18,79,20};//图表的数据
     int[] score2= {73,25,18,79,29,74,20,79,45,90,74,42,83,50,42,90,33,10,75,22,18,79,20,74,22,18,79,20};
@@ -114,7 +115,7 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
             List<PointValue> mPointValues=new ArrayList<>();
             for (int j = 0; j < scores.get(i).length; j++)
                 mPointValues.add(new PointValue(j, scores.get(i)[j]));
-            Line line = new Line(mPointValues).setColor(Color.parseColor("#FFCD41"));  //折线的颜色
+            Line line = new Line(mPointValues).setColor(colors[i]);  //折线的颜色
             line.setShape(ValueShape.CIRCLE);//折线图上每个数据点的形状  这里是圆形 （有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.SQUARE）
             line.setCubic(false);//曲线是否平滑
             line.setFilled(false);//是否填充曲线的面积
@@ -147,29 +148,29 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
         name.setMenuTextRight("null");
         name.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         purchase.setMenuTextRight("null");
-        purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         wave.setMenuTextRight("null");
-        wave.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        wave.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         date.setMenuTextRight("null");
-        date.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        date.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         soldPrice.setMenuTextRight("null");
-        soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         finalPrice.setMenuTextRight("null");
-        finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         portion.setMenuTextRight("null");
-        portion.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        portion.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         delta.setMenuTextRight("null");
-        delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         gamma.setMenuTextRight("null");
-        gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         theta.setMenuTextRight("null");
-        theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         vega.setMenuTextRight("null");
-        vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         rho.setMenuTextRight("null");
-        rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         maxLoss.setMenuTextRight("null");
-        maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttf"));
+        maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
 
     }
 }
