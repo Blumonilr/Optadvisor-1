@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import utf8.optadvisor.R;
 
 
 public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.ViewHolder> {

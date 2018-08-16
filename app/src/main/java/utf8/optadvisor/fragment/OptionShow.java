@@ -100,13 +100,14 @@ public class OptionShow extends Fragment {
                     Response response=client.newCall(request).execute();
                     String jsonData=response.body().string();
                     Gson gson=new Gson();
-                    LineChartInfo lineChartInfo =gson.fromJson(jsonData,LineChartInfo.class);
+                    lineChartInfo =gson.fromJson(jsonData,LineChartInfo.class);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         }).start();
     }
+
     private void drawLineChart(LineChartInfo lineChartInfo){
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
         lineChart.setDrawBorders(false);//禁止绘制图表边框的线
