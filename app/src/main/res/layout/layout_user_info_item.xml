@@ -2,36 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="54dp"
-    android:orientation="horizontal"
-    android:padding="4dp"
-    android:background="@drawable/hedging_back">
-    <ImageView
-        android:id="@+id/icon_left"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:contentDescription="iconLeft"
-        android:padding="5dp"
-        android:scaleType="fitCenter" />
+    android:layout_height="40dp"
+    android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/menu_text_left"
+        android:id="@+id/user_info_left_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/icon_left"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:ellipsize="end"
-        android:ems="10"
+        android:ems="5"
         android:gravity="center_vertical"
         android:lines="1"
         tools:text="name" />
+
     <TextView
-        android:id="@+id/menu_text_right"
+        android:id="@+id/user_info_right_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toEndOf="@id/menu_text_left"
+        android:layout_toEndOf="@id/user_info_left_text"
         android:ellipsize="end"
         android:gravity="center|end"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:lines="1"
         tools:text="content"/>
 

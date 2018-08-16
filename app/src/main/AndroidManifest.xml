@@ -26,13 +26,12 @@
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.InfoActivity" />
         <activity android:name=".activity.ShopActivity" />
-        <activity android:name=".activity.HedgingInfoSettingActivity">
-        </activity>
-        <activity android:name=".activity.HedgingInfoDisplayActivity">
+        <activity android:name=".activity.HedgingInfoSettingActivity"></activity>
+        <activity android:name=".activity.HedgingInfoDisplayActivity"></activity>
+        <activity android:name=".activity.UserInfoActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

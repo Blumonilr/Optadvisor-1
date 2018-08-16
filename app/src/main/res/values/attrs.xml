@@ -13,4 +13,14 @@
         <attr name="leftTextColor" format="color"/>
         <attr name="rightTextColor" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="InfoItemView">
+        <!--布局中的文字-->
+        <attr name="info_text"/>
+        <!--文字的大小-->
+        <attr name="info_textSize"/>
+        <!--文字的颜色-->
+        <attr name="info_leftTextColor" format="color"/>
+        <attr name="info_rightTextColor" format="color"/>
+    </declare-styleable>
 </resources>
