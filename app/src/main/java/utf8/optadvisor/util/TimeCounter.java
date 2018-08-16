@@ -25,8 +25,4 @@ public class TimeCounter extends CountDownTimer {
         button.setText("再次发送");
         button.setClickable(true);
     }
-
-
-
-
 }
