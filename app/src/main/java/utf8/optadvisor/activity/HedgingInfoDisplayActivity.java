@@ -39,6 +39,8 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hedging_info_display);
+        TextView title=(TextView)findViewById(R.id.tv_table_title_left);
+        title.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyh.ttc"));
         lineChart = (LineChartView)findViewById(R.id.line_chart);
         scores.add(score);
         scores.add(score2);
@@ -144,33 +146,46 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
         HedgingMenuItem maxLoss=findViewById(R.id.hedging_maxloss);
 
         id.setMenuTextRight("null");
+        id.setIconLeft(R.mipmap.ic_id);
         id.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
         name.setMenuTextRight("null");
         name.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        name.setIconLeft(R.mipmap.ic_name);
         purchase.setMenuTextRight("null");
         purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        purchase.setIconLeft(R.mipmap.ic_purchase);
         wave.setMenuTextRight("null");
         wave.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        wave.setIconLeft(R.mipmap.ic_wave);
         date.setMenuTextRight("null");
         date.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        date.setIconLeft(R.mipmap.ic_date);
         soldPrice.setMenuTextRight("null");
         soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        soldPrice.setIconLeft(R.mipmap.ic_sold_price);
         finalPrice.setMenuTextRight("null");
         finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        finalPrice.setIconLeft(R.mipmap.ic_final_price);
         portion.setMenuTextRight("null");
         portion.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        portion.setIconLeft(R.mipmap.ic_portion);
         delta.setMenuTextRight("null");
         delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        delta.setIconLeft(R.mipmap.ic_param);
         gamma.setMenuTextRight("null");
         gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        gamma.setIconLeft(R.mipmap.ic_param);
         theta.setMenuTextRight("null");
         theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        theta.setIconLeft(R.mipmap.ic_param);
         vega.setMenuTextRight("null");
         vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        vega.setIconLeft(R.mipmap.ic_param);
         rho.setMenuTextRight("null");
         rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        rho.setIconLeft(R.mipmap.ic_param);
         maxLoss.setMenuTextRight("null");
         maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
-
+        maxLoss.setIconLeft(R.mipmap.ic_loss);
     }
 }

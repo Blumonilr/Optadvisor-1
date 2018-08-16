@@ -12,8 +12,7 @@
         android:layout_height="match_parent"
         android:contentDescription="iconLeft"
         android:padding="5dp"
-        android:scaleType="fitCenter"
-        android:src="@mipmap/ic_left" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/menu_text_left"

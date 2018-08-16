@@ -80,4 +80,8 @@ public class HedgingMenuItem extends RelativeLayout {
     public TextView getMenuLeft(){
         return menuTextLeft;
     }
+
+    public void setIconLeft(int res) {
+        this.iconLeft.setImageResource(res);
+    }
 }

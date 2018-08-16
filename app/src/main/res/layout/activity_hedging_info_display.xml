@@ -62,7 +62,7 @@
                     android:id="@+id/hedging_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:leftIcon="@mipmap/ic_left"
+                    app:leftIcon="@mipmap/ic_id"
                     app:text="ID"
                     app:textSize="16sp" />
 
@@ -78,7 +78,6 @@
                     android:id="@+id/hedging_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:leftIcon="@mipmap/ic_left"
                     app:text="名称"
                     app:textSize="16sp" />
 
@@ -178,7 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leftIcon="@mipmap/ic_left"
-                    app:text="δ"
+                    app:text="delta"
                     app:textSize="16sp" />
             </LinearLayout>
 
@@ -192,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leftIcon="@mipmap/ic_left"
-                    app:text="γ"
+                    app:text="gamma"
                     app:textSize="16sp" />
             </LinearLayout>
 
@@ -206,7 +205,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leftIcon="@mipmap/ic_left"
-                    app:text="θ"
+                    app:text="theta"
                     app:textSize="16sp" />
             </LinearLayout>
 
@@ -220,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leftIcon="@mipmap/ic_left"
-                    app:text="α"
+                    app:text="vega"
                     app:textSize="16sp" />
             </LinearLayout>
 
@@ -234,7 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:leftIcon="@mipmap/ic_left"
-                    app:text="ρ"
+                    app:text="rho"
                     app:textSize="16sp" />
             </LinearLayout>
 
