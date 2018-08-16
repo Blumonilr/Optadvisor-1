@@ -35,6 +35,7 @@
         <activity android:name=".activity.InfoActivity" >
         </activity>
         <activity android:name=".activity.ShopActivity"></activity>
+        <activity android:name=".activity.MessageActivity"/>
     </application>
 
 </manifest>

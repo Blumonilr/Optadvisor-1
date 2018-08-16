@@ -15,6 +15,8 @@ import android.widget.TextView;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
+import utf8.optadvisor.R;
+
 
 public class QuestionnaireActivity extends AppCompatActivity {
 
