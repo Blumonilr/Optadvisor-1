@@ -209,9 +209,8 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    
-    
-    
+
+
     <!--questions and answers-->
     <string name="q1">1.您的主要收入来源是:</string>
     <string name="q2">2.最近您家庭预计进行证券或者金融衍生品投资的资金占家庭现有总资产（不含自主、自用房产及汽车等固定资产）的比例是：</string>
