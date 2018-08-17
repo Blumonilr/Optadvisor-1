@@ -6,11 +6,27 @@
     android:background="@color/colorButton"
     android:layout_height="match_parent"
     tools:context=".fragment.OptionShow">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="7dp">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="50ETF" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="期权"/>
+    </LinearLayout>
     <ScrollView
+        android:layout_marginTop="45dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

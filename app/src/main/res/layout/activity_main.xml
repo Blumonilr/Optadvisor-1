@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:background="#dddddd"
         android:layout_weight="1"
+        android:orientation="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
@@ -26,6 +27,12 @@
                 android:textSize="20sp"
                 android:textColor="@color/colorLightWhite"/>
         </android.support.v7.widget.Toolbar>
+        <FrameLayout
+            android:id="@+id/main_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_below="@id/toolBar"/>
 
 
 
@@ -52,12 +59,8 @@
                 android:text="@string/my_combination_text"
                 style="@style/MainBottomButton"/>
         </LinearLayout>
-        <FrameLayout
-            android:id="@+id/main_frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolBar"/>
-       </RelativeLayout>
+
+       </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
