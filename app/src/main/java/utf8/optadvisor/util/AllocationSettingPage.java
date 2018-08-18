@@ -1,8 +1,6 @@
 package utf8.optadvisor.util;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +33,7 @@ public class AllocationSettingPage extends LinearLayout {
 
     public AllocationSettingPage(final Context context) {
         super(context);
-        inflate(context, R.layout.activity_allocation_setting, this);
+        inflate(context, R.layout.linearlayout_allocation_setting, this);
         ib11=(ImageButton)findViewById(R.id.allocation_ib_11);
         ib12=(ImageButton)findViewById(R.id.allocation_ib_12);
         ib13=(ImageButton)findViewById(R.id.allocation_ib_13);
