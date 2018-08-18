@@ -84,8 +84,6 @@ public class OptionShow extends Fragment {
         initCandleStickChart();
         drawCandleStickChart(candleStickChartInfo);
 
-
-
         return view;
     }
 

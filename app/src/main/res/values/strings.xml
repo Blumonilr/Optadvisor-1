@@ -132,6 +132,10 @@
     <string name="message_center">消息中心</string>
     <string name="about">关于</string>
     <string name="exit">退出登录</string>
+    <string name="my_combination">我的组合</string>
+    <string name="my_allocation">资产配置</string>
+    <string name="my_hedge">套期保值</string>
+    <string name="my_diy">DIY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
