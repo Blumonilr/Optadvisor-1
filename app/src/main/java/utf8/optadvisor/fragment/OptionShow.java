@@ -152,8 +152,6 @@ public class OptionShow extends Fragment {
         });
 
 
-
-
         return view;
     }
 
