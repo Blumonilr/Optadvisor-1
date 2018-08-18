@@ -31,12 +31,16 @@
             android:id="@+id/main_frame_layout"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:layout_below="@id/toolBar"/>
+
+
 
         <LinearLayout
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:background="@color/colorLightWhite"
             >
             <Button

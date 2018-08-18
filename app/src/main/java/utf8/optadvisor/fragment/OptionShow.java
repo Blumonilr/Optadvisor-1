@@ -4,11 +4,18 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.support.v4.app.FragmentTransaction;
 
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -40,7 +47,6 @@ import utf8.optadvisor.util.MyXFormatter;
 
 
 public class OptionShow extends Fragment {
-    private String information;
     TextView present_price;
     TextView ups_and_downs;
     TextView yesterday_end;
@@ -52,9 +58,49 @@ public class OptionShow extends Fragment {
     TextView update_time;
     TextView status;
     LineChart lineChart;
+    OptionContract optionContract;
     CandleStickChart candleStickChart;
-    LineChartInfo lineChartInfo;
-    CandleStickChartInfo candleStickChartInfo;
+    LineChartInfo lineChartInfo=new LineChartInfo();
+    CandleStickChartInfo candleStickChartInfo=new CandleStickChartInfo();
+
+    private static final int INFO_SUCCESS = 0;//获取50etf成功的标识
+    private static final int INFO_FAILURE = 1;//获取50etf失败的标识
+    private static final int LINE_SUCCESS = 2;//获取折线成功的标识
+    private static final int LINE_FAILURE = 3;//获取折线失败的标识
+    private static final int CANDLE_SUCCESS = 4;//获取k线成功的标识
+    private static final int CANDLE_FAILURE = 5;//获取k线失败的标识
+    private Gson gson=new Gson();
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage (Message msg) {//此方法在ui线程运行
+            switch(msg.what) {
+                case INFO_SUCCESS:
+                    String info=(String) msg.obj;
+                    draw50ETF(info);
+                    break;
+                case INFO_FAILURE:
+                    System.out.println("1fail");
+                    break;
+                case LINE_SUCCESS:
+                    String jsonData=(String)msg.obj;
+                    lineChartInfo=gson.fromJson(jsonData,LineChartInfo.class);
+                    drawLineChart(lineChartInfo);
+                    break;
+                case LINE_FAILURE:
+                    System.out.println("2fail");
+                    break;
+                case CANDLE_FAILURE:
+                    System.out.println("3fail");
+                    break;
+                case CANDLE_SUCCESS:
+                    String jsonData1=(String)msg.obj;
+                    candleStickChartInfo=gson.fromJson(jsonData1,CandleStickChartInfo.class);
+                    drawCandleStickChart(candleStickChartInfo);
+                    break;
+            }
+        }
+    };
+
 
 
 
@@ -76,13 +122,35 @@ public class OptionShow extends Fragment {
         update_time=(TextView) view.findViewById(R.id.update_time);
         status=(TextView) view.findViewById(R.id.status);
         get50ETFinfo();
-        draw50ETF(information);
         lineChart=(LineChart) view.findViewById(R.id.line_chart);
         initLineChart();
-        drawLineChart(lineChartInfo);
         candleStickChart=(CandleStickChart) view.findViewById(R.id.candle_stick_chart);
         initCandleStickChart();
-        drawCandleStickChart(candleStickChartInfo);
+        Button button1=(Button) view.findViewById(R.id.button_50ETF);
+        Button button2=(Button) view.findViewById(R.id.button_option);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                if(optionContract!=null){
+                    transaction.hide(optionContract);
+                    transaction.commit();
+                }
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                if(optionContract==null){
+                    optionContract=new OptionContract();
+                    transaction.add(R.id.frame_50ETF, optionContract);
+                }
+                transaction.show(optionContract);
+                transaction.commit();
+            }
+        });
+
 
         return view;
     }
@@ -100,9 +168,9 @@ public class OptionShow extends Fragment {
                             .build();
                     Response response=client.newCall(request).execute();
                     String jsonData=response.body().string();
-                    Gson gson=new Gson();
-                    lineChartInfo =gson.fromJson(jsonData,LineChartInfo.class);
+                    mHandler.obtainMessage(LINE_SUCCESS,jsonData).sendToTarget();
                 }catch (Exception e){
+                    mHandler.obtainMessage(LINE_FAILURE).sendToTarget();
                     e.printStackTrace();
                 }
             }
@@ -110,7 +178,7 @@ public class OptionShow extends Fragment {
     }
 
     private void drawLineChart(LineChartInfo lineChartInfo){
-        if(lineChartInfo!=null) {
+        if(lineChartInfo.getLine()!=null) {
             lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
             lineChart.setDrawBorders(false);//禁止绘制图表边框的线
             lineChart.setScaleEnabled(true);
@@ -142,12 +210,6 @@ public class OptionShow extends Fragment {
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setValueFormatter(new MyXFormatter(true));//x轴自定义格式
                 YAxis leftAxis = lineChart.getAxisLeft();
-                LimitLine limitLine = new LimitLine(Float.valueOf(yesterday_end.getText().toString()), yesterday_end.getText().toString());
-                limitLine.setLineColor(Color.RED);
-                limitLine.setTextColor(Color.RED);
-                limitLine.setTextSize(10f);
-                leftAxis.addLimitLine(limitLine);
-
                 YAxis rightAxis = lineChart.getAxisRight();
                 //设置图表右边的y轴禁用
                 rightAxis.setEnabled(false);
@@ -254,10 +316,9 @@ public class OptionShow extends Fragment {
                             .build();
                     Response response=client.newCall(request).execute();
                     String jsonData=response.body().string();
-                    Gson gson=new Gson();
-                    candleStickChartInfo =gson.fromJson(jsonData,CandleStickChartInfo.class);
-
+                    mHandler.obtainMessage(CANDLE_SUCCESS,jsonData).sendToTarget();
                 }catch (Exception e){
+                    mHandler.obtainMessage(CANDLE_FAILURE).sendToTarget();
                     e.printStackTrace();
                 }
             }
@@ -265,7 +326,7 @@ public class OptionShow extends Fragment {
 
     }
     private void drawCandleStickChart(CandleStickChartInfo candleStickChartInfo){
-        if(candleStickChartInfo!=null) {
+        if(candleStickChartInfo.getKline()!=null) {
             candleStickChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
             candleStickChart.setDrawBorders(false);//禁止绘制图表边框的线
             candleStickChart.setScaleXEnabled(true);
@@ -380,7 +441,7 @@ public class OptionShow extends Fragment {
 
     //初始化50etf信息
     private void get50ETFinfo(){
-        Thread thread=new Thread(new Runnable() {
+        new Thread(new Runnable(){
             @Override
             public void run() {
                     try {
@@ -388,16 +449,16 @@ public class OptionShow extends Fragment {
                         Request request = new Request.Builder()
                                 .url("http://hq.sinajs.cn/list=s_sh510050,sh510050")
                                 .build();
-
                         Response response = client.newCall(request).execute();
-                        information = response.body().string();
+                        String information = response.body().string();
+                        mHandler.obtainMessage(INFO_SUCCESS,information).sendToTarget();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
 
-        });
-        thread.start();
+        }).start();
+
     }
 
 
@@ -438,12 +499,6 @@ public class OptionShow extends Fragment {
                 status.setText("开盘");
             }
         }
-    }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-
     }
 
 }
