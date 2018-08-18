@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import utf8.optadvisor.R;
@@ -19,6 +20,8 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
         TextView right4;
         TextView right5;
         TextView right6;
+        TextView right7;
+        TextView right8;
         public ViewHolder(View view){
             super(view);
             right1=(TextView) view.findViewById(R.id.right1);
@@ -27,6 +30,8 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
             right4=(TextView) view.findViewById(R.id.right4);
             right5=(TextView) view.findViewById(R.id.right5);
             right6=(TextView) view.findViewById(R.id.right6);
+            right7=(TextView) view.findViewById(R.id.right7);
+            right8=(TextView) view.findViewById(R.id.right8);
         }
     }
     public RightAdapter(List<String[]> put_option_info){
@@ -42,12 +47,14 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(RightAdapter.ViewHolder holder, int position){
         String[] info=put_option_info.get(position);
-        holder.right1.setText(info[37]);
-        holder.right2.setText(info[6]);
-        holder.right3.setText(info[40]);
-        holder.right4.setText(info[39]);
+        holder.right1.setText(info[6]);
+        holder.right2.setText(info[38]);
+        holder.right3.setText(info[5]);
+        holder.right4.setText(info[4]);
         holder.right5.setText(info[3]);
-        holder.right6.setText(info[1]);
+        holder.right6.setText(info[2]);
+        holder.right7.setText(info[1]);
+        holder.right8.setText(info[0]);
     }
     @Override
     public int getItemCount(){

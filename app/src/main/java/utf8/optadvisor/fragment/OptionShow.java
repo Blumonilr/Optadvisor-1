@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.support.v4.app.FragmentTransaction;
 
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -54,6 +58,7 @@ public class OptionShow extends Fragment {
     TextView update_time;
     TextView status;
     LineChart lineChart;
+    OptionContract optionContract;
     CandleStickChart candleStickChart;
     LineChartInfo lineChartInfo=new LineChartInfo();
     CandleStickChartInfo candleStickChartInfo=new CandleStickChartInfo();
@@ -121,6 +126,31 @@ public class OptionShow extends Fragment {
         initLineChart();
         candleStickChart=(CandleStickChart) view.findViewById(R.id.candle_stick_chart);
         initCandleStickChart();
+        Button button1=(Button) view.findViewById(R.id.button_50ETF);
+        Button button2=(Button) view.findViewById(R.id.button_option);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                if(optionContract!=null){
+                    transaction.hide(optionContract);
+                    transaction.commit();
+                }
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                if(optionContract==null){
+                    optionContract=new OptionContract();
+                    transaction.add(R.id.frame_50ETF, optionContract);
+                }
+                transaction.show(optionContract);
+                transaction.commit();
+            }
+        });
+
 
 
 
@@ -424,7 +454,6 @@ public class OptionShow extends Fragment {
                         Response response = client.newCall(request).execute();
                         String information = response.body().string();
                         mHandler.obtainMessage(INFO_SUCCESS,information).sendToTarget();
-                        System.out.println(information);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -438,7 +467,6 @@ public class OptionShow extends Fragment {
 
     private void draw50ETF(String information){
         if(information!=null) {
-            System.out.print("fa");
             int comma1 = information.indexOf(",");
             int comma2 = information.indexOf(",", comma1 + 1);
             int comma3 = information.indexOf(",", comma2 + 1);

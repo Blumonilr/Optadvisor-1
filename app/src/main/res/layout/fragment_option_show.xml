@@ -8,21 +8,32 @@
     tools:context=".fragment.OptionShow">
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="7dp">
         <Button
+            android:id="@+id/button_50ETF"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="50ETF" />
         <Button
+            android:id="@+id/button_option"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="期权"/>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/frame_50ETF"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
     <ScrollView
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
@@ -237,5 +248,7 @@
             />
     </LinearLayout>
     </ScrollView>
+    </FrameLayout>
+    </LinearLayout>
 
 </FrameLayout>
