@@ -11,25 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rlv_shopCart"
+            android:layout_height="wrap_content">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rlv_shopCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
+                </android.support.v7.widget.RecyclerView>
 
-            </View>
-        </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+                </View>
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,14 +43,19 @@
             android:id="@+id/ll_sum"
             android:layout_above="@+id/emptyView">
 
+            <ImageView
+                android:id="@+id/iv_addSelect"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/shopcart_selected"
+                android:padding="5dp"/>
+
             <TextView
                 android:id="@+id/tv_addSelect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:drawableLeft="@drawable/shopcart_selected"
-                android:text="全选"
-                android:drawablePadding="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:text="全选" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -56,9 +64,20 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_totalprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_sum"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:text="总价：¥0"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_totalnum"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
                     android:text="共0件商品"
@@ -82,12 +101,13 @@
 
         </LinearLayout>
 
+
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:id="@+id/emptyView"
             android:layout_alignParentBottom="true">
-
         </View>
     </RelativeLayout>
+
 </LinearLayout>
