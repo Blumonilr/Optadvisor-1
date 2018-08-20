@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import utf8.optadvisor.domain.ResponseMsg;
+import utf8.optadvisor.domain.response.ResponseMsg;
 
 public enum NetUtil {
     INSTANCE;
@@ -41,6 +41,19 @@ public enum NetUtil {
         OkHttpClient client=new OkHttpClient();
         Request.Builder builder=new Request.Builder();
         RequestBody requestBody=RequestBody.create(mediaType,stringBuilder.toString());
+        Request request=builder.url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * 带参POST请求(json字符串手动构建)
+     */
+    public void sendPostRequest(String address, String value, okhttp3.Callback callback){
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+
+        OkHttpClient client=new OkHttpClient();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,value);
         Request request=builder.url(address).post(requestBody).build();
         client.newCall(request).enqueue(callback);
     }

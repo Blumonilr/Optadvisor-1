@@ -29,30 +29,14 @@
         android:layout_marginEnd="50dp">
         <EditText
             android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:hint="@string/login_username_hint_text"
-            android:textColorHint="@color/colorGrayBorder"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:background="@drawable/shape_tranparent_text"
-            android:padding="15dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorGrayBorder"
-            android:layout_margin="8dp"/>
+            style="@style/TransparentInputView"
+            />
         <EditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TransparentInputView"
             android:hint="@string/login_pwd_hint_text"
-            android:textColorHint="@color/colorGrayBorder"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:background="@drawable/shape_tranparent_text"
-            android:textColor="@color/colorGrayBorder"
-            android:padding="15dp"
-            android:textSize="16sp"
-            android:layout_margin="8dp"
+            android:inputType="textPassword"
             />
         <Button
             android:id="@+id/login_button"
@@ -67,26 +51,15 @@
             android:layout_height="match_parent">
             <Button
                 android:id="@+id/forgetPassword"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/forget_pwd_text"
-                android:textSize="15sp"
-                android:textColor="@color/colorButton"
-                android:background="@color/transParent"
                 android:textAlignment="textStart"
-                android:layout_margin="5dp"/>
+                style="@style/LoginLittleButton"/>
             <Button
                 android:id="@+id/register"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
                 android:text="@string/register_text"
-                android:textSize="15sp"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorButton"
-                android:background="@color/transParent" />
+                style="@style/LoginLittleButton"
+                 />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

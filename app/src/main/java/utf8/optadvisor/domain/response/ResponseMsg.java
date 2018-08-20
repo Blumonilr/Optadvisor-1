@@ -1,4 +1,4 @@
-package utf8.optadvisor.domain;
+package utf8.optadvisor.domain.response;
 
 /**
  * 服务器响应对象

@@ -1,7 +1,10 @@
 package utf8.optadvisor.activity;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +21,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
-import utf8.optadvisor.domain.ResponseMsg;
+import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ActivityJumper;
 import utf8.optadvisor.util.NetUtil;
 
@@ -34,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     private int[] background={R.drawable.pic_login_bg1,R.drawable.pic_login_bg2,R.drawable.pic_login_bg3,R.drawable.pic_login_bg4,R.drawable.pic_login_bg5,
             R.drawable.pic_login_bg6,R.drawable.pic_login_bg7,R.drawable.pic_login_bg8,R.drawable.pic_login_bg9,R.drawable.pic_login_bg10,R.drawable.pic_login_bg11};
 
+    private AlertDialog.Builder dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
         initLoginMain();
+        initDialog();
         initAllTextView();
         initLoginButton();
         initRegisterButton();
@@ -85,10 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String usenameText=username.getText().toString();
                 String passwordText=password.getText().toString();
-                Log.d("Login Input:","{"+usenameText+","+passwordText+"}");
-                if(login(usenameText,passwordText)){
-                    finish();
-                }
+                login(usenameText,passwordText);
             }
         });
     }
@@ -120,8 +123,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * 初始化弹窗
+     */
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(LoginActivity.this);
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+
+    /**
      * 登录
-     * 未来要换成异步任务
      */
     private boolean login(String username,String password){
         SharedPreferences.Editor editor=sharedPreferences.edit();
@@ -135,17 +149,37 @@ public class LoginActivity extends AppCompatActivity {
         NetUtil.INSTANCE.sendPostRequest("http://192.168.1.108:8088/login", value, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("Net","fail");
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
-                Log.d("Net Message", String.valueOf(responseMsg.getCode()));
+                if(responseMsg.getCode()==0){
+                    ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,MainActivity.class);
+                    finish();
+                }else{
+                    dialog.setTitle("登录失败");
+                    dialog.setMessage("请检查账号密码");
+                    dialogShow();
+                }
             }
         });
-        ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,MainActivity.class);
+
         return true;
     }
+
+
+    private void dialogShow(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+    }
+
 }
 
