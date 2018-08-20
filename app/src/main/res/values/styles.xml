@@ -45,8 +45,16 @@
         <item name="android:gravity">bottom|center_horizontal</item>
     </style>
 
-    
-    
+    <style name="MainTopButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:color">@color/colorDarkGray</item>
+        <item name="android:background">@color/colorLightWhite</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
     <style name="TextView_Table_Right">
         <item name="android:layout_width">80dp</item>

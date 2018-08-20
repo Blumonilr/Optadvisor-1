@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.ActionMenuView;
 
 import utf8.optadvisor.R;
 import utf8.optadvisor.activity.ForgetPasswordActivity;
@@ -34,6 +35,14 @@ public class ActivityJumper {
      */
     public static void rightEnterLeftExit(Context context,Activity toExit, Class<?> cls){
         Intent intent = new Intent(context,cls);
+        context.startActivity(intent);
+        toExit.overridePendingTransition(R.anim.activity_right_enter,R.anim.activity_left_exit);
+    }
+
+    /**
+     * 右进左出,自定intent
+     */
+    public static void rightEnterLeftExit(Intent intent, Context context,Activity toExit){
         context.startActivity(intent);
         toExit.overridePendingTransition(R.anim.activity_right_enter,R.anim.activity_left_exit);
     }

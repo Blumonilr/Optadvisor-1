@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorButton"
     tools:context=".fragment.MyCombination">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="我的组合" />
+        android:background="@color/colorButton">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/sub_top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorLightWhite"
+                tools:ignore="UselessParent">
 
-</FrameLayout>
+                <Button
+                    android:id="@+id/allocation_button"
+                    style="@style/MainTopButton"
+                    android:text="@string/my_allocation" />
+
+                <Button
+                    android:id="@+id/hedge_button"
+                    style="@style/MainTopButton"
+                    android:text="@string/my_hedge" />
+
+                <Button
+                    android:id="@+id/diy_button"
+                    style="@style/MainTopButton"
+                    android:text="@string/my_diy" />
+                </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:alpha="0.9">
+                <LinearLayout
+                   android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="当前组合:"
+                        android:layout_margin="5dp"
+                        android:textAlignment="viewEnd"/>
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_weight="7"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/content_spinner"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"/>
+                </LinearLayout>
+        </android.support.v7.widget.CardView>
+            <ExpandableListView
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id ="@+id/option_list"
+                android:layout_width ="match_parent"
+                android:layout_height ="wrap_content"
+                android:background="@color/colorLightWhite" />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/my_line_chart"
+            android:alpha="0.9"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="10dp"
+            android:background="@color/colorLightWhite"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

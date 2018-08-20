@@ -10,9 +10,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_icon_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.QuestionnaireActivity" />
@@ -20,6 +20,7 @@
         <activity android:name=".activity.ResetByEmailActivity" />
         <activity android:name=".activity.ForgetResetPwdActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
+<<<<<<< HEAD
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask">
@@ -28,22 +29,31 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+=======
+        <activity android:name=".activity.LoginActivity" >
+
+>>>>>>> cf38e7d563c095130b212fe8a7b4ff67926f416c
         </activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.InfoActivity" />
         <activity android:name=".activity.ShopActivity" />
-        <activity android:name=".activity.HedgingInfoSettingActivity" />
-        <activity android:name=".activity.HedgingInfoDisplayActivity" />
+<<<<<<< HEAD
+        <activity android:name=".fragment.HedgingInfoSetting" />
+        <activity android:name=".fragment.HedgingInfoDisplay" />
         <activity android:name=".activity.UserInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+=======
+        <activity android:name=".fragment.HedgingInfoSetting">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".activity.AllocationActivity" >
+        <activity android:name=".fragment.HedgingInfoDisplay">
+>>>>>>> cf38e7d563c095130b212fe8a7b4ff67926f416c
+
+        </activity>
+        <activity android:name=".fragment.AllocationSetting" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

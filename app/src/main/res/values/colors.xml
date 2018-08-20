@@ -4,13 +4,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#7EC0EE</color>
-    <color name="colorLightWhite">#FEFEE0</color>
     <color name="colorButtnDark">#3EC1FF</color>
     <color name="textWhite">#ffffff</color>
     <color name="pressedIcon">#e53e42</color>
     <color name="background_color">#f6f6f6</color>
     <color name="splitline_color">#dddddd</color>
     <color name="colorGreen">#66FF66</color>
+<<<<<<< HEAD
     <color name="transParent">#01000000</color>
     <color name="colorLightBlue">#19b7a8</color>
     <color name="colorGraySolid">#80858175</color>
@@ -19,4 +19,15 @@
     <color name="colorLightSkyBlue">#87CEFA</color>
     <color name="colorDarkGray">#4d4d4d</color>
     <color name="darkSlateGray">#2F4F4F</color>
+=======
+<color name="colorLightWhite">#FEFEE0</color>
+<color name="transParent">#01000000</color>
+<color name="colorLightBlue">#19b7a8</color>
+<color name="colorGraySolid">#80858175</color>
+<color name="colorGrayBorder">#aea594</color>
+<color name="colorAliceBlue">#F0F8FF</color>
+<color name="colorLightSkyBlue">#87CEFA</color>
+<color name="colorDarkGray">#4d4d4d</color>
+<color name="darkSlateGray">#2F4F4F</color>
+>>>>>>> cf38e7d563c095130b212fe8a7b4ff67926f416c
 </resources>
