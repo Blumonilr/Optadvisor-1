@@ -136,6 +136,12 @@
     <string name="my_allocation">资产配置</string>
     <string name="my_hedge">套期保值</string>
     <string name="my_diy">DIY</string>
+    <string name="reset_password">重置密码</string>
+    <string name="reset_first">请输入新密码</string>
+    <string name="reset_again">请再次输入新密码</string>
+    <string name="old_password">请输入原始密码</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
