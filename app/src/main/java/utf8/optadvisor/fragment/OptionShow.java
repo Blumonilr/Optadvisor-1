@@ -111,9 +111,9 @@ public class OptionShow extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_option_show, container, false);
-        present_price=(TextView) view.findViewById(R.id.present_price);
-        ups_and_downs=(TextView) view.findViewById(R.id.ups_and_downs);
-        yesterday_end=(TextView) view.findViewById(R.id.yesterday_end);
+        present_price= view.findViewById(R.id.present_price);
+        ups_and_downs= view.findViewById(R.id.ups_and_downs);
+        yesterday_end=view.findViewById(R.id.yesterday_end);
         today_start=(TextView) view.findViewById(R.id.today_start);
         highest_price=(TextView) view.findViewById(R.id.highest_price);
         lowest_price=(TextView) view.findViewById(R.id.lowest_price);
@@ -126,8 +126,8 @@ public class OptionShow extends Fragment {
         initLineChart();
         candleStickChart=(CandleStickChart) view.findViewById(R.id.candle_stick_chart);
         initCandleStickChart();
-        Button button1=(Button) view.findViewById(R.id.button_50ETF);
-        Button button2=(Button) view.findViewById(R.id.button_option);
+        Button button1=view.findViewById(R.id.button_50ETF);
+        Button button2= view.findViewById(R.id.button_option);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
