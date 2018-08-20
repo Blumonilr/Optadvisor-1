@@ -1,13 +1,15 @@
 package utf8.optadvisor.fragment;
 
 import android.app.DatePickerDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -25,9 +27,11 @@ public class HedgingInfoSetting extends Fragment {
     private int mYear;
     private int mMonth;
     private int mDay;
+    private Button next;
+    private LinearLayout ll;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
@@ -37,6 +41,7 @@ public class HedgingInfoSetting extends Fragment {
         textView = (TextView) view.findViewById(R.id.hedging_tv_sb);
         datePicker = (Button) view.findViewById(R.id.hedging_datePicker);
         dateView = (TextView) view.findViewById(R.id.hedging_tv_dateview);
+        ll=(LinearLayout)view.findViewById(R.id.hedging_ll);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -80,6 +85,15 @@ public class HedgingInfoSetting extends Fragment {
                         }, calendar.get(Calendar.YEAR), calendar
                         .get(Calendar.MONTH), calendar
                         .get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        next=view.findViewById(R.id.hedging_bt_next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ll.removeAllViews();
+                ll.addView(new HedgingInfoDisplay(getContext()));
             }
         });
 

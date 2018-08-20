@@ -1,12 +1,14 @@
 package utf8.optadvisor.fragment;
 
-import android.app.Fragment;
+import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,33 +27,61 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.util.HedgingMenuItem;
 
 
-public class HedgingInfoDisplay extends Fragment {
+public class HedgingInfoDisplay extends ScrollView {
 
     private LineChartView lineChart;
+
+    private HedgingMenuItem id ;
+    private HedgingMenuItem name;
+    private HedgingMenuItem purchase;
+    private HedgingMenuItem wave;
+    private HedgingMenuItem date;
+    private HedgingMenuItem soldPrice;
+    private HedgingMenuItem finalPrice;
+    private HedgingMenuItem portion;
+    private HedgingMenuItem delta;
+    private HedgingMenuItem gamma;
+    private HedgingMenuItem theta;
+    private HedgingMenuItem vega;
+    private HedgingMenuItem rho;
+    private HedgingMenuItem maxLoss;
+
     int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
-    String[] date = {"5-23","5-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","1-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","4-22","9-22","10-22","11-22","zxc"};//X轴的标注
+    String[] dates = {"5-23","5-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","1-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","4-22","9-22","10-22","11-22","zxc"};//X轴的标注
     int[] score= {74,22,18,79,20,74,20,74,42,90,74,42,90,50,42,90,33,10,74,22,18,79,20,74,22,18,79,20};//图表的数据
     int[] score2= {73,25,18,79,29,74,20,79,45,90,74,42,83,50,42,90,33,10,75,22,18,79,20,74,22,18,79,20};
     List<int[]> scores=new ArrayList<>();
     private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     private List<Line> lines = new ArrayList<Line>();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_hedging_info_display, container, false);
-        TextView title=(TextView)view.findViewById(R.id.tv_table_title_left);
+    public HedgingInfoDisplay(Context context) {
+        super(context);
+        inflate(context,R.layout.fragment_hedging_info_display,  this);
+        TextView title=(TextView)findViewById(R.id.tv_table_title_left);
         title.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyh.ttc"));
-        lineChart = (LineChartView)view.findViewById(R.id.line_chart);
+        lineChart = (LineChartView)findViewById(R.id.line_chart);
         scores.add(score);
         scores.add(score2);
+
+        id = findViewById(R.id.hedging_id);
+        name =findViewById(R.id.hedging_name);
+        purchase = findViewById(R.id.hedging_purchase);
+        wave=findViewById(R.id.hedging_wave);
+        date=findViewById(R.id.hedging_date);
+        soldPrice=findViewById(R.id.hedging_soldprice);
+        finalPrice=findViewById(R.id.hedging_finalprice);
+        portion=findViewById(R.id.hedging_portion);
+        delta=findViewById(R.id.hedging_delta);
+        gamma=findViewById(R.id.hedging_gamma);
+        theta=findViewById(R.id.hedging_theta);
+        vega=findViewById(R.id.hedging_vega);
+        rho=findViewById(R.id.hedging_rho);
+        maxLoss=findViewById(R.id.hedging_maxloss);
+
         getAxisXLables();//获取x轴的标注
         getAxisPoints();//获取坐标点
         initLineChart();//初始化
         initMenu();
-
-        return view;
     }
 
     /**
@@ -109,8 +139,8 @@ public class HedgingInfoDisplay extends Fragment {
      * X 轴的显示
      */
     private void getAxisXLables(){
-        for (int i = 0; i < date.length; i++) {
-            mAxisXValues.add(new AxisValue(i).setLabel(date[i]));
+        for (int i = 0; i < dates.length; i++) {
+            mAxisXValues.add(new AxisValue(i).setLabel(dates[i]));
         }
     }
     /**
@@ -134,20 +164,6 @@ public class HedgingInfoDisplay extends Fragment {
     }
 
     private void initMenu(){
-        HedgingMenuItem id = getView().findViewById(R.id.hedging_id);
-        HedgingMenuItem name = getView().findViewById(R.id.hedging_name);
-        HedgingMenuItem purchase = getView().findViewById(R.id.hedging_purchase);
-        HedgingMenuItem wave=getView().findViewById(R.id.hedging_wave);
-        HedgingMenuItem date=getView().findViewById(R.id.hedging_date);
-        HedgingMenuItem soldPrice=getView().findViewById(R.id.hedging_soldprice);
-        HedgingMenuItem finalPrice=getView().findViewById(R.id.hedging_finalprice);
-        HedgingMenuItem portion=getView().findViewById(R.id.hedging_portion);
-        HedgingMenuItem delta=getView().findViewById(R.id.hedging_delta);
-        HedgingMenuItem gamma=getView().findViewById(R.id.hedging_gamma);
-        HedgingMenuItem theta=getView().findViewById(R.id.hedging_theta);
-        HedgingMenuItem vega=getView().findViewById(R.id.hedging_vega);
-        HedgingMenuItem rho=getView().findViewById(R.id.hedging_rho);
-        HedgingMenuItem maxLoss=getView().findViewById(R.id.hedging_maxloss);
 
         id.setMenuTextRight("null");
         id.setIconLeft(R.mipmap.ic_id);

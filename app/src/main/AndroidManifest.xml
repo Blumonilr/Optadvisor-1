@@ -20,7 +20,6 @@
         <activity android:name=".activity.ResetByEmailActivity" />
         <activity android:name=".activity.ForgetResetPwdActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
-<<<<<<< HEAD
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask">
@@ -29,31 +28,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-=======
-        <activity android:name=".activity.LoginActivity" >
-
->>>>>>> cf38e7d563c095130b212fe8a7b4ff67926f416c
         </activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.InfoActivity" />
         <activity android:name=".activity.ShopActivity" />
-<<<<<<< HEAD
-        <activity android:name=".fragment.HedgingInfoSetting" />
-        <activity android:name=".fragment.HedgingInfoDisplay" />
         <activity android:name=".activity.UserInfoActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-=======
-        <activity android:name=".fragment.HedgingInfoSetting">
-
-        </activity>
-        <activity android:name=".fragment.HedgingInfoDisplay">
->>>>>>> cf38e7d563c095130b212fe8a7b4ff67926f416c
-
-        </activity>
-        <activity android:name=".fragment.AllocationSetting" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
