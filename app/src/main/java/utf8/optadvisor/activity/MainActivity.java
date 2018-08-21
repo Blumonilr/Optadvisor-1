@@ -1,5 +1,6 @@
 package utf8.optadvisor.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,11 +20,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.fragment.BuildPortfolio;
 import utf8.optadvisor.fragment.MyCombination;
 import utf8.optadvisor.fragment.OptionShow;
 import utf8.optadvisor.util.ActivityJumper;
+import utf8.optadvisor.util.NetUtil;
 
 /**
  * 主界面
@@ -40,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private Button toBulidPortfolioButton;
     private Button toMyCombinationButton;
 
-    TextView innerText;
+    private AlertDialog.Builder dialog;
+
+    private TextView innerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +122,19 @@ public class MainActivity extends AppCompatActivity {
         changeButton(true,toMyCombinationButton);
         transaction.commit();
     }
+
+    /**
+     * 初始化弹窗
+     */
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(MainActivity.this);
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+
 
     /**
      * 设置“行情展示”按钮
@@ -201,10 +224,22 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Main","toAbout");
                         break;
                     case R.id.quit:
-                        SharedPreferences.Editor editor=preferences.edit();
-                        editor.putBoolean("isLogined",false);
-                        editor.apply();
-                        ActivityJumper.rightEnterLeftExit(MainActivity.this,MainActivity.this,LoginActivity.class);
+                        NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/logout", new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                dialog.setTitle("网络连接错误");
+                                dialog.setMessage("登出时发生错误，请重试");
+                                dialogShow();
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                SharedPreferences.Editor editor=preferences.edit();
+                                editor.putBoolean("isLogined",false);
+                                editor.apply();
+                                ActivityJumper.rightEnterLeftExit(MainActivity.this,MainActivity.this,LoginActivity.class);
+                            }
+                        });
                         break;
                     default:
                 }
@@ -249,6 +284,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * 按钮点击效果
+     */
     private void changeButton(boolean chosen,Button button){
          if(chosen){
              button.setTextColor(getResources().getColor(R.color.colorButton,null));
@@ -284,4 +323,12 @@ public class MainActivity extends AppCompatActivity {
          button.setCompoundDrawables(null, picChosen, null, null);
     }
 
+    private void dialogShow(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+    }
 }

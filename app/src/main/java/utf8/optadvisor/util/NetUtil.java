@@ -15,7 +15,7 @@ import utf8.optadvisor.domain.response.ResponseMsg;
 public enum NetUtil {
     INSTANCE;
     private Gson gson=new Gson();
-
+    public final static String SERVER_BASE_ADDRESS="http://192.168.1.108:8088";
     /**
      * 不带参GET请求
      */
