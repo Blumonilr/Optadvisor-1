@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.UserInfoActivity">
+    tools:context=".activity.ModifyActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/user_info_toolbar"
+        android:id="@+id/user_info_modify_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:title="个人信息"
@@ -17,12 +17,12 @@
         app:popupTheme="@style/Base.ThemeOverlay.AppCompat.Light">
 
         <Button
-            android:id="@+id/user_info_bt_modify"
+            android:id="@+id/user_modify_bt_confirm"
             android:layout_width="65dp"
             android:layout_height="40dp"
             android:layout_marginLeft="200dp"
             android:background="@color/colorPrimary"
-            android:text="修改信息"
+            android:text="保存信息"
             android:textSize="16sp"/>
 
     </android.support.v7.widget.Toolbar>
@@ -56,7 +56,7 @@
                 android:textSize="16sp"/>
 
             <ImageView
-                android:id="@+id/user_head"
+                android:id="@+id/user_modify_head"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentRight="true"
@@ -77,11 +77,11 @@
             android:background="#BDBDBD"/>
 
 
-        <utf8.optadvisor.util.UserInfoMenuItem
-            android:id="@+id/user_info_name"
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:info_text="名称"
+            app:modify_text="名称"
             android:background="#ffffff"/>
 
         <View
@@ -90,24 +90,11 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
-        android:id="@+id/user_info_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:info_text="账号"
-        android:background="#ffffff"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#BDBDBD"
-            android:layout_marginLeft="15dp" />
-
-        <utf8.optadvisor.util.UserInfoMenuItem
-            android:id="@+id/user_info_gender"
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:info_text="性别"
+            app:modify_text="账号"
             android:background="#ffffff"/>
 
         <View
@@ -116,11 +103,11 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
-            android:id="@+id/user_info_age"
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:info_text="年龄"
+            app:modify_text="性别"
             android:background="#ffffff"/>
 
         <View
@@ -129,11 +116,11 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
-            android:id="@+id/user_info_birth"
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:info_text="生日"
+            app:modify_text="年龄"
             android:background="#ffffff"/>
 
         <View
@@ -142,11 +129,11 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
-            android:id="@+id/user_info_phone"
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:info_text="电话"
+            app:modify_text="生日"
             android:background="#ffffff"/>
 
         <View
@@ -155,11 +142,24 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
-            android:id="@+id/user_info_email"
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:info_text="邮箱"
+            app:modify_text="电话"
+            android:background="#ffffff"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BDBDBD"
+            android:layout_marginLeft="15dp" />
+
+        <utf8.optadvisor.util.ModifyItem
+            android:id="@+id/user_info_modify_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:modify_text="邮箱"
             android:background="#ffffff"/>
 
         <View
@@ -194,8 +194,8 @@
                 android:text="简介"
                 android:textSize="16sp"/>
 
-            <TextView
-                android:id="@+id/user_info_introduction"
+            <EditText
+                android:id="@+id/user_info_modify_introduction"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@id/introduction"
@@ -203,6 +203,7 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:textSize="16sp"
+                android:background="@color/textWhite"
                 android:textColor="#000000" />
 
         </RelativeLayout>

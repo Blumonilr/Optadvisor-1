@@ -23,4 +23,14 @@
         <attr name="info_leftTextColor" format="color"/>
         <attr name="info_rightTextColor" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="ModifyItemView">
+        <!--布局中的文字-->
+        <attr name="modify_text"/>
+        <!--文字的大小-->
+        <attr name="modify_textSize"/>
+        <!--文字的颜色-->
+        <attr name="modify_leftTextColor" format="color"/>
+        <attr name="modify_rightTextColor" format="color"/>
+    </declare-styleable>
 </resources>
