@@ -1,35 +1,54 @@
 package utf8.optadvisor.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.RegisterInfo;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ActivityJumper;
+import utf8.optadvisor.util.NetUtil;
+import utf8.optadvisor.util.SyncHorizontalScrollView;
 
 /**
- * 注册
+ * 注册界面
  */
 public class RegisterActivity extends AppCompatActivity {
-    private RegisterInfo info;
+    private RegisterInfo Info=new RegisterInfo();
+    private EditText edit_userName;
+    private EditText edit_password;
+    private EditText edit_telephone;
+    private EditText edit_name;
+    private EditText edit_email;
+    private DatePicker datePicker;
+    private RadioGroup radioGroup;
+    private RadioButton rb;
     @Override
+    /**
+     * 注册界面
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        info=new RegisterInfo();
         Toolbar toolbar = (Toolbar) findViewById(R.id.tbb);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,44 +57,24 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
             }
         });
+        edit_userName=(EditText) findViewById(R.id.edit_userName);
+        edit_password=(EditText) findViewById(R.id.edit_password);
+        edit_telephone=(EditText) findViewById(R.id.edit_telephone);
+        edit_name=(EditText) findViewById(R.id.edit_name);
+        edit_email=(EditText) findViewById(R.id.edit_email);
+        datePicker=findViewById(R.id.date_picker);
+        radioGroup=findViewById(R.id.gender_group);
 
-        final EditText usernameInput= findViewById(R.id.edit_username);
-        final EditText passwordInput=findViewById(R.id.edit_password);
-        final EditText telephoneInput=findViewById(R.id.edit_telephone);
-        final EditText nameInput=findViewById(R.id.edit_name);
-        final EditText emailInput= findViewById(R.id.edit_email);
-        final DatePicker birthdayInput=findViewById(R.id.edit_birthday);
-        final RadioGroup genderInput=findViewById(R.id.edit_gender);
 
 
-        Button button=findViewById(R.id.input_commit);
+        /**获取填写的信息
+         */
+
+        Button button=(Button) findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String usename=usernameInput.getText().toString();
-                String password=passwordInput.getText().toString();
-                String telephone=telephoneInput.getText().toString();
-                if(TextUtils.isEmpty(usename)||TextUtils.isEmpty(password)){
-                    AlertDialog.Builder dialog=new AlertDialog.Builder(RegisterActivity.this);
-                    dialog.setTitle("格式错误");
-                    dialog.setMessage("请检查用户名，密码，手机号码是否填写");
-                    dialog.show();
-                    return;
-                }
-                String birthday=birthdayInput.getYear()+"/"+birthdayInput.getMonth()+"/"+birthdayInput.getDayOfMonth();
-                String name=nameInput.getText().toString();
-                String email=emailInput.getText().toString();
-                String gender="女";
-                if(genderInput.getCheckedRadioButtonId()==0){
-                    gender="男";
-                }
-
-                if(info.isInfoOk()){
-                    //向提交数据并跳转
-                }
-                else{
-                    //显示错误
-                }
+                getInfo();
             }
         });
     }
@@ -89,4 +88,65 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
         ActivityJumper.leftEnterRightExit(RegisterActivity.this,RegisterActivity.this,LoginActivity.class);
     }
+    private void getInfo() {
+        String username = edit_userName.getText().toString();
+        String password = edit_password.getText().toString();
+        String name = edit_name.getText().toString();
+        String birthday = datePicker.getYear() + "" + datePicker.getMonth() + datePicker.getDayOfMonth();
+        String telephone = edit_telephone.getText().toString();
+        String gender = null;
+        if (radioGroup.getCheckedRadioButtonId() != -1) {
+            rb = findViewById(radioGroup.getCheckedRadioButtonId());
+            gender = rb.getText().toString();
+        }
+        String email = edit_email.getText().toString();
+        if (username == null || password == null ||name == null || birthday ==null || telephone == null || gender == null) {
+            System.out.print("error");
+        }
+        else{
+            Info.setUsername(username);
+            Info.setBirthday(birthday);
+            Info.setPassword(password);
+            Info.setName(name);
+            Info.setGender(gender);
+            Info.setTelephone(telephone);
+
+
+            final Map<String, String> value = new HashMap<String, String>();
+            value.put("username", username);
+            value.put("password", password);
+            value.put("name", name);
+            value.put("birthday", birthday);
+            value.put("telephone", telephone);
+            value.put("email", email);
+            value.put("gender", gender);
+            value.put("avatarPath", "");
+            value.put("w1", "");
+            value.put("w2", "");
+            NetUtil.INSTANCE.sendPostRequest("http://192.168.1.108:8088/signUp", value, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    //
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                    if (responseMsg.getCode() == 0) {
+                        Intent intent = new Intent(RegisterActivity.this, QuestionnaireActivity.class);
+                        intent.putExtra("Info", Info);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        System.out.print("报错");
+                    }
+
+                }
+            });
+
+
+        }
+    }
+
+
 }

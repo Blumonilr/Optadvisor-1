@@ -5,41 +5,49 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left1"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left2"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left3"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left4"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left5"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left6"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left7"
         android:layout_width="80dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="18sp"
         android:id="@+id/left8"
         android:layout_width="80dp"
         android:gravity="center"
