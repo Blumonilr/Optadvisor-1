@@ -1,56 +1,26 @@
 package utf8.optadvisor.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.ResponseMsg;
 import utf8.optadvisor.util.ActivityJumper;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import utf8.optadvisor.util.NetUtil;
 
 /**
  * 登录界面
@@ -136,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 设置忘记密码按钮
+     */
     private void initForgetPasswordButton(){
         Button forgetPasswordButton = findViewById(R.id.forgetPassword);
         forgetPasswordButton.setOnClickListener(new OnClickListener() {
@@ -147,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * 登录
      * 未来要换成异步任务
      */
     private boolean login(String username,String password){
@@ -155,6 +129,21 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("password",password);
         editor.putBoolean("isLogined",true);
         editor.apply();
+        Map<String,String> value=new HashMap<String,String>();
+        value.put("username",username);
+        value.put("password",password);
+        NetUtil.INSTANCE.sendPostRequest("http://192.168.1.108:8088/login", value, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("Net","fail");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
+                Log.d("Net Message", String.valueOf(responseMsg.getCode()));
+            }
+        });
         ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,MainActivity.class);
         return true;
     }

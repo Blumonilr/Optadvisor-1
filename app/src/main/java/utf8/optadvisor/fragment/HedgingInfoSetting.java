@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import utf8.optadvisor.R;
 
@@ -29,6 +32,7 @@ public class HedgingInfoSetting extends Fragment {
     private int mDay;
     private Button next;
     private LinearLayout ll;
+    private EditText et1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -42,6 +46,7 @@ public class HedgingInfoSetting extends Fragment {
         datePicker = (Button) view.findViewById(R.id.hedging_datePicker);
         dateView = (TextView) view.findViewById(R.id.hedging_tv_dateview);
         ll=(LinearLayout)view.findViewById(R.id.hedging_ll);
+        et1=(EditText)view.findViewById(R.id.hedging_et_1);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -92,6 +97,11 @@ public class HedgingInfoSetting extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String,String> values=new HashMap<>();
+                values.put("OpenInterest",et1.getText().toString());
+                values.put("rate",textView.getText().toString());
+
+
                 ll.removeAllViews();
                 ll.addView(new HedgingInfoDisplay(getContext()));
             }

@@ -40,6 +40,7 @@ public class UserInfoActivity extends AppCompatActivity {
         TextView intro=(TextView)findViewById(R.id.introduction);
         TextView introduction=(TextView) findViewById(R.id.user_info_introduction);
 
+        User
         name.setInfoTextRight("最后的韵律");
         account.setInfoTextRight("12345678");
         gender.setInfoTextRight("男");
