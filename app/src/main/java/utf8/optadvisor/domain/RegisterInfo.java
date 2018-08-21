@@ -1,26 +1,37 @@
 package utf8.optadvisor.domain;
 
-public class RegisterInfo {
-    private String year=null;
-    private String month=null;
-    private String userName=null;
+import java.io.Serializable;
+
+public class RegisterInfo implements Serializable{
+    private  String email=null;
+    private String username =null;
     private String telephone=null;
     private String birthday=null;
     private String name=null;
     private String gender=null;
-    private String day=null;
+    private String password=null;
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public void setMonth(String month) {
-        this.month = month;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -30,18 +41,13 @@ public class RegisterInfo {
         this.telephone = telephone;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public String getEmail() {
+        return email;
     }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
 
     public String getTelephone() {
         return telephone;
@@ -55,26 +61,14 @@ public class RegisterInfo {
         return birthday;
     }
 
-    public String getDay() {
-        return day;
-    }
 
     public String getName() {
         return name;
     }
 
-    public String getMonth() {
-        return month;
+
+    public String getUsername() {
+        return username;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getYear() {
-        return year;
-    }
-    public boolean isInfoOk(){
-        return true;
-    }
 }

@@ -1,6 +1,7 @@
 package utf8.optadvisor.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -10,6 +11,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +47,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.LoginActivity;
 import utf8.optadvisor.util.MyXFormatter;
+import utf8.optadvisor.util.NetUtil;
 
 
 public class OptionShow extends Fragment {
@@ -60,6 +64,7 @@ public class OptionShow extends Fragment {
     TextView update_time;
     TextView status;
     LineChart lineChart;
+    DIY diy;
     OptionContract optionContract;
     CandleStickChart candleStickChart;
     LineChartInfo lineChartInfo=new LineChartInfo();
@@ -72,6 +77,7 @@ public class OptionShow extends Fragment {
     private static final int CANDLE_SUCCESS = 4;//获取k线成功的标识
     private static final int CANDLE_FAILURE = 5;//获取k线失败的标识
     private Gson gson=new Gson();
+    private AlertDialog.Builder dialog;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -124,11 +130,17 @@ public class OptionShow extends Fragment {
         volume=(TextView) view.findViewById(R.id.volume);
         update_time=(TextView) view.findViewById(R.id.update_time);
         status=(TextView) view.findViewById(R.id.status);
+        initDialog();
         get50ETFinfo();
         lineChart=(LineChart) view.findViewById(R.id.line_chart);
         initLineChart();
         candleStickChart=(CandleStickChart) view.findViewById(R.id.candle_stick_chart);
         initCandleStickChart();
+
+
+
+
+
         Button button1=view.findViewById(R.id.button_50ETF);
         Button button2= view.findViewById(R.id.button_option);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -161,25 +173,22 @@ public class OptionShow extends Fragment {
 
     //初始化线性图
     private void initLineChart(){
-        new Thread(new Runnable(){
+        NetUtil.INSTANCE.sendGetRequest("http://yunhq.sse.com.cn:32041/v1/sh1/line/510050?select=time,price,volume", new Callback() {
             @Override
-            public void run(){
-                try{
-                    OkHttpClient client=new OkHttpClient();
-                    Request request=new Request.Builder()
-                            .url("http://yunhq.sse.com.cn:32041/v1/sh1/line/510050?select=time,price,volume")
-                            .build();
-                    Response response=client.newCall(request).execute();
-                    String jsonData=response.body().string();
-                    mHandler.obtainMessage(LINE_SUCCESS,jsonData).sendToTarget();
-                }catch (Exception e){
-                    mHandler.obtainMessage(LINE_FAILURE).sendToTarget();
-                    e.printStackTrace();
-                }
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(LINE_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialog.show();
             }
-        }).start();
-    }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(LINE_SUCCESS,response.body().string()).sendToTarget();
+
+            }
+        });
+    }
     private void drawLineChart(LineChartInfo lineChartInfo){
         if(lineChartInfo.getLine()!=null) {
             lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
@@ -226,7 +235,6 @@ public class OptionShow extends Fragment {
 
 
     }
-
     //线性图数据
     private class LineChartInfo {
         private String code;
@@ -306,27 +314,21 @@ public class OptionShow extends Fragment {
 
 
 
-
     //初始化k线图
     private void initCandleStickChart(){
-        new Thread(new Runnable(){
+        NetUtil.INSTANCE.sendGetRequest("http://yunhq.sse.com.cn:32041/v1/sh1/dayk/510050?select=date,open,high,low,close,volume&begin=-300&end=-1", new Callback() {
             @Override
-            public void run(){
-                try{
-                    OkHttpClient client=new OkHttpClient();
-                    Request request=new Request.Builder()
-                            .url("http://yunhq.sse.com.cn:32041/v1/sh1/dayk/510050?select=date,open,high,low,close,volume&begin=-300&end=-1")
-                            .build();
-                    Response response=client.newCall(request).execute();
-                    String jsonData=response.body().string();
-                    mHandler.obtainMessage(CANDLE_SUCCESS,jsonData).sendToTarget();
-                }catch (Exception e){
-                    mHandler.obtainMessage(CANDLE_FAILURE).sendToTarget();
-                    e.printStackTrace();
-                }
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(CANDLE_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialog.show();
             }
-        }).start();
-
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(CANDLE_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
     }
     private void drawCandleStickChart(CandleStickChartInfo candleStickChartInfo){
         if(candleStickChartInfo.getKline()!=null) {
@@ -391,7 +393,6 @@ public class OptionShow extends Fragment {
 
 
     }
-
     //k线图数据
     private class CandleStickChartInfo{
         private String code;
@@ -442,30 +443,34 @@ public class OptionShow extends Fragment {
     }
 
 
+
     //初始化50etf信息
     private void get50ETFinfo(){
-        new Thread(new Runnable(){
+        NetUtil.INSTANCE.sendGetRequest("http://hq.sinajs.cn/list=s_sh510050,sh510050", new Callback() {
             @Override
-            public void run() {
-                    try {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder()
-                                .url("http://hq.sinajs.cn/list=s_sh510050,sh510050")
-                                .build();
-                        Response response = client.newCall(request).execute();
-                        String information = response.body().string();
-                        mHandler.obtainMessage(INFO_SUCCESS,information).sendToTarget();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(INFO_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialog.show();
+            }
 
-        }).start();
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(INFO_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
+
+
+
+
+
+
+
+
+
 
     }
-
-
-
     private void draw50ETF(String information){
         if(information!=null) {
             int comma1 = information.indexOf(",");
@@ -502,6 +507,18 @@ public class OptionShow extends Fragment {
                 status.setText("开盘");
             }
         }
+    }
+
+
+
+//dialog信息
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(getActivity());
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
     }
 
 }

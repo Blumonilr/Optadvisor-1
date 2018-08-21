@@ -47,14 +47,14 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(RightAdapter.ViewHolder holder, int position){
         String[] info=put_option_info.get(position);
-        holder.right1.setText(info[6]);
-        holder.right2.setText(info[38]);
-        holder.right3.setText(info[5]);
-        holder.right4.setText(info[4]);
-        holder.right5.setText(info[3]);
-        holder.right6.setText(info[2]);
-        holder.right7.setText(info[1]);
-        holder.right8.setText(info[0]);
+        holder.right1.setText(info[0]);
+        holder.right2.setText(info[1]);
+        holder.right3.setText(info[2]);
+        holder.right4.setText(info[3]);
+        holder.right5.setText(info[4]);
+        holder.right6.setText(info[5]);
+        holder.right7.setText(info[38]);
+        holder.right8.setText(info[6]);
     }
     @Override
     public int getItemCount(){
