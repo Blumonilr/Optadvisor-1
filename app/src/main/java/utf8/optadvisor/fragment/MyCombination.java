@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,13 +32,14 @@ import java.util.Objects;
 
 import utf8.optadvisor.R;
 import utf8.optadvisor.activity.DetailActivity;
+import utf8.optadvisor.domain.entity.Portfolio;
 import utf8.optadvisor.util.ActivityJumper;
 import utf8.optadvisor.util.ExpandableAdapter;
 
 /**
  * 对我的组合的管理
  */
-public class MyCombination extends Fragment implements View.OnClickListener{
+public class MyCombination extends Fragment implements View.OnClickListener {
 
     private List<String> groupArray;
     private List<List<String>> childArray;
@@ -44,6 +48,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
     private ExpandableListView expandableListView;
     private Button[] buttons;
     private ExpandableAdapter expandableAdapter;
+    private Portfolio currentPortfolio;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +59,11 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         initLineChart();
         initButtons();
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.combination_menu, menu);
     }
 
     /**

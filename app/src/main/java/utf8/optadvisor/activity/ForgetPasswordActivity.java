@@ -40,6 +40,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private Button confirm;
     private TextView username;
     private TextView verifyCode;
+    private TextView newPassword;
     private AlertDialog.Builder dialog;
 
     @Override
@@ -59,6 +60,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private void initAllTextView(){
         username=findViewById(R.id.username_input);
         verifyCode=findViewById(R.id.verify_input);
+        newPassword=findViewById(R.id.new_password_input);
     }
 
     /**
@@ -71,6 +73,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String usernameText=username.getText().toString();
                 String code=verifyCode.getText().toString();
+                String newPwd=newPassword.getText().toString();
                 if(TextUtils.isEmpty(usernameText)||TextUtils.isEmpty(code)){
                     dialog.setTitle("格式错误");
                     dialog.setMessage("输入不能为空");
@@ -78,6 +81,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 }else {
                     Map<String,String> value=new HashMap<>();
                     value.put("verifyCode",code);
+                    value.put("newPassword",newPwd);
                     NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/checkVerifyCode", value, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
@@ -93,9 +97,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                             String content="";
                             switch (responseMsg.getCode()){
                                 case 0:
-                                    Intent intent=new Intent(ForgetPasswordActivity.this,ForgetResetPwdActivity.class);
-                                    intent.putExtra("username",usernameText);
-                                    ActivityJumper.rightEnterLeftExit(intent,ForgetPasswordActivity.this,ForgetPasswordActivity.this);
+                                    ActivityJumper.rightEnterLeftExit(ForgetPasswordActivity.this,ForgetPasswordActivity.this,LoginActivity.class);
                                     break;
                                 case 1001:
                                     content="账号不存在";
@@ -108,6 +110,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                     content="未知的错误，请重试";
                             }
                             if(content.length()>0){
+                                dialog.setTitle(title);
+                                dialog.setMessage(content);
                                 dialogShow();
                             }
                         }
