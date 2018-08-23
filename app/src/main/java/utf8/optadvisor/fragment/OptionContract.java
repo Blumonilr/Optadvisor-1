@@ -186,7 +186,7 @@ public class OptionContract extends Fragment {
                 mHandler.obtainMessage(MONTHS_FAIL).sendToTarget();
                 dialog.setTitle("网络连接错误");
                 dialog.setMessage("请稍后再试");
-                dialog.show();
+                dialogShow();
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -242,11 +242,13 @@ public class OptionContract extends Fragment {
                     for(int k=0;k<left.size();k++){
                         center.add(left.get(k)[7]);
                     }
-                    System.out.println("到底哪错了");
                     AllInfo allInfo=new AllInfo(left,right,center);
                     mHandler.obtainMessage(SUCCESS,allInfo).sendToTarget();
                 }catch (Exception e){
                     mHandler.obtainMessage(FAILURE).sendToTarget();
+                    dialog.setTitle("网络连接错误");
+                    dialog.setMessage("请稍后再试");
+                    dialogShow();
                     e.printStackTrace();
                 }
             }
@@ -317,6 +319,14 @@ public class OptionContract extends Fragment {
         dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+    private void dialogShow(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
             }
         });
     }
