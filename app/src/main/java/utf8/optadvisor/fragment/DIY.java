@@ -99,7 +99,7 @@ public class DIY extends Fragment {
         view= inflater.inflate(R.layout.fragment_diy, container, false);
         spinner_adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,spinner_items);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        progressBar=view.findViewById(R.id.option_progress_bar);
+        progressBar=view.findViewById(R.id.diy_progress_bar);
         initDialog();
         initMonths();
         final CountDownTimer timer = new CountDownTimer(2000, 1000) {

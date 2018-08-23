@@ -3,13 +3,15 @@ package utf8.optadvisor.domain;
 import java.io.Serializable;
 
 public class RegisterInfo implements Serializable{
-    private  String email=null;
+    private String email=null;
     private String username =null;
     private String telephone=null;
     private String birthday=null;
     private String name=null;
     private String gender=null;
     private String password=null;
+    private int w1=0;
+    private int w2=0;
 
 
     public void setPassword(String password) {
@@ -71,4 +73,18 @@ public class RegisterInfo implements Serializable{
         return username;
     }
 
+    public int getW1() {
+        return w1;
+    }
+
+    public int getW2() {
+        return w2;
+    }
+    public void setW1(int w1) {
+        this.w1 = w1;
+    }
+
+    public void setW2(int w2) {
+        this.w2 = w2;
+    }
 }

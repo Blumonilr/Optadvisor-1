@@ -20,6 +20,7 @@ import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -91,7 +92,7 @@ public class MessageActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/getMessage", new Callback() {
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/getMessage",MessageActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         dialog.setTitle("网络连接错误");
@@ -103,6 +104,7 @@ public class MessageActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
+                        System.out.println(responseMsg.getData());
                         MessageList messages=new Gson().fromJson((JsonElement) responseMsg.getData(),MessageList.class);
                         List<Message> read=messages.getRead();
                         List<Message> unread=messages.getUnread();
