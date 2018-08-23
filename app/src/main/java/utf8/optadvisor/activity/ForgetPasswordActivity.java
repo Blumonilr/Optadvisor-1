@@ -41,7 +41,7 @@ import utf8.optadvisor.util.TimeCounter;
  * 忘记密码界面
  */
 public class ForgetPasswordActivity extends AppCompatActivity {
-    private String s=null;
+    private String cookie;
     private Button send;
     private Button confirm;
     private TextView username;
@@ -88,7 +88,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     Map<String,String> value=new HashMap<>();
                     value.put("verifyCode",code);
                     value.put("newPassword",newPwd);
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/checkVerifyCode", value,s, new Callback() {
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/checkVerifyCode", value,cookie, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             dialog.setTitle("网络连接错误");
@@ -225,8 +225,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                             List<String> cookies = headers.values("Set-Cookie");
                             String session = cookies.get(0);
                             Log.d("info_cookies", "onResponse-size: " + cookies);
-                            s = session.substring(0, session.indexOf(";"));
-                            Log.i("info_s", "session is  :" + s);
+                            cookie = session.substring(0, session.indexOf(";"));
+                            Log.i("info_s", "session is  :" + cookie);
                             ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                             if(responseMsg.getCode()!=0){
                                 dialog.setTitle("格式错误");

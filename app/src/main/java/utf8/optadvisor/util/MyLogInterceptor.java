@@ -25,9 +25,9 @@ import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.response.ResponseMsg;
 
 public class MyLogInterceptor implements Interceptor {
-    private SharedPreferences sp;
+    private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    public String s;
+    public String cookie;
     private Context context;
 
     public MyLogInterceptor(Context context){
@@ -45,8 +45,8 @@ public class MyLogInterceptor implements Interceptor {
 
         if(msg.getCode()==1008){
             Map<String,String> value=new HashMap<String,String>();
-            value.put("username",sp.getString("username",null));
-            value.put("password",sp.getString("password",null));
+            value.put("username",sharedPreferences.getString("username",null));
+            value.put("password",sharedPreferences.getString("password",null));
             NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS+"/login", value, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -54,22 +54,22 @@ public class MyLogInterceptor implements Interceptor {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     Headers headers = response.headers();
-                    Log.d("info_headers", "header " + headers);
+                    Log.d("来自Net拦截器的消息:info_headers", "header " + headers);
                     List<String> cookies = headers.values("Set-Cookie");
                     String session = cookies.get(0);
-                    Log.d("info_cookies", "onResponse-size: " + cookies);
-                    s = session.substring(0, session.indexOf(";"));
-                    Log.i("info_s", "session is  :" + s);
-                    editor.putString("cookie",s);
+                    Log.d("来自Net拦截器的消息:info_cookies", "onResponse-size: " + cookies);
+                    cookie = session.substring(0, session.indexOf(";"));
+                    Log.i("来自Net拦截器的消息:info_s", "session is  :" + cookie);
+                    editor.putString("cookie",cookie);
                     editor.apply();
                 }
             });
-            Request request_again = chain.request().newBuilder()
-                    .header("cookie",sp.getString("cookie","456789"))
+            Request requestAgain = chain.request().newBuilder()
+                    .header("cookie",sharedPreferences.getString("cookie","456789"))
                     .build();
-            Response response_again = chain.proceed(request_again);
-            String content= response_again.body().string();
-            MediaType mediaType = response_again.body().contentType();
+            Response responseAgain = chain.proceed(requestAgain);
+            String content= responseAgain.body().string();
+            MediaType mediaType = responseAgain.body().contentType();
             return response.newBuilder()
                     .body(ResponseBody.create(mediaType,content))
                     .build();
@@ -82,7 +82,7 @@ public class MyLogInterceptor implements Interceptor {
         }
     }
     private void initSp(Context context){
-        sp=context.getSharedPreferences("userInfo",Context.MODE_PRIVATE);
-        editor=sp.edit();
+        sharedPreferences=context.getSharedPreferences("userInfo",Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
     }
 }

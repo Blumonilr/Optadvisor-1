@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -56,6 +57,12 @@ public class MessageActivity extends AppCompatActivity {
         refreshMessage();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshMessage();
+    }
+
     /**
      * 设置消息列表
      */
@@ -65,12 +72,6 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         messageAdapter = new MessageAdapter(messageList);
         recyclerView.setAdapter(messageAdapter);
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     /**
@@ -105,9 +106,11 @@ public class MessageActivity extends AppCompatActivity {
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                         System.out.println(responseMsg.getData());
-                        MessageList messages=new Gson().fromJson((JsonElement) responseMsg.getData(),MessageList.class);
+                        Log.d("MessageController",responseMsg.getData().toString());
+                        MessageList messages= new Gson().fromJson(responseMsg.getData().toString(),MessageList.class);
                         List<Message> read=messages.getRead();
                         List<Message> unread=messages.getUnread();
+                        messageList.clear();
                         messageList.addAll(unread);
                         messageList.addAll(read);
                         notifyRefreshSuccess();
