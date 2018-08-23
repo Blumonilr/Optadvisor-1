@@ -11,9 +11,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.QuestionnaireActivity" />
@@ -40,6 +40,8 @@
         <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.ModifyActivity"></activity>
+        <activity android:name=".activity.MessageActivity" />
+        <activity android:name=".activity.MessageDetailActivity"></activity>
     </application>
 
 </manifest>

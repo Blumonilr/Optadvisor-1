@@ -6,10 +6,42 @@
     android:layout_height="match_parent"
     android:background="@color/colorButton"
     tools:context=".fragment.OptionContract">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <Spinner
+            android:background="@color/colorLightWhite"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/choose_month">
+        </Spinner>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLightWhite">
+            <TextView
+                android:gravity="center"
+                android:text="看涨合约"
+                android:textSize="18sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/darkSlateGray"/>
+
+            <TextView
+                android:gravity="center"
+                android:textSize="18sp"
+                android:text="看跌合约"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,41 +59,49 @@
                     android:layout_height="wrap_content"
                     android:weightSum="2">
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="买量"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="买价"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="最新价"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="卖价"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="卖量"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="持仓量"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="振幅"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="涨跌幅"
@@ -70,6 +110,7 @@
             </utf8.optadvisor.util.SyncHorizontalScrollView>
 
             <TextView
+                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -89,52 +130,59 @@
                     android:layout_height="wrap_content"
                     android:weightSum="2">
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="涨跌幅"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="振幅"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="持仓量"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="卖量"
+                        android:text="买量"
                         android:gravity="center"/>
                     <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="卖价"
-                        android:gravity="center"/>
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="最新价"
-                        android:gravity="center"/>
-                    <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="买价"
                         android:gravity="center"/>
                     <TextView
+                        android:textSize="18sp"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="买量"
+                        android:text="最新价"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="卖价"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="卖量"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="持仓量"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="振幅"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="涨跌幅"
                         android:gravity="center"/>
                 </LinearLayout>
             </utf8.optadvisor.util.SyncHorizontalScrollView>
         </LinearLayout>
+
    <LinearLayout
+       android:background="@color/colorLightWhite"
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
@@ -171,7 +219,15 @@
            </android.support.v7.widget.RecyclerView>
 
        </utf8.optadvisor.util.SyncHorizontalScrollView>
+
    </LinearLayout>
+
     </LinearLayout>
+    <ProgressBar
+        android:layout_marginTop="100dp"
+        android:indeterminateDuration="2000"
+        android:id="@+id/option_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

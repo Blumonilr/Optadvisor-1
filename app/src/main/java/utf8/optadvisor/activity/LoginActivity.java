@@ -144,10 +144,9 @@ public class LoginActivity extends AppCompatActivity {
     private boolean login(String username,String password){
         progressBar.setVisibility(View.VISIBLE);
 
-        SharedPreferences.Editor editor=sharedPreferences.edit();
+        final SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("username",username);
         editor.putString("password",password);
-        editor.putBoolean("isLogined",true);
         editor.apply();
         Map<String,String> value=new HashMap<String,String>();
         value.put("username",username);
@@ -164,6 +163,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                 if(responseMsg.getCode()==0){
+                    editor.putBoolean("isLogined",true);
+                    editor.apply();
+
                     ActivityJumper.rightEnterLeftExit(LoginActivity.this,LoginActivity.this,MainActivity.class);
                     finish();
                     progressHide();
