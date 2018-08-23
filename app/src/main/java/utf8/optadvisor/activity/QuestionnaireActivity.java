@@ -16,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -82,7 +84,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                         q5.getCheckedRadioButtonId() == -1 ||
                         q6.getCheckedRadioButtonId() == -1
                         ) {
-                    System.out.print("没做完");
+                    System.out.println("没做完");
                     //输出
                 } else {
                     //q1
@@ -196,27 +198,30 @@ public class QuestionnaireActivity extends AppCompatActivity {
                     }
                     //结算
                     int sum=score1+score2+score3+score4+score5+score6;
-                    String w1=null;
-                    String w2=null;
+
+                    int w1=0;
+                    int w2=0;
                     if(sum<=10){
-                        w1=0.1+"";
-                        w2=0.9+"";
+                        w1=10;
+                        w2=90;
                     }else if(sum>10&&sum<=20){
-                        w1=0.3+"";
-                        w2=0.7+"";
+                        w1=30;
+                        w2=70;
                     }else if(sum>20&&sum<=30){
-                        w1=0.5+"";
-                        w2=0.5+"";
+                        w1=50;
+                        w2=50;
                     }else if(sum>30&&sum<=40){
-                        w1=0.7+"";
-                        w2=0.3+"";
+                        w1=70;
+                        w2=30;
                     }else if(sum>40){
-                        w1=0.9+"";
-                        w2=0.1+"";
+                        w1=90;
+                        w2=10;
                     }
                     Intent intent = getIntent();
                     RegisterInfo info=(RegisterInfo) intent.getSerializableExtra("Info");
-                    final Map<String, String> value = new HashMap<String, String>();
+                    info.setW1(w1);
+                    info.setW2(w2);
+                   /* final Map<String, String> value = new HashMap<String, String>();
                     value.put("username", info.getUsername());
                     value.put("password", info.getPassword());
                     value.put("name", info.getName());
@@ -226,21 +231,24 @@ public class QuestionnaireActivity extends AppCompatActivity {
                     value.put("gender", info.getGender());
                     value.put("avatarPath", "");
                     value.put("w1", w1);
-                    value.put("w2", w2);
-                    NetUtil.INSTANCE.sendPostRequest("", value, new Callback() {
+                    value.put("w2", w2);*/
+                    System.out.println(w1+"   "+w2);
+                    Gson gson=new Gson();
+                    String value=gson.toJson(info);
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS+"/signUp", value, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            System.out.print("failure");
+                            System.out.print("问卷网络错误");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                             if(responseMsg.getCode()==0){
-                                System.out.print("成功");
+                                System.out.println("注册成功");
                                 finish();
                             }else{
-                                System.out.print("失败");
+                                System.out.print("注册失败");
                             }
 
                         }

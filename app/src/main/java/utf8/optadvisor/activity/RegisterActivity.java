@@ -3,6 +3,7 @@ package utf8.optadvisor.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -42,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatePicker datePicker;
     private RadioGroup radioGroup;
     private RadioButton rb;
+    private AlertDialog.Builder dialog;
     @Override
     /**
      * 注册界面
@@ -92,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
         String username = edit_userName.getText().toString();
         String password = edit_password.getText().toString();
         String name = edit_name.getText().toString();
-        String birthday = datePicker.getYear() + "" + datePicker.getMonth() + datePicker.getDayOfMonth();
+        String birthday = datePicker.getYear() + "/" + datePicker.getMonth() +"/" +datePicker.getDayOfMonth();
         String telephone = edit_telephone.getText().toString();
         String gender = null;
         if (radioGroup.getCheckedRadioButtonId() != -1) {
@@ -101,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         String email = edit_email.getText().toString();
         if (username == null || password == null ||name == null || birthday ==null || telephone == null || gender == null) {
-            System.out.print("error");
+            System.out.println("注册信息有空缺");
         }
         else{
             Info.setUsername(username);
@@ -110,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
             Info.setName(name);
             Info.setGender(gender);
             Info.setTelephone(telephone);
+            Info.setEmail(email);
 
 
             final Map<String, String> value = new HashMap<String, String>();
@@ -123,10 +126,10 @@ public class RegisterActivity extends AppCompatActivity {
             value.put("avatarPath", "");
             value.put("w1", "");
             value.put("w2", "");
-            NetUtil.INSTANCE.sendPostRequest("http://192.168.1.108:8088/signUp", value, new Callback() {
+            NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS+"/isUsernameUsed", value, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    //
+                    System.out.println("注册界面网络错误");
                 }
 
                 @Override
@@ -138,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        System.out.print("报错");
+                        System.out.println("重名了");
                     }
 
                 }
@@ -147,6 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
     }
+
 
 
 }

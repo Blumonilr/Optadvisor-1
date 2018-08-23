@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putBoolean("isLogined",false);
                                 editor.apply();
                                 ActivityJumper.rightEnterLeftExit(MainActivity.this,MainActivity.this,LoginActivity.class);
+                                finish();
                             }
                         });
                         break;

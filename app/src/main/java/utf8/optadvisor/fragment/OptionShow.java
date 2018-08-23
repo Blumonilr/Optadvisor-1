@@ -147,8 +147,8 @@ public class OptionShow extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                if(optionContract!=null){
-                    transaction.hide(optionContract);
+                if(diy!=null){
+                    transaction.hide(diy);
                     transaction.commit();
                 }
             }
@@ -157,11 +157,11 @@ public class OptionShow extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                if(optionContract==null){
-                    optionContract=new OptionContract();
-                    transaction.add(R.id.frame_50ETF, optionContract);
+                if(diy==null){
+                    diy=new DIY();
+                    transaction.add(R.id.frame_50ETF, diy);
                 }
-                transaction.show(optionContract);
+                transaction.show(diy);
                 transaction.commit();
             }
         });

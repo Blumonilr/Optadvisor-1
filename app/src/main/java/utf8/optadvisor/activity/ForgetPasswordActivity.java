@@ -2,8 +2,10 @@ package utf8.optadvisor.activity;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -16,14 +18,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.response.ResponseMsg;
@@ -35,7 +41,7 @@ import utf8.optadvisor.util.TimeCounter;
  * 忘记密码界面
  */
 public class ForgetPasswordActivity extends AppCompatActivity {
-
+    private String s=null;
     private Button send;
     private Button confirm;
     private TextView username;
@@ -82,7 +88,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     Map<String,String> value=new HashMap<>();
                     value.put("verifyCode",code);
                     value.put("newPassword",newPwd);
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/checkVerifyCode", value, new Callback() {
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/checkVerifyCode", value,s, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             dialog.setTitle("网络连接错误");
@@ -92,7 +98,14 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
+                            String responseData= null;
+                            try {
+                                responseData = response.body().string();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Gson gson=new Gson();
+                            ResponseMsg responseMsg=gson.fromJson(responseData,ResponseMsg.class);
                             String title="验证失败";
                             String content="";
                             switch (responseMsg.getCode()){
@@ -181,6 +194,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
      * 设置发送按钮
      */
     private void initSendButton(){
+
         send=findViewById(R.id.send_button);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,6 +220,13 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            Headers headers = response.headers();
+                            Log.d("info_headers", "header " + headers);
+                            List<String> cookies = headers.values("Set-Cookie");
+                            String session = cookies.get(0);
+                            Log.d("info_cookies", "onResponse-size: " + cookies);
+                            s = session.substring(0, session.indexOf(";"));
+                            Log.i("info_s", "session is  :" + s);
                             ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                             if(responseMsg.getCode()!=0){
                                 dialog.setTitle("格式错误");
