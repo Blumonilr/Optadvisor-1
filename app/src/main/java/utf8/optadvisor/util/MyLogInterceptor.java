@@ -24,6 +24,9 @@ import utf8.optadvisor.activity.LoginActivity;
 import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.response.ResponseMsg;
 
+/**
+ * okhttp拦截器
+ */
 public class MyLogInterceptor implements Interceptor {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -37,7 +40,9 @@ public class MyLogInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         initSp(context);
         Gson gson=new Gson();
-        Request request = chain.request();
+        Request request = chain.request().newBuilder()
+                .header("cookie",sharedPreferences.getString("cookie","456789"))
+                .build();
         Response response = chain.proceed(request);
         String data=response.body().string();
         ResponseMsg msg=gson.fromJson(data,ResponseMsg.class);

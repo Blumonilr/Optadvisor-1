@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         initMyCombinationButton();
         initToolBar();
         initDrawer();
+        initDialog();
         showOptionShow();
     }
 
