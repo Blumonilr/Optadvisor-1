@@ -73,7 +73,7 @@ public class UserInfoActivity extends AppCompatActivity {
         final TextView introduction = (TextView) findViewById(R.id.user_info_introduction);
 
 
-        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", "", new Callback() {
+        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", UserInfoActivity.this, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Toast.makeText(UserInfoActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT);

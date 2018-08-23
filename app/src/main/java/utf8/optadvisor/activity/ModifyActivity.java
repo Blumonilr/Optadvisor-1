@@ -62,7 +62,7 @@ public class ModifyActivity extends AppCompatActivity {
         final EditText introduction = (EditText) findViewById(R.id.user_info_modify_introduction);
 
 
-        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", "", new Callback() {
+        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo",ModifyActivity.this, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Toast.makeText(ModifyActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT);
@@ -100,7 +100,7 @@ public class ModifyActivity extends AppCompatActivity {
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values, new Callback() {
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values,ModifyActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Toast.makeText(ModifyActivity.this, "网络连接错误，更新失败", Toast.LENGTH_SHORT);
