@@ -16,21 +16,15 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Base.ThemeOverlay.AppCompat.Light">
 
-        <Button
-            android:id="@+id/user_modify_bt_confirm"
-            android:layout_width="65dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="200dp"
-            android:background="@color/colorPrimary"
-            android:text="保存信息"
-            android:textSize="16sp"/>
 
     </android.support.v7.widget.Toolbar>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar"
         android:orientation="vertical">
 
         <View
@@ -212,6 +206,32 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#BDBDBD" />
-    </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/user_modify_bt_confirm"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@color/textWhite"
+                android:text="保存信息"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/user_modify_bt_password"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@color/textWhite"
+                android:text="修改密码"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

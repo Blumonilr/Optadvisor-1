@@ -62,31 +62,31 @@ public class ModifyActivity extends AppCompatActivity {
         final EditText introduction = (EditText) findViewById(R.id.user_info_modify_introduction);
 
 
-        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", "", new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Toast.makeText(ModifyActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                User user = (User) responseMsg.getData();
-                name.setInfoTextRight(user.getName());
-                account.setInfoTextRight(user.getUsername());
-                gender.setInfoTextRight(user.getGender());
-                try {
-                    age.setInfoTextRight("" + getAge(user.getBirthday()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                birth.setInfoTextRight(user.getBirthday());
-                phone.setInfoTextRight(user.getTelephone());
-                email.setInfoTextRight(user.getEmail());
-                intro.setTextColor(Color.GRAY);
-                introduction.setText("introduction");
-            }
-        });
+//        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", "", new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(ModifyActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT);
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+//                User user = (User) responseMsg.getData();
+//                name.setInfoTextRight(user.getName());
+//                account.setInfoTextRight(user.getUsername());
+//                gender.setInfoTextRight(user.getGender());
+//                try {
+//                    age.setInfoTextRight("" + getAge(user.getBirthday()));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                birth.setInfoTextRight(user.getBirthday());
+//                phone.setInfoTextRight(user.getTelephone());
+//                email.setInfoTextRight(user.getEmail());
+//                intro.setTextColor(Color.GRAY);
+//                introduction.setText("introduction");
+//            }
+//        });
 
         final Map<String,String> values=new HashMap<>();
         values.put("username",account.getInfoTextRight().toString());
@@ -97,23 +97,23 @@ public class ModifyActivity extends AppCompatActivity {
         values.put("gender",gender.getInfoTextRight().toString());
 
         Button modify = (Button) findViewById(R.id.user_modify_bt_confirm);
-        modify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Toast.makeText(ModifyActivity.this, "网络连接错误，更新失败", Toast.LENGTH_SHORT);
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        Intent intent=new Intent(ModifyActivity.this,UserInfoActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-        });
+//        modify.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values, new Callback() {
+//                    @Override
+//                    public void onFailure(Call call, IOException e) {
+//                        Toast.makeText(ModifyActivity.this, "网络连接错误，更新失败", Toast.LENGTH_SHORT);
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Call call, Response response) throws IOException {
+//                        Intent intent=new Intent(ModifyActivity.this,UserInfoActivity.class);
+//                        startActivity(intent);
+//                    }
+//                });
+//            }
+//        });
     }
 
     private static int getAge(String date) throws ParseException {
