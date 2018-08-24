@@ -20,7 +20,7 @@ import utf8.optadvisor.domain.response.ResponseMsg;
 public enum NetUtil {
     INSTANCE;
     private Gson gson=new Gson();
-    public final static String SERVER_BASE_ADDRESS="http://192.168.43.153:8088";
+    public final static String SERVER_BASE_ADDRESS="http://192.168.1.110:8088";
     public static SharedPreferences sharedPreference;
     /**
      * GET请求
@@ -128,6 +128,18 @@ public enum NetUtil {
         MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
 
         OkHttpClient client=new OkHttpClient();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,value);
+        Request request=builder.url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+    /**
+     * POST请求，手动构建参数，带拦截器
+     */
+    public void sendPostRequest(String address, String value,Context context, okhttp3.Callback callback){
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+
+        OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
         Request.Builder builder=new Request.Builder();
         RequestBody requestBody=RequestBody.create(mediaType,value);
         Request request=builder.url(address).post(requestBody).build();
