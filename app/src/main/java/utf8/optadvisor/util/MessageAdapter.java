@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import utf8.optadvisor.R;
 import utf8.optadvisor.activity.MessageDetailActivity;
-import utf8.optadvisor.domain.Message;
+import utf8.optadvisor.domain.entity.Message;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
 

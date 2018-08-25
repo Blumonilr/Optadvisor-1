@@ -20,7 +20,7 @@ import utf8.optadvisor.domain.response.ResponseMsg;
 public enum NetUtil {
     INSTANCE;
     private Gson gson=new Gson();
-    public final static String SERVER_BASE_ADDRESS="http://192.168.43.153:8088";
+    public final static String SERVER_BASE_ADDRESS="http://192.168.1.102:8088";
     public static SharedPreferences sharedPreference;
     /**
      * GET请求
@@ -103,6 +103,25 @@ public enum NetUtil {
         client.newCall(request).enqueue(callback);
     }
 
+    /**
+     * PUT请求带拦截器
+     */
+    public void sendPutRequest(String address, Map<String,String> value,Context context, okhttp3.Callback callback){
+        //设置数据格式为json
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+        //构建json字符串
+        StringBuilder stringBuilder=new StringBuilder("{");
+        for(Map.Entry<String, String> each:value.entrySet()){
+            stringBuilder.append("\"").append(each.getKey()).append("\":\"").append(each.getValue()).append("\",");
+        }
+        stringBuilder.replace(stringBuilder.length()-1,stringBuilder.length(),"}");
+        //发送
+        OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,stringBuilder.toString());
+        Request request=builder.url(address).put(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
 
     /**
      *POST请求带拦截器，无传参
@@ -120,7 +139,6 @@ public enum NetUtil {
     }
 
 
-
     /**
      * POST请求，手动构建参数
      */
@@ -131,6 +149,36 @@ public enum NetUtil {
         Request.Builder builder=new Request.Builder();
         RequestBody requestBody=RequestBody.create(mediaType,value);
         Request request=builder.url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     *DELETE请求带拦截器，无传参
+     */
+    public void sendDeleteRequest(String address,Context context, okhttp3.Callback callback){
+        //设置数据格式为json
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+
+        //发送
+        OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,"");
+        Request request=builder.url(address).delete(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     *PATCH请求带拦截器，无传参
+     */
+    public void sendPatchRequest(String address,Context context, okhttp3.Callback callback){
+        //设置数据格式为json
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+
+        //发送
+        OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,"");
+        Request request=builder.url(address).patch(requestBody).build();
         client.newCall(request).enqueue(callback);
     }
 

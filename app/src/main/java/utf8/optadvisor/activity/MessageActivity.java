@@ -1,7 +1,6 @@
 package utf8.optadvisor.activity;
 
 import android.content.DialogInterface;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -13,21 +12,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
-import utf8.optadvisor.domain.Message;
+import utf8.optadvisor.domain.entity.Message;
 import utf8.optadvisor.domain.MessageList;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.MessageAdapter;
@@ -54,7 +50,6 @@ public class MessageActivity extends AppCompatActivity {
 
         //初始化消息列表
         swipeRefreshLayout.setRefreshing(true);
-        //refreshMessage();
         Log.d("On create size", String.valueOf(messageList.size()));
     }
 
@@ -98,7 +93,7 @@ public class MessageActivity extends AppCompatActivity {
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/getMessage",MessageActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("MessageAct on fali","not  wrong yet");
+                        Log.d("MessageAct on fail","not  wrong yet");
                         dialog.setTitle("网络连接错误");
                         dialog.setMessage("请稍后再试");
                         dialogShow();
