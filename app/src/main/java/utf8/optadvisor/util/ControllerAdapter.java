@@ -6,13 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import utf8.optadvisor.R;
 
 
 public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.ViewHolder> {
     private List<Integer> controller_data;
+    private Map<Integer,Integer> amount_map=new HashMap<>();
     static class ViewHolder extends RecyclerView.ViewHolder{
         AmountView controller;
         public ViewHolder(View view){
@@ -31,8 +34,14 @@ public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.Vi
         return holder;
     }
     @Override
-    public void onBindViewHolder(ControllerAdapter.ViewHolder holder, int position){
+    public void onBindViewHolder(ControllerAdapter.ViewHolder holder, final int position){
         holder.controller.setGoods_storage(99);
+        holder.controller.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
+            @Override
+            public void onAmountChange(View view, int amount) {
+                amount_map.put(position,amount);
+            }
+        });
     }
     @Override
     public int getItemCount(){
@@ -40,4 +49,7 @@ public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.Vi
     }
 
 
+    public Map<Integer, Integer> getAmount_map() {
+        return amount_map;
+    }
 }
