@@ -3,6 +3,7 @@ package utf8.optadvisor.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -325,7 +326,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                                         toChange.setName(newName);
                                         portfolioNames.clear();
                                         for (Portfolio portfolio : currentPortfolioList) {
-                                            portfolioNames.add(portfolio.getName());
+                                             portfolioNames.add(portfolio.getName());
                                         }
                                         currentPortfolioChange(true);
                                     } else {
@@ -452,6 +453,36 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 Intent intent=new Intent(getContext(), DetailActivity.class);
                 intent.putExtra("fromMyCombination",true);
+                Log.d("我的组合i", String.valueOf(i));
+                Log.d("我的组合i1", String.valueOf(i1));
+                StringBuilder optionDetail=new StringBuilder("");
+                Option option=currentPortfolio.getOptions()[i1];
+                if(option.getType()>0){
+                    optionDetail.append("状态:买入\n");
+                }else {
+                    optionDetail.append("状态:卖出\n");
+                }
+
+                if(option.getCp()>0){
+                    optionDetail.append("判断:看涨\n");
+                }else {
+                    optionDetail.append("判断:看跌\n");
+                }
+                optionDetail.append("到期时间:").append(option.getExpireTime()).append("\n");
+                optionDetail.append("执行价格:").append(option.getK()).append("\n");
+                if(option.getType()>0){
+                    optionDetail.append("买入价格:").append(option.getPrice1()).append("\n");
+                }else {
+                    optionDetail.append("卖出价格:").append(option.getPrice2()).append("\n");
+                }
+                optionDetail.append("比例:").append(Math.abs(option.getType())).append("\n");
+                optionDetail.append("delta:").append(option.getDelta()).append("\n");
+                optionDetail.append("gamma:").append(option.getGamma()).append("\n");
+                optionDetail.append("theta:").append(option.getTheta()).append("\n");
+                optionDetail.append("vega:").append(option.getVega()).append("\n");
+                optionDetail.append("rho:").append(option.getRho()).append("\n");
+                intent.putExtra("optionDetail",optionDetail.toString());
+                intent.putExtra("optionName",option.getName());
                 ActivityJumper.rightEnterLeftExit(intent, Objects.requireNonNull(getContext()), Objects.requireNonNull(getActivity()));
                 return false;
             }

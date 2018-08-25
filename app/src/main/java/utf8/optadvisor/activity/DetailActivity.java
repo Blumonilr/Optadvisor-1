@@ -42,6 +42,12 @@ public class DetailActivity extends AppCompatActivity {
         for(int i=0;i<100;i++){
             content+="test";
         }
+        if(intent.getBooleanExtra("fromMyCombination",false)){
+            content=intent.getStringExtra("optionDetail");
+            textView.setTextSize(18);
+            textView.setLineSpacing(8,1);
+            collapsingToolbar.setTitle(intent.getStringExtra("optionName"));
+        }
         textView.setText(content);
     }
 

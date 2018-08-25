@@ -153,6 +153,20 @@ public enum NetUtil {
     }
 
     /**
+     * POST请求带拦截器，手动构建参数
+     */
+    public void sendPostRequest(String address, String value, Context context,okhttp3.Callback callback){
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+
+        OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,value);
+        Request request=builder.url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+
+    /**
      *DELETE请求带拦截器，无传参
      */
     public void sendDeleteRequest(String address,Context context, okhttp3.Callback callback){
