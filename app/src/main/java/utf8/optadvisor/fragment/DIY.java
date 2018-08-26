@@ -37,6 +37,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ControllerAdapter;
 import utf8.optadvisor.util.LeftAdapter;
 import utf8.optadvisor.util.NetUtil;
@@ -63,6 +64,7 @@ public class DIY extends Fragment {
     private final int FAILURE=1;
     private final int MONTHS_GET=2;
     private final int MONTHS_FAIL=3;
+    private final int GET_EXPIRETIME=4;
     private Button bt1;
     private ProgressBar progressBar;
     private AlertDialog.Builder dialog;
@@ -99,6 +101,12 @@ public class DIY extends Fragment {
                     spinner_adapter.notifyDataSetChanged();
                     initOptionInfo(spinner_items.get(0),call_or_put);
                  break;
+                case GET_EXPIRETIME:
+                    String et=(String)msg.obj;
+                    System.out.print("sss");
+                    sendDIY(et);
+                    break;
+
             }
         }
     };
@@ -198,34 +206,25 @@ public class DIY extends Fragment {
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<Integer,Integer> amount_map=controllerAdapter.getAmount_map();
-                int cp=1;
-                if(call_or_put==false){
-                    cp=-1;
-                }
-                List<CustomOption> option_list=new ArrayList<>();
-                for(int key:amount_map.keySet()){
-                    String code=list.get(0)[key];
-                    String et=expireTime.substring(0,4)+"-"+expireTime.substring(4,6)+"-"+expireTime.substring(6);
-                    option_list.add(new CustomOption(et,amount_map.get(key),cp,code));
-                }
-                Gson gson=new Gson();
-                String value=gson.toJson(option_list);
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/login", value, getContext(), new Callback() {
+                new Thread(new Runnable() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                        dialog.setTitle("网络连接错误");
-                        dialog.setMessage("请稍后再试");
-                        dialogShow();
+                    public void run() {
+                        try{
+                            OkHttpClient client=new OkHttpClient();
+                            Request request=new Request.Builder()
+                                    .url("http://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getRemainderDay?date="+expireTime)
+                                    .build();
+                            Response response=client.newCall(request).execute();
+                            String s=response.body().string();
+                            s=s.substring(s.indexOf("expireDay")+12,s.indexOf("expireDay")+22);
+                            mHandler.obtainMessage(GET_EXPIRETIME,s).sendToTarget();
+                            System.out.println("run");
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
+                }).start();
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String get_info=response.body().string();
-                        //这里是回传的diy信息
-
-                    }
-                });
 
 
             }
@@ -234,6 +233,39 @@ public class DIY extends Fragment {
 
 
         return view;
+    }
+    private void sendDIY(String et){
+        Map<Integer,Integer> amount_map=controllerAdapter.getAmount_map();
+        int cp=1;
+        if(call_or_put==false){
+            cp=-1;
+        }
+        List<CustomOption> option_list=new ArrayList<>();
+        for(int key:amount_map.keySet()){
+            String code=list.get(0)[key];
+            option_list.add(new CustomOption(et,amount_map.get(key),cp,code));
+        }
+        Gson gson=new Gson();
+        String value=gson.toJson(option_list);
+        value="{\"options\": "+value+"}";
+
+        System.out.println("json"+value);
+        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String get_info=response.body().string();
+                System.out.println("回传"+get_info);
+                //这里是回传的diy信息
+
+            }
+        });
     }
 
 
