@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             default:
+                myCombination.onOptionsItemSelected(item);
                 break;
         }
         return true;

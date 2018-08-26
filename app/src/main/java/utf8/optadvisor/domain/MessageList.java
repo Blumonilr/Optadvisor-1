@@ -2,6 +2,8 @@ package utf8.optadvisor.domain;
 
 import java.util.List;
 
+import utf8.optadvisor.domain.entity.Message;
+
 public class MessageList {
     private List<Message> read;
     private List<Message> unread;

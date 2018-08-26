@@ -142,10 +142,9 @@
     <string name="old_password">请输入原始密码</string>
     <string name="male">男</string>
     <string name="female">女</string>
-    <string name="reset_name_text">重命名</string>
-    <string name="delete">删除</string>
-    <string name="begin_track">追踪</string>
-    <string name="cancel_track">取消追踪</string>
+    <string name="reset_name_text">重命名该组合</string>
+    <string name="delete">删除该组合</string>
+    <string name="change_track">更改追踪状态</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_register">RegisterActivity</string>

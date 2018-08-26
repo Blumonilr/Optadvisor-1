@@ -2,18 +2,19 @@ package utf8.optadvisor.domain.entity;
 
 public class Option {
     private Long persisentId;//存储用主键
-    private String id;
+
+    private String tradeCode; //交易代码
+    private String optionCode; //期权代码
     private String name;//例如:50ETF购8月2600
-    private int type;//1为买入0为卖出
-    private int property;//1为看涨0为看跌
+    private int type;
+    private int cp;//1为看涨 -1为看跌
     private String expireTime;//到期时间
-    private double executionPrice;//执行价格
     private double transactionPrice;//成交价
-    private int quantity;//在组合中的份数,单独存在无意义
     private double yclose;//期权前一天收盘价
     private double price1;//期权实时买入价格
     private double price2;//期权实时卖出价格
     private double k;//期权行权价格
+    private double realTimePrice;//期权实时价
     private double delta;
     private double gamma;
     private double vega;
@@ -29,12 +30,20 @@ public class Option {
         this.persisentId = persisentId;
     }
 
-    public String getId() {
-        return id;
+    public String getTradeCode() {
+        return tradeCode;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTradeCode(String tradeCode) {
+        this.tradeCode = tradeCode;
+    }
+
+    public String getOptionCode() {
+        return optionCode;
+    }
+
+    public void setOptionCode(String optionCode) {
+        this.optionCode = optionCode;
     }
 
     public String getName() {
@@ -53,12 +62,12 @@ public class Option {
         this.type = type;
     }
 
-    public int getProperty() {
-        return property;
+    public int getCp() {
+        return cp;
     }
 
-    public void setProperty(int property) {
-        this.property = property;
+    public void setCp(int cp) {
+        this.cp = cp;
     }
 
     public String getExpireTime() {
@@ -69,28 +78,12 @@ public class Option {
         this.expireTime = expireTime;
     }
 
-    public double getExecutionPrice() {
-        return executionPrice;
-    }
-
-    public void setExecutionPrice(double executionPrice) {
-        this.executionPrice = executionPrice;
-    }
-
     public double getTransactionPrice() {
         return transactionPrice;
     }
 
     public void setTransactionPrice(double transactionPrice) {
         this.transactionPrice = transactionPrice;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getYclose() {
@@ -123,6 +116,14 @@ public class Option {
 
     public void setK(double k) {
         this.k = k;
+    }
+
+    public double getRealTimePrice() {
+        return realTimePrice;
+    }
+
+    public void setRealTimePrice(double realTimePrice) {
+        this.realTimePrice = realTimePrice;
     }
 
     public double getDelta() {
