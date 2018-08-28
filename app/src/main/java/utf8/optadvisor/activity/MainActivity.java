@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         initMyCombinationButton();
         initToolBar();
         initDrawer();
+        initDialog();
         showOptionShow();
     }
 
@@ -257,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             default:
+                myCombination.onOptionsItemSelected(item);
                 break;
         }
         return true;

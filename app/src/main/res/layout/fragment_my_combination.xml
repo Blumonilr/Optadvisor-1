@@ -6,6 +6,29 @@
     android:orientation="vertical"
     android:background="@color/colorButton"
     tools:context=".fragment.MyCombination">
+    <LinearLayout
+        android:id="@+id/sub_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLightWhite"
+        tools:ignore="UselessParent">
+
+
+        <Button
+            android:id="@+id/allocation_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_allocation" />
+
+        <Button
+            android:id="@+id/hedge_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_hedge" />
+
+        <Button
+            android:id="@+id/diy_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_diy" />
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,28 +37,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/sub_top_bar"
-                android:layout_width="match_parent"
+
+            <ProgressBar
+                android:id="@+id/combination_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorLightWhite"
-                tools:ignore="UselessParent">
-
-                <Button
-                    android:id="@+id/allocation_button"
-                    style="@style/MainTopButton"
-                    android:text="@string/my_allocation" />
-
-                <Button
-                    android:id="@+id/hedge_button"
-                    style="@style/MainTopButton"
-                    android:text="@string/my_hedge" />
-
-                <Button
-                    android:id="@+id/diy_button"
-                    style="@style/MainTopButton"
-                    android:text="@string/my_diy" />
-                </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:indeterminateTint="@color/colorAliceBlue"/>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -53,13 +63,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:text="当前组合:"
-                        android:layout_margin="5dp"
                         android:textAlignment="viewEnd"/>
                     <Spinner
+                        android:id="@+id/content_spinner"
                         android:layout_width="0dp"
                         android:layout_weight="7"
                         android:layout_height="wrap_content"
-                        android:id="@+id/content_spinner"
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"/>
 

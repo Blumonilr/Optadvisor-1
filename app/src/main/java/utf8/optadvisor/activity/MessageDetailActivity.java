@@ -1,8 +1,7 @@
 package utf8.optadvisor.activity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -22,7 +19,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
-import utf8.optadvisor.domain.Message;
+import utf8.optadvisor.domain.entity.Message;
+import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.NetUtil;
 
 public class MessageDetailActivity extends AppCompatActivity {
@@ -50,13 +48,13 @@ public class MessageDetailActivity extends AppCompatActivity {
         //设为已读
         if(!message.getReadStatus()) setReaded();
 
-        Button deleteButton=findViewById(R.id.delete_message_button);
+        FloatingActionButton deleteButton=findViewById(R.id.delete_message_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Map<String,String> value=new HashMap<String,String>();
                 value.put("id", String.valueOf(message.getId()));
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/deleteMessage", value, new Callback() {
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/deleteMessage", value,MessageDetailActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         dialog.setTitle("网络连接错误");
@@ -66,6 +64,7 @@ public class MessageDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
+                        ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                         exit();
                     }
                 });

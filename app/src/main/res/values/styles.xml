@@ -89,4 +89,25 @@
         <item name="android:textColor">@color/colorButton</item>
         <item name="android:background">@color/transParent</item>
     </style>
+
+    <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">#fff</item>
+        <item name="actionMenuTextAppearance">@style/AppTheme.actionMenuTextSize</item>
+        <item name="android:actionOverflowMenuStyle">@style/OverflowMenu</item>
+        <item name="android:popupBackground">@color/colorButton</item>
+    </style>
+
+    <style name="AppTheme.actionMenuTextSize" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+    <style name="OverflowMenu" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>  <!--设置不覆盖锚点-->
+        <item name="android:dropDownVerticalOffset">?attr/actionBarSize</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:popupBackground">@color/colorButton</item> <!--更改背景颜色-->
+        <item name="android:background">@color/colorButton</item>
+    </style>
 </resources>

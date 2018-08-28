@@ -25,10 +25,10 @@
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
@@ -46,9 +46,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MessageActivity" />
-        <activity android:name=".activity.MessageDetailActivity"></activity>
         <activity android:name=".activity.ResetPasswordActivity"/>
+        <activity android:name=".activity.MessageDetailActivity" />
+        <activity android:name=".activity.GuideActivity">
+
+        </activity>
     </application>
 
 </manifest>

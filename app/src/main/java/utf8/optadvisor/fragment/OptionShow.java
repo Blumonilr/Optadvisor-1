@@ -179,7 +179,7 @@ public class OptionShow extends Fragment {
                 mHandler.obtainMessage(LINE_FAILURE).sendToTarget();
                 dialog.setTitle("网络连接错误");
                 dialog.setMessage("请稍后再试");
-                dialog.show();
+                dialogShow();
             }
 
             @Override
@@ -322,7 +322,7 @@ public class OptionShow extends Fragment {
                 mHandler.obtainMessage(CANDLE_FAILURE).sendToTarget();
                 dialog.setTitle("网络连接错误");
                 dialog.setMessage("请稍后再试");
-                dialog.show();
+                dialogShow();
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -452,7 +452,7 @@ public class OptionShow extends Fragment {
                 mHandler.obtainMessage(INFO_FAILURE).sendToTarget();
                 dialog.setTitle("网络连接错误");
                 dialog.setMessage("请稍后再试");
-                dialog.show();
+                dialogShow();
             }
 
             @Override
@@ -501,10 +501,13 @@ public class OptionShow extends Fragment {
             highest_price.setText(information.substring(comma4_2 + 1, comma5_2));
             lowest_price.setText(information.substring(comma5_2 + 1, comma6_2));
             update_time.setText(information.substring(last2comma + 1, last1comma));
-            if (information.substring(information.length() - 4).equals("00\";")) {
+            int h=Integer.parseInt(information.substring(last2comma + 1, information.indexOf(":")));
+            int m=Integer.parseInt(information.substring(information.indexOf(":")+1,information.lastIndexOf(":")));
+            if (     ((h*60+m)>=570&&(h*60+m)<690)||
+                    ((h*60>=780)&&(h*60<900))   ) {
                 status.setText("开盘");
             } else {
-                status.setText("开盘");
+                status.setText("闭市");
             }
         }
     }
@@ -517,6 +520,14 @@ public class OptionShow extends Fragment {
         dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+    private void dialogShow(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
             }
         });
     }

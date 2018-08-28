@@ -6,7 +6,7 @@ package utf8.optadvisor.domain.response;
 public class ResponseMsg {
     private int code;
     private String msg;
-    private Object data;
+    private Object data;//也是一个json字符串
 
     public ResponseMsg(int code, String msg) {
         this.code = code;

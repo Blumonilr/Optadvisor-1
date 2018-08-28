@@ -1,7 +1,6 @@
 package utf8.optadvisor.activity;
 
 import android.content.DialogInterface;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -11,22 +10,20 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
-import utf8.optadvisor.domain.Message;
+import utf8.optadvisor.domain.entity.Message;
 import utf8.optadvisor.domain.MessageList;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.MessageAdapter;
@@ -53,7 +50,14 @@ public class MessageActivity extends AppCompatActivity {
 
         //初始化消息列表
         swipeRefreshLayout.setRefreshing(true);
+        Log.d("On create size", String.valueOf(messageList.size()));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         refreshMessage();
+        Log.d("On resume size", String.valueOf(messageList.size()));
     }
 
     /**
@@ -65,12 +69,6 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         messageAdapter = new MessageAdapter(messageList);
         recyclerView.setAdapter(messageAdapter);
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     /**
@@ -95,6 +93,7 @@ public class MessageActivity extends AppCompatActivity {
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/getMessage",MessageActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
+                        Log.d("MessageAct on fail","not  wrong yet");
                         dialog.setTitle("网络连接错误");
                         dialog.setMessage("请稍后再试");
                         dialogShow();
@@ -105,11 +104,15 @@ public class MessageActivity extends AppCompatActivity {
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                         System.out.println(responseMsg.getData());
-                        MessageList messages=new Gson().fromJson((JsonElement) responseMsg.getData(),MessageList.class);
-                        List<Message> read=messages.getRead();
-                        List<Message> unread=messages.getUnread();
-                        messageList.addAll(unread);
-                        messageList.addAll(read);
+                        messageList.clear();
+                        Log.d("On refresh size", String.valueOf(messageList.size()));
+                        if(responseMsg.getData()!=null) {
+                            MessageList messages = new Gson().fromJson(responseMsg.getData().toString(), MessageList.class);
+                            List<Message> read = messages.getRead();
+                            List<Message> unread = messages.getUnread();
+                            messageList.addAll(unread);
+                            messageList.addAll(read);
+                        }
                         notifyRefreshSuccess();
                     }
                 });
