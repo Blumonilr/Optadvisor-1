@@ -74,7 +74,7 @@ public class AllocationSetting extends Fragment {
                         ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                         AllocationResponse responseAllocation=new Gson().fromJson(responseMsg.getData().toString(),AllocationResponse.class);
                         ll.removeAllViews();
-                        ll.addView(new AllocationInfoPage(context,responseAllocation));
+                        ll.addView(new AllocationInfoPage(context,responseAllocation,AllocationSetting.this));
                     }
                 });
 
@@ -82,18 +82,13 @@ public class AllocationSetting extends Fragment {
             }
         });
 
-        Button back=(Button)view.findViewById(R.id.allocation_info_bt_back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ll.removeAllViews();
-                setting=new AllocationSettingPage(context);
-                ll.addView(setting);
-            }
-        });
 
 
 
         return view;
+    }
+
+    public LinearLayout getLL() {
+        return ll;
     }
 }
