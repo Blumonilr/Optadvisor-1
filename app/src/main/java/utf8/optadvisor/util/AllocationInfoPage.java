@@ -8,7 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
@@ -20,6 +22,8 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.AllocationResponse;
+import utf8.optadvisor.domain.entity.Option;
 
 public class AllocationInfoPage extends LinearLayout {
 
@@ -45,44 +49,59 @@ public class AllocationInfoPage extends LinearLayout {
     UserInfoMenuItem group_risk;
     UserInfoMenuItem property_expectation;
     UserInfoMenuItem property_risk;
+
+    private AllocationResponse allocationResponse;
+
     private LineChartView lineChart;
     int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
-    String[] Xdate = {"5-23","5-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","1-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","4-22","9-22","10-22","11-22","zxc"};//X轴的标注
-    int[] score= {74,22,18,79,20,74,20,74,42,90,74,42,90,50,42,90,33,10,74,22,18,79,20,74,22,18,79,20};//图表的数据
-    int[] score2= {73,25,18,79,29,74,20,79,45,90,74,42,83,50,42,90,33,10,75,22,18,79,20,74,22,18,79,20};
-    List<int[]> scores=new ArrayList<>();
+    String[] Xdate;//X轴的标注
+    ArrayList<Float> score1=new ArrayList<>();//图表的数据
+    ArrayList<Float> score2=new ArrayList<>();
+    List<ArrayList<Float>> scores=new ArrayList<>();
     private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     private List<Line> lines = new ArrayList<Line>();
 
-    public AllocationInfoPage(final Context context) {
+    public AllocationInfoPage(final Context context, final AllocationResponse allocationResponse) {
         super(context);
         inflate(context, R.layout.linearlayout_allocation_info,this);
+
+        this.allocationResponse=allocationResponse;
+        Xdate=allocationResponse.getGraph()[0];
+        for (String s:allocationResponse.getGraph()[1])
+            score1.add(Float.parseFloat(s));
+        for (String s:allocationResponse.getGraph()[2])
+            score2.add(Float.parseFloat(s));
 
         ll_buttons=(LinearLayout)findViewById(R.id.allocation_ll_buttons);
 
         initMenuItem();
 
-        OptionButton ob1=new OptionButton(context,"test01");
-        ob1.setText("test01","2");
-        ll_buttons.addView(ob1);
-        buttons.add(ob1);
-
-
-        OptionButton ob2=new OptionButton(context,"test02");
-        ob2.setText("test02","3");
-        ll_buttons.addView(ob2);
-        buttons.add(ob2);
+        for (Option option:allocationResponse.getOptions()){
+            OptionButton ob=new OptionButton(context,option);
+            ob.setText(option.getOptionCode(),option.getType()>0?"买入"+Math.abs(option.getType()):"卖出"+Math.abs(option.getType()));
+            ll_buttons.addView(ob);
+            buttons.add(ob);
+        }
 
         for (OptionButton bt:buttons){
-            bt.setClicked(buttons,id);
+            bt.setClicked(buttons,id,date,soldPrice,finalPrice,delta,gamma,theta,vega,rho);
         }
 
         lineChart = (LineChartView)findViewById(R.id.allocation_line_chart);
-        scores.add(score);
+        scores.add(score1);
         scores.add(score2);
         getAxisXLables();//获取x轴的标注
         getAxisPoints();//获取坐标点
         initLineChart();//初始化
+
+        Button add=(Button)findViewById(R.id.allocation_info_bt_add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ConfirmDialog confirm=new ConfirmDialog(context,allocationResponse,AllocationInfoPage.this);
+                confirm.show();
+            }
+        });
 
     }
 
@@ -125,47 +144,47 @@ public class AllocationInfoPage extends LinearLayout {
 
         cost=(UserInfoMenuItem)findViewById(R.id.allocation_item_cost);
         cost.setInfoTextLeft("成本");
-        cost.setInfoTextRight("");
+        cost.setInfoTextRight(allocationResponse.getCost()+"");
 
         guarantee=(UserInfoMenuItem)findViewById(R.id.allocation_item_guarantee);
         guarantee.setInfoTextLeft("保证金");
-        guarantee.setInfoTextRight("");
+        guarantee.setInfoTextRight(allocationResponse.getBond()+"");
 
         group_delta=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_delta);
         group_delta.setInfoTextLeft("delta");
-        group_delta.setInfoTextRight("");
+        group_delta.setInfoTextRight(allocationResponse.getZ_delta()+"");
 
         group_gamma=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_gamma);
         group_gamma.setInfoTextLeft("gamma");
-        group_gamma.setInfoTextRight("");
+        group_gamma.setInfoTextRight(allocationResponse.getZ_gamma()+"");
 
         group_theta=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_theta);
         group_theta.setInfoTextLeft("theta");
-        group_theta.setInfoTextRight("");
+        group_theta.setInfoTextRight(allocationResponse.getZ_theta()+"");
 
         group_vega=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_vega);
         group_vega.setInfoTextLeft("vega");
-        group_vega.setInfoTextRight("");
+        group_vega.setInfoTextRight(allocationResponse.getZ_vega()+"");
 
         group_rho=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_rho);
         group_rho.setInfoTextLeft("rho");
-        group_rho.setInfoTextRight("");
+        group_rho.setInfoTextRight(allocationResponse.getZ_rho()+"");
 
         group_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_expectation);
         group_expectation.setInfoTextLeft("组合期望收益率");
-        group_expectation.setInfoTextRight("");
+        group_expectation.setInfoTextRight(allocationResponse.getEm()+"");
 
         group_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_risk);
         group_risk.setInfoTextLeft("组合风险率");
-        group_risk.setInfoTextRight("");
+        group_risk.setInfoTextRight(allocationResponse.getBeta()+"");
 
         property_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_expectation);
         property_expectation.setInfoTextLeft("资产期望收益率");
-        property_expectation.setInfoTextRight("");
+        property_expectation.setInfoTextRight(allocationResponse.getReturnOnAssets()+"");
 
         property_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_risk);
         property_risk.setInfoTextLeft("资产风险率");
-        property_risk.setInfoTextRight("");
+        property_risk.setInfoTextRight(allocationResponse.getBeta()+"");
     }
 
     /**
@@ -233,8 +252,8 @@ public class AllocationInfoPage extends LinearLayout {
     private void getAxisPoints(){
         for (int i = 0; i < scores.size(); i++) {
             List<PointValue> mPointValues=new ArrayList<>();
-            for (int j = 0; j < scores.get(i).length; j++)
-                mPointValues.add(new PointValue(j, scores.get(i)[j]));
+            for (int j = 0; j < scores.get(i).size(); j++)
+                mPointValues.add(new PointValue(j, scores.get(i).get(j)));
             Line line = new Line(mPointValues).setColor(colors[i]);  //折线的颜色
             line.setShape(ValueShape.CIRCLE);//折线图上每个数据点的形状  这里是圆形 （有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.SQUARE）
             line.setCubic(false);//曲线是否平滑

@@ -196,6 +196,7 @@
             android:layout_toRightOf="@+id/hedging_v_4"/>
 
         <EditText
+            android:id="@+id/hedging_et_2"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"

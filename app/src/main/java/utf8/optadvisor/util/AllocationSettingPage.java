@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -29,6 +30,17 @@ public class AllocationSettingPage extends LinearLayout {
     ImageButton ib33;
     Spinner time;
     LinearLayout linearLayout;
+    EditText principle;
+    EditText maxLoss;
+
+    private char combination;
+    private String date;
+    private String m0;
+    private String k;
+    private String p1;
+    private String p2;
+    private String sigma1;
+    private String sigma2;
 
 
     public AllocationSettingPage(final Context context) {
@@ -43,6 +55,8 @@ public class AllocationSettingPage extends LinearLayout {
         ib31=(ImageButton)findViewById(R.id.allocation_ib_31);
         ib32=(ImageButton)findViewById(R.id.allocation_ib_32);
         ib33=(ImageButton)findViewById(R.id.allocation_ib_33);
+        principle=(EditText)findViewById(R.id.allocation_et_principle);
+        maxLoss=(EditText)findViewById(R.id.allocation_et_maxloss);
         linearLayout=(LinearLayout)findViewById(R.id.allocation_setting_ll);
 
         ib11.setOnClickListener(new OnClickListener() {
@@ -61,9 +75,14 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
                 price.setContent(true,true);
                 linearLayout.addView(price);
+                p1=price.getETF()+"";
+                p2="4";
                 AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
                 wave.setContent(false,true);
                 linearLayout.addView(wave);
+                sigma1=wave.getSigma()+"";
+                sigma2="50";
+                combination='A';
             }
         });
 
@@ -83,6 +102,11 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
                 wave.setContent(false,true);
                 linearLayout.addView(wave);
+                p1=wave.getETF()+"";
+                p2=wave.getETF()+"";
+                sigma1=wave.getSigma()+"";
+                sigma2="50";
+                combination='B';
             }
         });
 
@@ -102,9 +126,14 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
                 price.setContent(true,false);
                 linearLayout.addView(price);
+                p1="0";
+                p2=price.getETF()+"";
                 AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
                 wave.setContent(false,true);
                 linearLayout.addView(wave);
+                sigma1=wave.getSigma()+"";
+                sigma2="50";
+                combination='C';
             }
         });
 
@@ -124,6 +153,11 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
                 price.setContent(true,true);
                 linearLayout.addView(price);
+                p1=price.getETF()+"";
+                p2="4";
+                sigma1=""+price.getSigma();
+                sigma2=""+price.getSigma();
+                combination='D';
             }
         });
 
@@ -158,7 +192,11 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
                 price.setContent(true,false);
                 linearLayout.addView(price);
-
+                p1="0";
+                p2=price.getETF()+"";
+                sigma1=""+price.getSigma();
+                sigma2=""+price.getSigma();
+                combination='E';
             }
         });
 
@@ -178,9 +216,14 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
                 price.setContent(true,true);
                 linearLayout.addView(price);
+                p1=price.getETF()+"";
+                p2="4";
                 AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
                 wave.setContent(false,false);
                 linearLayout.addView(wave);
+                sigma1="0";
+                sigma2=""+wave.getSigma();
+                combination='F';
             }
         });
 
@@ -200,6 +243,11 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
                 wave.setContent(false,false);
                 linearLayout.addView(wave);
+                p1=""+wave.getETF();
+                p2=""+wave.getETF();
+                sigma1="0";
+                sigma2=""+wave.getSigma();
+                combination='G';
             }
         });
 
@@ -219,9 +267,14 @@ public class AllocationSettingPage extends LinearLayout {
                 AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
                 price.setContent(true,false);
                 linearLayout.addView(price);
+                p1="0";
+                p2=price.getETF()+"";
                 AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
                 wave.setContent(false,false);
                 linearLayout.addView(wave);
+                sigma1="0";
+                sigma2=wave.getSigma()+"";
+                combination='H';
             }
         });
 
@@ -256,5 +309,37 @@ public class AllocationSettingPage extends LinearLayout {
         time.setAdapter(adapter);
 
 
+    }
+
+    public char getCombination() {
+        return combination;
+    }
+
+    public String getDate() {
+        return time.getSelectedItem().toString();
+    }
+
+    public String getM0() {
+        return principle.getText().toString();
+    }
+
+    public String getK() {
+        return maxLoss.getText().toString();
+    }
+
+    public String getP1() {
+        return p1;
+    }
+
+    public String getP2() {
+        return p2;
+    }
+
+    public String getSigma1() {
+        return sigma1;
+    }
+
+    public String getSigma2() {
+        return sigma2;
     }
 }

@@ -3,7 +3,6 @@ package utf8.optadvisor.fragment;
 import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.HedgingResponse;
+import utf8.optadvisor.domain.response.ResponseMsg;
+import utf8.optadvisor.util.NetUtil;
 
 public class HedgingInfoSetting extends Fragment {
 
@@ -33,6 +42,7 @@ public class HedgingInfoSetting extends Fragment {
     private Button next;
     private LinearLayout ll;
     private EditText et1;
+    private EditText et2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -98,12 +108,27 @@ public class HedgingInfoSetting extends Fragment {
             @Override
             public void onClick(View v) {
                 Map<String,String> values=new HashMap<>();
-                values.put("OpenInterest",et1.getText().toString());
-                values.put("rate",textView.getText().toString());
+                values.put("n0",et1.getText().toString());
+                values.put("a",""+(Double.parseDouble(textView.getText().toString())/100.0));
+                values.put("s_exp",et2.getText().toString());
+                values.put("t",dateView.getText().toString());
 
 
-                ll.removeAllViews();
-                ll.addView(new HedgingInfoDisplay(getContext()));
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Toast.makeText(HedgingInfoSetting.this.getContext(), "网络连接错误，请重试", Toast.LENGTH_SHORT);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                        HedgingResponse responseOption=new Gson().fromJson(responseMsg.getData().toString(),HedgingResponse.class);
+                        ll.removeAllViews();
+                        ll.addView(new HedgingInfoDisplay(getContext(),responseOption));
+                    }
+                });
+
             }
         });
 
