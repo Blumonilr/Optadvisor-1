@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/allocation_tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="推荐组合"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#4169E1"
+        />
+
+    <LinearLayout
+        android:id="@+id/allocation_ll_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#8EE5EE"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="期权信息"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#4169E1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="看涨期权"
+            android:textSize="18sp"/>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_soldprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_finalprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_delta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_gamma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_theta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_vega"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_rho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#8EE5EE"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="组合表现"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:layout_marginTop="10dp"
+        android:textColor="#4169E1"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_guarantee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_delta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_gamma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_theta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_vega"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_rho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_expectation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+        <utf8.optadvisor.util.UserInfoMenuItem
+            android:id="@+id/allocation_item_group_risk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+        </utf8.optadvisor.util.UserInfoMenuItem>
+
+    </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#8EE5EE"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="资产收益"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:layout_marginTop="10dp"
+                android:textColor="#4169E1"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <utf8.optadvisor.util.UserInfoMenuItem
+                    android:id="@+id/allocation_item_property_expectation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp">
+
+                </utf8.optadvisor.util.UserInfoMenuItem>
+
+                <utf8.optadvisor.util.UserInfoMenuItem
+                    android:id="@+id/allocation_item_property_risk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp">
+
+                </utf8.optadvisor.util.UserInfoMenuItem>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#8EE5EE"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="回测收益图"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:layout_marginTop="10dp"
+                android:textColor="#4169E1"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#ffffff">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="#BF0815" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="组合回测收益"
+                        android:layout_marginLeft="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="#088B05" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="资产回测收益"
+                        android:layout_marginLeft="5dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/allocation_line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#ffffff"
+                android:layout_marginBottom="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/allocation_info_bt_back"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@color/textWhite"
+                android:text="上一步"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/allocation_info_bt_add"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@color/textWhite"
+                android:text="加入我的组合"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

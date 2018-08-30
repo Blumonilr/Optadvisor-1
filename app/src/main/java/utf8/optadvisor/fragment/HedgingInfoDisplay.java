@@ -1,11 +1,10 @@
-package utf8.optadvisor.activity;
+package utf8.optadvisor.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,29 +20,72 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.HedgingResponse;
 import utf8.optadvisor.util.HedgingMenuItem;
 
 
-public class HedgingInfoDisplayActivity extends AppCompatActivity {
+public class HedgingInfoDisplay extends ScrollView {
 
     private LineChartView lineChart;
-    int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
-    String[] date = {"5-23","5-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","1-22","6-22","5-23","5-22","2-22","5-22","4-22","9-22","10-22","11-22","12-22","4-22","9-22","10-22","11-22","zxc"};//X轴的标注
-    int[] score= {74,22,18,79,20,74,20,74,42,90,74,42,90,50,42,90,33,10,74,22,18,79,20,74,22,18,79,20};//图表的数据
-    int[] score2= {73,25,18,79,29,74,20,79,45,90,74,42,83,50,42,90,33,10,75,22,18,79,20,74,22,18,79,20};
-    List<int[]> scores=new ArrayList<>();
+
+    private HedgingMenuItem id ;
+    private HedgingMenuItem name;
+    private HedgingMenuItem purchase;
+    private HedgingMenuItem wave;
+    private HedgingMenuItem date;
+    private HedgingMenuItem soldPrice;
+    private HedgingMenuItem finalPrice;
+    private HedgingMenuItem delta;
+    private HedgingMenuItem gamma;
+    private HedgingMenuItem theta;
+    private HedgingMenuItem vega;
+    private HedgingMenuItem rho;
+    private HedgingMenuItem maxLoss;
+    private HedgingResponse response;
+
+    int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05"),Color.parseColor("#4876FF")};
+    String[] dates;//X轴的标注
+    ArrayList<Float> score1=new ArrayList<>();//图表的数据
+    ArrayList<Float> score2=new ArrayList<>();
+    ArrayList<Float> score3=new ArrayList<>();
+    List<List<Float>> scores=new ArrayList<>();
     private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     private List<Line> lines = new ArrayList<Line>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hedging_info_display);
+    public HedgingInfoDisplay(Context context, HedgingResponse hedging) {
+        super(context);
+        inflate(context,R.layout.fragment_hedging_info_display,  this);
+        this.response=hedging;
         TextView title=(TextView)findViewById(R.id.tv_table_title_left);
-        title.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyh.ttc"));
+        title.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyh.ttc"));
+
+        dates=response.getGraph()[0];
         lineChart = (LineChartView)findViewById(R.id.line_chart);
-        scores.add(score);
+        for (String s:response.getGraph()[1])
+            score1.add(Float.parseFloat(s));
+        scores.add(score1);
+        for (String s:response.getGraph()[2])
+            score2.add(Float.parseFloat(s));
         scores.add(score2);
+        for (String s:response.getGraph()[3])
+            score3.add(Float.parseFloat(s));
+        scores.add(score3);
+
+
+        id = findViewById(R.id.hedging_id);
+        name =findViewById(R.id.hedging_name);
+        purchase = findViewById(R.id.hedging_purchase);
+        wave=findViewById(R.id.hedging_wave);
+        date=findViewById(R.id.hedging_date);
+        soldPrice=findViewById(R.id.hedging_soldprice);
+        finalPrice=findViewById(R.id.hedging_finalprice);
+        delta=findViewById(R.id.hedging_delta);
+        gamma=findViewById(R.id.hedging_gamma);
+        theta=findViewById(R.id.hedging_theta);
+        vega=findViewById(R.id.hedging_vega);
+        rho=findViewById(R.id.hedging_rho);
+        maxLoss=findViewById(R.id.hedging_maxloss);
+
         getAxisXLables();//获取x轴的标注
         getAxisPoints();//获取坐标点
         initLineChart();//初始化
@@ -105,8 +147,8 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
      * X 轴的显示
      */
     private void getAxisXLables(){
-        for (int i = 0; i < date.length; i++) {
-            mAxisXValues.add(new AxisValue(i).setLabel(date[i]));
+        for (int i = 0; i < dates.length; i++) {
+            mAxisXValues.add(new AxisValue(i).setLabel(dates[i]));
         }
     }
     /**
@@ -115,8 +157,8 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
     private void getAxisPoints(){
         for (int i = 0; i < scores.size(); i++) {
             List<PointValue> mPointValues=new ArrayList<>();
-            for (int j = 0; j < scores.get(i).length; j++)
-                mPointValues.add(new PointValue(j, scores.get(i)[j]));
+            for (int j = 0; j < scores.get(i).size(); j++)
+                mPointValues.add(new PointValue(j, scores.get(i).get(j)));
             Line line = new Line(mPointValues).setColor(colors[i]);  //折线的颜色
             line.setShape(ValueShape.CIRCLE);//折线图上每个数据点的形状  这里是圆形 （有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.SQUARE）
             line.setCubic(false);//曲线是否平滑
@@ -130,62 +172,51 @@ public class HedgingInfoDisplayActivity extends AppCompatActivity {
     }
 
     private void initMenu(){
-        HedgingMenuItem id = findViewById(R.id.hedging_id);
-        HedgingMenuItem name = findViewById(R.id.hedging_name);
-        HedgingMenuItem purchase = findViewById(R.id.hedging_purchase);
-        HedgingMenuItem wave=findViewById(R.id.hedging_wave);
-        HedgingMenuItem date=findViewById(R.id.hedging_date);
-        HedgingMenuItem soldPrice=findViewById(R.id.hedging_soldprice);
-        HedgingMenuItem finalPrice=findViewById(R.id.hedging_finalprice);
-        HedgingMenuItem portion=findViewById(R.id.hedging_portion);
-        HedgingMenuItem delta=findViewById(R.id.hedging_delta);
-        HedgingMenuItem gamma=findViewById(R.id.hedging_gamma);
-        HedgingMenuItem theta=findViewById(R.id.hedging_theta);
-        HedgingMenuItem vega=findViewById(R.id.hedging_vega);
-        HedgingMenuItem rho=findViewById(R.id.hedging_rho);
-        HedgingMenuItem maxLoss=findViewById(R.id.hedging_maxloss);
 
-        id.setMenuTextRight("null");
+        id.setMenuTextRight(response.getOption().getOptionCode());
         id.setIconLeft(R.mipmap.ic_id);
-        id.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
-        name.setMenuTextRight("null");
-        name.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        id.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
+        name.setMenuTextRight(response.getOption().getName());
+        name.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         name.setIconLeft(R.mipmap.ic_name);
-        purchase.setMenuTextRight("null");
-        purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        if (response.getOption().getType()<0)
+            purchase.setMenuTextRight("卖出");
+        else
+            purchase.setMenuTextRight("买入");
+        purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         purchase.setIconLeft(R.mipmap.ic_purchase);
-        wave.setMenuTextRight("null");
-        wave.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        if (response.getOption().getCp()<0)
+            wave.setMenuTextRight("看跌");
+        else
+            wave.setMenuTextRight("看涨");
+        wave.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         wave.setIconLeft(R.mipmap.ic_wave);
-        date.setMenuTextRight("null");
-        date.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        date.setMenuTextRight(response.getOption().getExpireTime());
+        date.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         date.setIconLeft(R.mipmap.ic_date);
-        soldPrice.setMenuTextRight("null");
-        soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        soldPrice.setMenuTextRight(response.getOption().getK()+"");
+        soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         soldPrice.setIconLeft(R.mipmap.ic_sold_price);
-        finalPrice.setMenuTextRight("null");
-        finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        finalPrice.setMenuTextRight(response.getOption().getType()>0?response.getOption().getPrice1()+"":response.getOption().getPrice2()+"");
+        finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         finalPrice.setIconLeft(R.mipmap.ic_final_price);
-        portion.setMenuTextRight("null");
-        portion.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
-        portion.setIconLeft(R.mipmap.ic_portion);
-        delta.setMenuTextRight("null");
-        delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        delta.setMenuTextRight(response.getOption().getDelta()+"");
+        delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         delta.setIconLeft(R.mipmap.ic_param);
-        gamma.setMenuTextRight("null");
-        gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        gamma.setMenuTextRight(response.getOption().getGamma()+"");
+        gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         gamma.setIconLeft(R.mipmap.ic_param);
-        theta.setMenuTextRight("null");
-        theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        theta.setMenuTextRight(response.getOption().getTheta()+"");
+        theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         theta.setIconLeft(R.mipmap.ic_param);
-        vega.setMenuTextRight("null");
-        vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        vega.setMenuTextRight(response.getOption().getVega()+"");
+        vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         vega.setIconLeft(R.mipmap.ic_param);
-        rho.setMenuTextRight("null");
-        rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        rho.setMenuTextRight(response.getOption().getRho()+"");
+        rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         rho.setIconLeft(R.mipmap.ic_param);
-        maxLoss.setMenuTextRight("null");
-        maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getAssets(),"fonts/msyhbd.ttc"));
+        maxLoss.setMenuTextRight(response.getIk()+"");
+        maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         maxLoss.setIconLeft(R.mipmap.ic_loss);
     }
 }

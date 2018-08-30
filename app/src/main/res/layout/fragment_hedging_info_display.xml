@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.HedgingInfoDisplayActivity"
+    android:background="@color/colorButton"
+    tools:context=".fragment.HedgingInfoDisplay"
     >
 
     <LinearLayout
@@ -12,18 +13,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:src="@drawable/pic_logo"
-            android:scaleType="fitCenter"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="vertical"
-            android:background="#CCCCCC">
+            android:background="@color/colorButton">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,19 +148,6 @@
                     app:textSize="16sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <utf8.optadvisor.util.HedgingMenuItem
-                    android:id="@+id/hedging_portion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:leftIcon="@mipmap/ic_left"
-                    app:text="比例"
-                    app:textSize="16sp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -317,6 +299,28 @@
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:text="type2"
+                        android:layout_marginLeft="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="#4876FF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="type3"
                         android:layout_marginLeft="5dp" />
 
                 </LinearLayout>

@@ -37,9 +37,16 @@
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.InfoActivity" />
         <activity android:name=".activity.ShopActivity" />
-        <activity android:name=".activity.HedgingInfoSettingActivity" />
-        <activity android:name=".activity.HedgingInfoDisplayActivity" />
+        <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.MessageActivity" />
+        <activity android:name=".activity.ModifyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.ResetPasswordActivity"/>
         <activity android:name=".activity.MessageDetailActivity" />
         <activity android:name=".activity.GuideActivity">
 
