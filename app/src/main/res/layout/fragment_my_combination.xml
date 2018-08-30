@@ -83,18 +83,18 @@
                 android:layout_width ="match_parent"
                 android:layout_height ="wrap_content"
                 android:background="@color/colorLightWhite" />
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/my_line_chart"
-            android:alpha="0.9"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:padding="10dp"
-            android:background="@color/colorLightWhite"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart"
+                android:alpha="0.9"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:background="@color/colorLightWhite"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

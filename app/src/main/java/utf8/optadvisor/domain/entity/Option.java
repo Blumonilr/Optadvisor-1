@@ -6,10 +6,10 @@ public class Option {
     private String tradeCode; //交易代码
     private String optionCode; //期权代码
     private String name;//例如:50ETF购8月2600
-    private int type;
+    private int type;//1为买入0为卖出
     private int cp;//1为看涨 -1为看跌
     private String expireTime;//到期时间
-    private double transactionPrice;//成交价
+    private double transactionPrice;//成交价(即交易时的买价或卖价)
     private double yclose;//期权前一天收盘价
     private double price1;//期权实时买入价格
     private double price2;//期权实时卖出价格

@@ -13,8 +13,8 @@ public class Portfolio {
     private boolean trackingStatus;
 
     //期权组合和DIY要有的东西
-    private double M0;
-    private double k;
+    private double M0;//警报需要
+    private double k;//警报需要
     private double sigma1;
     private double sigma2;
     private double p1;
@@ -26,6 +26,7 @@ public class Portfolio {
     private double z_vega;
     private double z_theta;
     private double z_rho;
+    private double returnOnAssets; //资产收益率
     private double EM;//组合的期望收益率
     private double beta;//组合风险值
 
@@ -36,6 +37,8 @@ public class Portfolio {
     private double sExp;
     private boolean flag;
 
+/*    private String backTestData;
+    private String backTestData1;*/
     public Long getId() {
         return id;
     }
@@ -242,5 +245,29 @@ public class Portfolio {
 
     public void setFlag(boolean flag) {
         this.flag = flag;
+    }
+
+/*    public String getBackTestData() {
+        return backTestData;
+    }
+
+    public void setBackTestData(String backTestData) {
+        this.backTestData = backTestData;
+    }
+
+    public String getBackTestData1() {
+        return backTestData1;
+    }
+
+    public void setBackTestData1(String backTestData1) {
+        this.backTestData1 = backTestData1;
+    }*/
+
+    public double getReturnOnAssets() {
+        return returnOnAssets;
+    }
+
+    public void setReturnOnAssets(double returnOnAssets) {
+        this.returnOnAssets = returnOnAssets;
     }
 }
