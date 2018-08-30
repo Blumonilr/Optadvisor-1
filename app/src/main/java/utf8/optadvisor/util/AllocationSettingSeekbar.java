@@ -1,6 +1,9 @@
 package utf8.optadvisor.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -17,8 +20,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.fragment.OptionShow;
 
 public class AllocationSettingSeekbar extends LinearLayout {
+
+    private static final int INFO_SUCCESS = 0;//获取50etf成功的标识
+    private static final int INFO_FAILURE = 1;//获取50etf失败的标识
+    private static final int SIGMA_SUCCESS = 2;//获取SIGMA成功的标识
+    private static final int SIGMA_FAILURE = 3;//获取SIGMA失败的标识
+
     TextView title;
     TextView max;
     TextView field;
@@ -30,6 +40,35 @@ public class AllocationSettingSeekbar extends LinearLayout {
 
     private double ETF;
     private double sigma;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        public void handleMessage (Message msg) {//此方法在ui线程运行
+            switch(msg.what) {
+                case INFO_SUCCESS:
+                    String info=(String) msg.obj;
+                    ETF=Double.parseDouble(info.substring(info.indexOf(",")+1,info.indexOf(",")+6));
+                    break;
+                case INFO_FAILURE:
+                    System.out.println("1fail");
+                    break;
+                case SIGMA_SUCCESS:
+                    String response=(String)msg.obj;
+                    String[] sigams=response.split("\n");
+                    String temp="";
+                    for (String s:sigams){
+                        if (s.length()>9)
+                            temp=s;
+                    }
+                    sigma=Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
+                    break;
+                case SIGMA_FAILURE:
+                    System.out.println("2fail");
+                    break;
+
+            }
+        }
+    };
 
     public AllocationSettingSeekbar(Context context) {
         super(context);
@@ -66,6 +105,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
         });
 
         get50ETF();
+        get50Sigma();
     }
 
     public void setContent(boolean isPrice,boolean isUp){
@@ -93,8 +133,9 @@ public class AllocationSettingSeekbar extends LinearLayout {
         String response2= null;
         try {
             response2 = client.newCall(request2).execute().body().string();
-            ETF=Double.parseDouble(response2.substring(response2.indexOf(",")+1,response2.indexOf(",")+6));
+            mHandler.obtainMessage(INFO_SUCCESS,response2).sendToTarget();
         } catch (IOException e) {
+            mHandler.obtainMessage(INFO_FAILURE).sendToTarget();
             e.printStackTrace();
         }
     }
@@ -108,16 +149,11 @@ public class AllocationSettingSeekbar extends LinearLayout {
         String response2= null;
         try {
             response2 = client.newCall(request2).execute().body().string();
+            mHandler.obtainMessage(SIGMA_SUCCESS,response2).sendToTarget();
         } catch (IOException e) {
+            mHandler.obtainMessage(SIGMA_FAILURE).sendToTarget();
             e.printStackTrace();
         }
-        String[] sigams=response2.split("\n");
-        String temp="";
-        for (String s:sigams){
-            if (s.length()>9)
-                temp=s;
-        }
-        this.sigma=Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
     }
 
     public double getETF() {

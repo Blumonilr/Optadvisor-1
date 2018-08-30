@@ -56,4 +56,20 @@ public class ETFTest {
         }
         System.out.println(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
     }
+
+    @Test
+    public void test2(){
+        OkHttpClient client=new OkHttpClient();
+        String url="http://hq.sinajs.cn/list=s_sh510050";
+        Request request2 = new Request.Builder()
+                .url(url)
+                .build();
+        String response2= null;
+        try {
+            response2 = client.newCall(request2).execute().body().string();
+            System.out.println(Double.parseDouble(response2.substring(response2.indexOf(",")+1,response2.indexOf(",")+6)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
