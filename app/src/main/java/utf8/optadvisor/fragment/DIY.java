@@ -56,7 +56,7 @@ public class DIY extends Fragment {
     private ArrayAdapter<String> spinner_adapter;
     private LeftAdapter leftAdapter=new LeftAdapter(left_data);
     private ControllerAdapter controllerAdapter=new ControllerAdapter(controller_data);
-    private FloatingActionButton fb;
+    private Button fb;
     private RecyclerView options_view;
     private RecyclerView controllers_view;
     private Spinner spinner;
