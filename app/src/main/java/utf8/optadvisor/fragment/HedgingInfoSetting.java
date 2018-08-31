@@ -55,7 +55,7 @@ public class HedgingInfoSetting extends Fragment {
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
 
         initDialog();
-        
+
         calendar = Calendar.getInstance();
         seekBar = (SeekBar) view.findViewById(R.id.progress);
         textView = (TextView) view.findViewById(R.id.hedging_tv_sb);
