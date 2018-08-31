@@ -251,6 +251,7 @@ public class OptionShow extends Fragment {
             this.begin = begin;
         }
 
+
         public void setCode(String code) {
             this.code = code;
         }

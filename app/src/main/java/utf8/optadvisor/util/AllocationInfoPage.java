@@ -24,6 +24,7 @@ import lecho.lib.hellocharts.view.LineChartView;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.entity.Option;
+import utf8.optadvisor.fragment.AllocationSetting;
 
 public class AllocationInfoPage extends LinearLayout {
 
@@ -51,6 +52,7 @@ public class AllocationInfoPage extends LinearLayout {
     UserInfoMenuItem property_risk;
 
     private AllocationResponse allocationResponse;
+    private AllocationSetting allocationSetting;
 
     private LineChartView lineChart;
     int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
@@ -61,9 +63,10 @@ public class AllocationInfoPage extends LinearLayout {
     private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     private List<Line> lines = new ArrayList<Line>();
 
-    public AllocationInfoPage(final Context context, final AllocationResponse allocationResponse) {
+    public AllocationInfoPage(final Context context, final AllocationResponse allocationResponse,final AllocationSetting allocationSetting) {
         super(context);
         inflate(context, R.layout.linearlayout_allocation_info,this);
+        this.allocationSetting=allocationSetting;
 
         this.allocationResponse=allocationResponse;
         Xdate=allocationResponse.getGraph()[0];
@@ -100,6 +103,15 @@ public class AllocationInfoPage extends LinearLayout {
             public void onClick(View view) {
                 ConfirmDialog confirm=new ConfirmDialog(context,allocationResponse,AllocationInfoPage.this);
                 confirm.show();
+            }
+        });
+
+        Button back=(Button)findViewById(R.id.allocation_info_bt_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                allocationSetting.getLL().removeAllViews();
+                allocationSetting.getLL().addView(new AllocationSettingPage(context));
             }
         });
 
