@@ -97,8 +97,10 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
+                price.setContent(true,true);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
+                wave.setContent(false,true);
                 linearLayout.addView(wave);
                 combination='A';
             }
@@ -118,6 +120,7 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
+                wave.setContent(false,true);
                 linearLayout.addView(wave);
                 combination='B';
             }
@@ -137,8 +140,10 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
+                price.setContent(true,false);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
+                wave.setContent(false,true);
                 linearLayout.addView(wave);
                 combination='C';
             }
@@ -158,6 +163,7 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
+                price.setContent(true,true);
                 linearLayout.addView(price);
                 combination='D';
             }
@@ -192,6 +198,7 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
+                price.setContent(true,false);
                 linearLayout.addView(price);
                 combination='E';
             }
@@ -211,8 +218,10 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
+                price.setContent(true,true);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
+                wave.setContent(false,false);
                 linearLayout.addView(wave);
                 combination='F';
             }
@@ -232,6 +241,7 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
+                wave.setContent(false,false);
                 linearLayout.addView(wave);
                 combination='G';
             }
@@ -251,8 +261,10 @@ public class AllocationSettingPage extends LinearLayout {
                 ib12.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
+                price.setContent(true,false);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
+                wave.setContent(false,false);
                 linearLayout.addView(wave);
                 combination='H';
             }
@@ -302,7 +314,8 @@ public class AllocationSettingPage extends LinearLayout {
                 values.put("sigma1",getSigma1());
                 values.put("sigma2",getSigma2());
 
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values, new Callback() {
+
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values,getContext(), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         dialog.setTitle("网络连接错误");

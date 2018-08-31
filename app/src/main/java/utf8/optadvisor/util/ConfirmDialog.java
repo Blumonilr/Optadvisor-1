@@ -114,7 +114,7 @@ public class ConfirmDialog extends Dialog {
                     values.put("em", "" + allocationResponse.getEm());
                     values.put("beta", "" + allocationResponse.getBeta());
 
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values, new Callback() {
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             sdialog.setTitle("网络连接错误");

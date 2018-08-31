@@ -99,19 +99,19 @@ public class AllocationSettingSeekbar extends LinearLayout {
 
                 if (isPrice&&!isUp) {
                     max.setText(df1.format(ETF * (progress / 100.0)) + "");
-                    setContent(isPrice,isUp);
+
                 }
                 if (isPrice&&isUp) {
                     max.setText((df1.format(ETF + (4.0 - ETF) * (progress / 100.0))) + "");
-                    setContent(isPrice,isUp);
+
                 }
                 if (!isPrice&&!isUp) {
                     max.setText(df2.format(sigma * (progress / 100.0)) + "");
-                    setContent(isPrice, isUp);
+
                 }
                 if (!isPrice&&isUp) {
                     max.setText((df2.format(sigma + (50.0 - sigma) * (progress / 100.0))) + "");
-                    setContent(isPrice, isUp);
+
                 }
             }
 
@@ -129,7 +129,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
         initDialog();
     }
 
-    private void setContent(boolean isPrice,boolean isUp){
+    public void setContent(boolean isPrice,boolean isUp){
         System.out.println(isPrice);
         title.setText(isPrice?"预测价格范围":"预测波动率范围");
         max.setText(isPrice?(isUp?ETF+"":"0.000"):isUp?sigma+"":"0.00");
@@ -149,7 +149,9 @@ public class AllocationSettingSeekbar extends LinearLayout {
             @Override
             public void onFailure(Call call, IOException e) {
                 mHandler.obtainMessage(INFO_FAILURE).sendToTarget();
-                Toast.makeText(AllocationSettingSeekbar.this.getContext(),"网络连接错误",Toast.LENGTH_SHORT);
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
             }
 
             @Override
