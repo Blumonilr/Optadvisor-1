@@ -79,7 +79,7 @@ public class AmountView  extends LinearLayout implements View.OnClickListener, T
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btnDecrease) {
-            if (amount > 0) {
+            if (amount > -99) {
                 amount--;
                 Log.d(TAG, "onClick:===== "+amount);
                 etAmount.setText(amount + "");
