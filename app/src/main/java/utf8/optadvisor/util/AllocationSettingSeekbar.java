@@ -20,14 +20,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
-import utf8.optadvisor.fragment.OptionShow;
 
 public class AllocationSettingSeekbar extends LinearLayout {
 
     private static final int INFO_SUCCESS = 0;//获取50etf成功的标识
     private static final int INFO_FAILURE = 1;//获取50etf失败的标识
-    private static final int SIGMA_SUCCESS = 2;//获取SIGMA成功的标识
-    private static final int SIGMA_FAILURE = 3;//获取SIGMA失败的标识
+    private static final int SIGMA_SUCCESS = 2;//获取50etf成功的标识
+    private static final int SIGMA_FAILURE = 3;//获取50etf失败的标识
 
     TextView title;
     TextView max;
@@ -44,28 +43,26 @@ public class AllocationSettingSeekbar extends LinearLayout {
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
-            switch(msg.what) {
+            switch (msg.what) {
                 case INFO_SUCCESS:
-                    String info=(String) msg.obj;
-                    ETF=Double.parseDouble(info.substring(info.indexOf(",")+1,info.indexOf(",")+6));
+                    String info = (String) msg.obj;
+                    set50ETF(Double.parseDouble(info.substring(info.indexOf(",") + 1, info.indexOf(",") + 6)));
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
                     break;
                 case SIGMA_SUCCESS:
-                    String response=(String)msg.obj;
-                    String[] sigams=response.split("\n");
-                    String temp="";
-                    for (String s:sigams){
-                        if (s.length()>9)
-                            temp=s;
+                    String response2=(String)msg.obj;
+                    String[] sigams = response2.split("\n");
+                    String temp = "";
+                    for (String s : sigams) {
+                        if (s.length() > 9)
+                            temp = s;
                     }
-                    sigma=Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
+                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",") + 1, temp.indexOf(" "))));
                     break;
                 case SIGMA_FAILURE:
                     System.out.println("2fail");
-                    break;
-
             }
         }
     };
@@ -125,35 +122,33 @@ public class AllocationSettingSeekbar extends LinearLayout {
 
 
     private void get50ETF(){
-        OkHttpClient client=new OkHttpClient();
-        String url="http://hq.sinajs.cn/list=s_sh510050";
-        Request request2 = new Request.Builder()
-                .url(url)
-                .build();
-        String response2= null;
-        try {
-            response2 = client.newCall(request2).execute().body().string();
-            mHandler.obtainMessage(INFO_SUCCESS,response2).sendToTarget();
-        } catch (IOException e) {
-            mHandler.obtainMessage(INFO_FAILURE).sendToTarget();
-            e.printStackTrace();
-        }
+        NetUtil.INSTANCE.sendGetRequest("http://hq.sinajs.cn/list=s_sh510050", new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(INFO_FAILURE).sendToTarget();
+                Toast.makeText(AllocationSettingSeekbar.this.getContext(),"网络连接错误",Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(INFO_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
     }
 
     private void get50Sigma(){
-        OkHttpClient client=new OkHttpClient();
-        String url="http://www.optbbs.com/d/csv/d/data.csv?v="+ Calendar.getInstance().getTimeInMillis();
-        Request request2 = new Request.Builder()
-                .url(url)
-                .build();
-        String response2= null;
-        try {
-            response2 = client.newCall(request2).execute().body().string();
-            mHandler.obtainMessage(SIGMA_SUCCESS,response2).sendToTarget();
-        } catch (IOException e) {
-            mHandler.obtainMessage(SIGMA_FAILURE).sendToTarget();
-            e.printStackTrace();
-        }
+        NetUtil.INSTANCE.sendGetRequest("http://www.optbbs.com/d/csv/d/data.csv?v=" + Calendar.getInstance().getTimeInMillis(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(SIGMA_FAILURE).sendToTarget();
+                Toast.makeText(AllocationSettingSeekbar.this.getContext(),"网络连接错误",Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(SIGMA_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
     }
 
     public double getETF() {
@@ -162,5 +157,13 @@ public class AllocationSettingSeekbar extends LinearLayout {
 
     public double getSigma() {
         return sigma;
+    }
+
+    private void set50ETF(double a50ETF) {
+        this.ETF = a50ETF;
+    }
+
+    private void set50sigma(double a50sigma) {
+        this.sigma = a50sigma;
     }
 }

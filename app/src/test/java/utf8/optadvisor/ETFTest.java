@@ -1,6 +1,7 @@
 package utf8.optadvisor;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
@@ -59,17 +60,26 @@ public class ETFTest {
 
     @Test
     public void test2(){
-        OkHttpClient client=new OkHttpClient();
-        String url="http://hq.sinajs.cn/list=s_sh510050";
-        Request request2 = new Request.Builder()
-                .url(url)
-                .build();
-        String response2= null;
-        try {
-            response2 = client.newCall(request2).execute().body().string();
-            System.out.println(Double.parseDouble(response2.substring(response2.indexOf(",")+1,response2.indexOf(",")+6)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Bundle data = msg.getData();
+                String userInfo = data.getString("userInfo");
+
+            }
+        };
+                OkHttpClient client = new OkHttpClient();
+                String url = "http://hq.sinajs.cn/list=s_sh510050";
+                Request request2 = new Request.Builder()
+                        .url(url)
+                        .build();
+                String response2 = null;
+                try {
+                    response2 = client.newCall(request2).execute().body().string();
+                    System.out.println(Double.parseDouble(response2.substring(response2.indexOf(",") + 1, response2.indexOf(",") + 6)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
     }
 }
