@@ -54,6 +54,8 @@ public class ETFTest {
         for (String s:sigams){
             if (s.length()>9)
                 temp=s;
+            else
+                break;
         }
         System.out.println(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
     }

@@ -2,8 +2,10 @@ package utf8.optadvisor.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.fragment.AllocationSetting;
 
 public class AllocationSettingSeekbar extends LinearLayout {
 
@@ -40,6 +43,10 @@ public class AllocationSettingSeekbar extends LinearLayout {
     private double ETF;
     private double sigma;
 
+    private AlertDialog.Builder dialog;
+
+    private AllocationSetting setting;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
@@ -58,8 +65,10 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     for (String s : sigams) {
                         if (s.length() > 9)
                             temp = s;
+                        else
+                            break;
                     }
-                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",") + 1, temp.indexOf(" "))));
+                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
                     break;
                 case SIGMA_FAILURE:
                     System.out.println("2fail");
@@ -67,9 +76,17 @@ public class AllocationSettingSeekbar extends LinearLayout {
         }
     };
 
-    public AllocationSettingSeekbar(Context context) {
+    public AllocationSettingSeekbar(Context context, boolean Price, boolean Up, AllocationSetting setting) {
         super(context);
         inflate(context, R.layout.seekbar_prediction,this);
+
+        this.isPrice=Price;
+        this.isUp=Up;
+        this.setting=setting;
+
+        get50ETF();
+        get50Sigma();
+
         title=(TextView)findViewById(R.id.allocation_sk_title);
         max=(TextView)findViewById(R.id.allocation_sk_max);
         field=(TextView)findViewById(R.id.allocation_sk_field);
@@ -80,14 +97,22 @@ public class AllocationSettingSeekbar extends LinearLayout {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                if (isPrice&&!isUp)
-                    max.setText(df1.format(2.457*(progress/100.0))+"");
-                if (isPrice&&isUp)
-                    max.setText((df1.format(2.457+2.457*(progress/100.0)))+"");
-                if (!isPrice&&!isUp)
-                    max.setText(df2.format(26.0*(progress/100.0))+"");
-                if (!isPrice&&isUp)
-                    max.setText((df2.format(26.0+26*(progress/100.0)))+"");
+                if (isPrice&&!isUp) {
+                    max.setText(df1.format(ETF * (progress / 100.0)) + "");
+                    setContent(isPrice,isUp);
+                }
+                if (isPrice&&isUp) {
+                    max.setText((df1.format(ETF + (4.0 - ETF) * (progress / 100.0))) + "");
+                    setContent(isPrice,isUp);
+                }
+                if (!isPrice&&!isUp) {
+                    max.setText(df2.format(sigma * (progress / 100.0)) + "");
+                    setContent(isPrice, isUp);
+                }
+                if (!isPrice&&isUp) {
+                    max.setText((df2.format(sigma + (50.0 - sigma) * (progress / 100.0))) + "");
+                    setContent(isPrice, isUp);
+                }
             }
 
             @Override
@@ -101,15 +126,13 @@ public class AllocationSettingSeekbar extends LinearLayout {
             }
         });
 
-        get50ETF();
-        get50Sigma();
+        initDialog();
     }
 
-    public void setContent(boolean isPrice,boolean isUp){
-        this.isPrice=isPrice;
-        this.isUp=isUp;
+    private void setContent(boolean isPrice,boolean isUp){
+        System.out.println(isPrice);
         title.setText(isPrice?"预测价格范围":"预测波动率范围");
-        max.setText(isPrice?(isUp?"2.457":"0.000"):isUp?"26.00":"0.00");
+        max.setText(isPrice?(isUp?ETF+"":"0.000"):isUp?sigma+"":"0.00");
         if (isPrice&&!isUp)
             field.setText("价格范围 "+df1.format(0)+"~"+df1.format(ETF));
         if (isPrice&&isUp)
@@ -141,7 +164,9 @@ public class AllocationSettingSeekbar extends LinearLayout {
             @Override
             public void onFailure(Call call, IOException e) {
                 mHandler.obtainMessage(SIGMA_FAILURE).sendToTarget();
-                Toast.makeText(AllocationSettingSeekbar.this.getContext(),"网络连接错误",Toast.LENGTH_SHORT);
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
             }
 
             @Override
@@ -152,11 +177,11 @@ public class AllocationSettingSeekbar extends LinearLayout {
     }
 
     public double getETF() {
-        return ETF;
+        return Double.parseDouble(max.getText().toString());
     }
 
     public double getSigma() {
-        return sigma;
+        return Double.parseDouble(max.getText().toString());
     }
 
     private void set50ETF(double a50ETF) {
@@ -165,5 +190,22 @@ public class AllocationSettingSeekbar extends LinearLayout {
 
     private void set50sigma(double a50sigma) {
         this.sigma = a50sigma;
+    }
+
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(setting.getActivity());
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+    private void dialogShow(){
+        setting.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 }

@@ -63,7 +63,11 @@ public class AllocationInfoPage extends LinearLayout {
     private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     private List<Line> lines = new ArrayList<Line>();
 
-    public AllocationInfoPage(final Context context, final AllocationResponse allocationResponse,final AllocationSetting allocationSetting) {
+    public AllocationSetting getAllocationSetting() {
+        return allocationSetting;
+    }
+
+    public AllocationInfoPage(final Context context, final AllocationResponse allocationResponse, final AllocationSetting allocationSetting) {
         super(context);
         inflate(context, R.layout.linearlayout_allocation_info,this);
         this.allocationSetting=allocationSetting;
@@ -111,7 +115,7 @@ public class AllocationInfoPage extends LinearLayout {
             @Override
             public void onClick(View view) {
                 allocationSetting.getLL().removeAllViews();
-                allocationSetting.getLL().addView(new AllocationSettingPage(context));
+                allocationSetting.getLL().addView(new AllocationSettingPage(context,allocationSetting));
             }
         });
 
