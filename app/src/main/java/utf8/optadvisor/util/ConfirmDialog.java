@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -95,26 +96,28 @@ public class ConfirmDialog extends Dialog {
             public void onClick(View view) {
                 if (name.getText().toString() != null && type.getSelectedItem() != null && back.getSelectedItem() != null) {
                     Map<String, String> values = new HashMap<>();
-                    values.put("options", new Gson().toJson(allocationResponse.getOptions(), new TypeToken<ArrayList<Option>>() {}.getType()));
-                    values.put("type", "0");
-                    values.put("trackingStatus", back.getSelectedItem().toString().equals("是") ? "true" : "false");
-                    values.put("m0", allocationResponse.getM0() + "");
-                    values.put("k", allocationResponse.getK() + "");
-                    values.put("p1", "" + allocationResponse.getP1());
-                    values.put("p2", "" + allocationResponse.getP2());
-                    values.put("sigma1", "" + allocationResponse.getSigma1());
-                    values.put("sigma2", "" + allocationResponse.getSigma2());
-                    values.put("cost", "" + allocationResponse.getCost());
-                    values.put("bond", "" + allocationResponse.getBond());
-                    values.put("z_delta", "" + allocationResponse.getZ_delta());
-                    values.put("z_gamma", "" + allocationResponse.getZ_gamma());
-                    values.put("z_vega", "" + allocationResponse.getZ_vega());
-                    values.put("z_theta", "" + allocationResponse.getZ_theta());
-                    values.put("z_rho", "" + allocationResponse.getZ_rho());
-                    values.put("em", "" + allocationResponse.getEm());
-                    values.put("beta", "" + allocationResponse.getBeta());
+                    values.put("options", new Gson().toJsonTree(allocationResponse.getOptions(), new TypeToken<ArrayList<Option>>() {}.getType()).toString().replaceAll(" ",""));
+                    values.put("name","\"" + name.getText().toString()+"\"");
+                    values.put("type", "\"" + "0"+"\"");
+                    values.put("trackingStatus", "\"" + (back.getSelectedItem().toString().equals("是") ? "true" : "false")+"\"");
+                    values.put("m0", "\"" + allocationResponse.getM0()+"\"");
+                    values.put("k", "\"" + allocationResponse.getK() +"\"");
+                    values.put("p1", "\"" + allocationResponse.getP1()+"\"");
+                    values.put("p2", "\"" + allocationResponse.getP2()+"\"");
+                    values.put("sigma1", "\"" + allocationResponse.getSigma1()+"\"");
+                    values.put("sigma2", "\"" + allocationResponse.getSigma2()+"\"");
+                    values.put("cost", "\"" +  allocationResponse.getCost()+"\"");
+                    values.put("bond", "\"" + allocationResponse.getBond()+"\"");
+                    values.put("z_delta", "\"" + allocationResponse.getZ_delta()+"\"");
+                    values.put("z_gamma", "\"" +  allocationResponse.getZ_gamma()+"\"");
+                    values.put("z_vega", "\"" +  allocationResponse.getZ_vega()+"\"");
+                    values.put("z_theta", "\"" +  allocationResponse.getZ_theta()+"\"");
+                    values.put("z_rho", "\"" +  allocationResponse.getZ_rho()+"\"");
+                    values.put("em", "\"" +  allocationResponse.getEm()+"\"");
+                    values.put("beta", "\"" + allocationResponse.getBeta()+"\"");
+                    values.put("graph",new Gson().toJson(allocationResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
 
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
+                    NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             sdialog.setTitle("网络连接错误");
@@ -124,6 +127,7 @@ public class ConfirmDialog extends Dialog {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            System.out.println();
                             dialog.dismiss();
                         }
                     });

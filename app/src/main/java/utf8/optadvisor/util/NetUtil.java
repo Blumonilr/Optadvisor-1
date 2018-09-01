@@ -95,6 +95,28 @@ public enum NetUtil {
             stringBuilder.append("\"").append(each.getKey()).append("\":\"").append(each.getValue()).append("\",");
         }
         stringBuilder.replace(stringBuilder.length()-1,stringBuilder.length(),"}");
+        System.out.println(stringBuilder.toString());
+        //发送
+        OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
+        Request.Builder builder=new Request.Builder();
+        RequestBody requestBody=RequestBody.create(mediaType,stringBuilder.toString());
+        Request request=builder.url(address).post(requestBody).build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * POST请求带拦截器(Options专用)
+     */
+    public void sendPostRequestForOptions(String address, Map<String,String> value,Context context, okhttp3.Callback callback){
+        //设置数据格式为json
+        MediaType mediaType= MediaType.parse("application/json;charset=utf-8");
+        //构建json字符串
+        StringBuilder stringBuilder=new StringBuilder("{");
+        for(Map.Entry<String, String> each:value.entrySet()){
+            stringBuilder.append("\"").append(each.getKey()).append("\":").append(each.getValue()).append(",");
+        }
+        stringBuilder.replace(stringBuilder.length()-1,stringBuilder.length(),"}");
+        System.out.println(stringBuilder.toString());
         //发送
         OkHttpClient client=new OkHttpClient.Builder().addInterceptor(new MyLogInterceptor(context)).build();
         Request.Builder builder=new Request.Builder();
@@ -209,4 +231,6 @@ public enum NetUtil {
         return gson.fromJson(responseData,ResponseMsg.class);
     }
 
+
 }
+
