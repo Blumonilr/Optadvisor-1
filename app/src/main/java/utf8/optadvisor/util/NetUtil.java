@@ -20,7 +20,7 @@ import utf8.optadvisor.domain.response.ResponseMsg;
 public enum NetUtil {
     INSTANCE;
     private Gson gson=new Gson();
-    public final static String SERVER_BASE_ADDRESS="http://192.168.1.105:8088";
+    public final static String SERVER_BASE_ADDRESS="http://192.168.1.110:8088";
     public static SharedPreferences sharedPreference;
     /**
      * GET请求

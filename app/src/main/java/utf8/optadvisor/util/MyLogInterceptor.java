@@ -2,6 +2,8 @@ package utf8.optadvisor.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -31,7 +33,9 @@ public class MyLogInterceptor implements Interceptor {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     public String cookie;
+    private final int A=0;
     private Context context;
+    private boolean ischanged=false;
 
     public MyLogInterceptor(Context context){
         this.context=context;
@@ -67,14 +71,16 @@ public class MyLogInterceptor implements Interceptor {
                     Log.i("来自Net拦截器的消息:info_s", "session is  :" + cookie);
                     editor.putString("cookie",cookie);
                     editor.apply();
+                    ischanged=true;
                 }
             });
-            Request requestAgain = chain.request().newBuilder()
-                    .header("cookie",sharedPreferences.getString("cookie","456789"))
-                    .build();
-            Response responseAgain = chain.proceed(requestAgain);
-            String content= responseAgain.body().string();
-            MediaType mediaType = responseAgain.body().contentType();
+            
+                Request requestAgain = chain.request().newBuilder()
+                        .header("cookie", sharedPreferences.getString("cookie", "456789"))
+                        .build();
+                Response responseAgain = chain.proceed(requestAgain);
+                String content = responseAgain.body().string();
+                MediaType mediaType = responseAgain.body().contentType();
             return response.newBuilder()
                     .body(ResponseBody.create(mediaType,content))
                     .build();
