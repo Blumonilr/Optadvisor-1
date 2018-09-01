@@ -53,4 +53,9 @@ public class AllocationSetting extends Fragment {
     public LinearLayout getLL() {
         return ll;
     }
+
+    public void setView(AllocationResponse responseAllocation) {
+        this.ll.removeAllViews();
+        this.ll.addView(new AllocationInfoPage(this.getContext(), responseAllocation, this));
+    }
 }

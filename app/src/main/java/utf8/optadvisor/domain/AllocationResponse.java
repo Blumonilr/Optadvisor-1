@@ -1,12 +1,13 @@
 package utf8.optadvisor.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import utf8.optadvisor.domain.entity.Option;
 
 public class AllocationResponse implements Serializable {
 
-    private Option[] options;
+    private List<Option> optionList;
     private int[] buyAndSell;
     private int num;
     private double cost;
@@ -18,7 +19,7 @@ public class AllocationResponse implements Serializable {
     private double z_rho;
     private double em;
     private double beta;
-    private String[][] graph;
+    private List<List<String>> graph;
     private double m0;
     private double k;
     private double p1;
@@ -27,9 +28,6 @@ public class AllocationResponse implements Serializable {
     private double sigma2;
     private double returnOnAssets;
 
-    public Option[] getOptions() {
-        return options;
-    }
 
     public int[] getBuyAndSell() {
         return buyAndSell;
@@ -75,9 +73,6 @@ public class AllocationResponse implements Serializable {
         return beta;
     }
 
-    public String[][] getGraph() {
-        return graph;
-    }
 
     public double getM0() {
         return m0;
@@ -105,5 +100,13 @@ public class AllocationResponse implements Serializable {
 
     public double getReturnOnAssets() {
         return returnOnAssets;
+    }
+
+    public List<List<String>> getGraph() {
+        return graph;
+    }
+
+    public List<Option> getOptions() {
+        return optionList;
     }
 }

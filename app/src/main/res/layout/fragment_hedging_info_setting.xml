@@ -96,7 +96,7 @@
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/hedging_tv_sb"
+            android:layout_toLeftOf="@+id/hedging_et_sb"
             android:layout_toRightOf="@+id/hedging_tv_portion"
             android:layout_marginTop="6dp"
             android:paddingBottom="3dp"
@@ -107,14 +107,16 @@
             android:progressDrawable="@drawable/hedging_sb_progress"
             android:thumb="@drawable/hedging_sb_circle" />
 
-        <TextView
-            android:id="@+id/hedging_tv_sb"
+        <EditText
+            android:id="@+id/hedging_et_sb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:padding="5dp"
             android:text="0"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
             android:textColor="#7EC0EE"
             android:textSize="18sp" />
 
@@ -146,27 +148,17 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/hedging_v_3"/>
 
-        <TextView
-            android:id="@+id/hedging_tv_dateview"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:hint="请选择日期"
-            android:layout_toRightOf="@+id/hedging_tv_date"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="18sp"
-            android:layout_marginLeft="10dp"/>
 
-        <Button
-            android:id="@+id/hedging_datePicker"
-            android:layout_width="80dp"
-            android:layout_height="35dp"
-            android:layout_toRightOf="@+id/hedging_tv_dateview"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:text="选择日期"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:textSize="13sp"/>
+        <Spinner
+            android:id="@+id/hedging_spr_validtime"
+            android:layout_width="130dp"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@+id/hedging_tv_date"
+            android:layout_marginLeft="30dp"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp">
+
+        </Spinner>
 
     </RelativeLayout>
 
@@ -205,7 +197,7 @@
             android:paddingLeft="10dp"
             android:hint="¥0"
             android:singleLine="true"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textSize="18sp"
             android:layout_toRightOf="@+id/hedging_tv_min"
             android:background="@drawable/hedging_edittext_selector"/>

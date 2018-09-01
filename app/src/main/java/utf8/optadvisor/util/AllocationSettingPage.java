@@ -1,7 +1,10 @@
 package utf8.optadvisor.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
@@ -60,6 +63,26 @@ public class AllocationSettingPage extends LinearLayout {
     private String sigma2;
 
     private AllocationSetting allocationSetting;
+    private AllocationResponse responseAllocation;
+
+    private static final int INFO_SUCCESS = 0;
+    private static final int INFO_FAILURE = 1;
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        public void handleMessage (Message msg) {//此方法在ui线程运行
+            switch (msg.what) {
+                case INFO_SUCCESS:
+                    String info = (String) msg.obj;
+                    System.out.println(info);
+                    AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
+                    allocationSetting.setView(responseAllocation);
+                    break;
+                case INFO_FAILURE:
+                    System.out.println("1fail");
+                    break;
+            }
+        }
+    };
 
     public AllocationSettingPage(final Context context,final AllocationSetting allocationSetting) {
         super(context);
@@ -302,6 +325,7 @@ public class AllocationSettingPage extends LinearLayout {
 
         Button bt=(Button)findViewById(R.id.allocation_setting_next);
         bt.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Map<String,String> values=new HashMap<>();
@@ -314,26 +338,24 @@ public class AllocationSettingPage extends LinearLayout {
                 values.put("sigma1",getSigma1());
                 values.put("sigma2",getSigma2());
 
-
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values,getContext(), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         dialog.setTitle("网络连接错误");
                         dialog.setMessage("请稍后再试");
                         dialogShow();
+
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        AllocationResponse responseAllocation=new Gson().fromJson(responseMsg.getData().toString(),AllocationResponse.class);
-                        allocationSetting.getLL().removeAllViews();
-                        allocationSetting.getLL().addView(new AllocationInfoPage(context,responseAllocation,allocationSetting));
+                        System.out.println(responseMsg.getData().toString());
+                        mHandler.obtainMessage(INFO_SUCCESS,responseMsg.getData().toString()).sendToTarget();
                     }
                 });
-
-
             }
+
         });
 
     }

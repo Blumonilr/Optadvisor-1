@@ -56,7 +56,7 @@ public class AllocationInfoPage extends LinearLayout {
 
     private LineChartView lineChart;
     int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
-    String[] Xdate;//X轴的标注
+    List<String> Xdate;//X轴的标注
     ArrayList<Float> score1=new ArrayList<>();//图表的数据
     ArrayList<Float> score2=new ArrayList<>();
     List<ArrayList<Float>> scores=new ArrayList<>();
@@ -71,12 +71,11 @@ public class AllocationInfoPage extends LinearLayout {
         super(context);
         inflate(context, R.layout.linearlayout_allocation_info,this);
         this.allocationSetting=allocationSetting;
-
         this.allocationResponse=allocationResponse;
-        Xdate=allocationResponse.getGraph()[0];
-        for (String s:allocationResponse.getGraph()[1])
+        Xdate=allocationResponse.getGraph().get(0);
+        for (String s:allocationResponse.getGraph().get(1))
             score1.add(Float.parseFloat(s));
-        for (String s:allocationResponse.getGraph()[2])
+        for (String s:allocationResponse.getGraph().get(2))
             score2.add(Float.parseFloat(s));
 
         ll_buttons=(LinearLayout)findViewById(R.id.allocation_ll_buttons);
@@ -258,8 +257,8 @@ public class AllocationInfoPage extends LinearLayout {
      * X 轴的显示
      */
     private void getAxisXLables(){
-        for (int i = 0; i < Xdate.length; i++) {
-            mAxisXValues.add(new AxisValue(i).setLabel(Xdate[i]));
+        for (int i = 0; i < Xdate.size(); i++) {
+            mAxisXValues.add(new AxisValue(i).setLabel(Xdate.get(i)));
         }
     }
     /**
