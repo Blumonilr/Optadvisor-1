@@ -1,8 +1,10 @@
 package utf8.optadvisor.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +46,15 @@ public class HedgingInfoSetting extends Fragment {
     private EditText et1;
     private EditText et2;
 
+    private AlertDialog.Builder dialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
+
+        initDialog();
 
         calendar = Calendar.getInstance();
         seekBar = (SeekBar) view.findViewById(R.id.progress);
@@ -114,10 +120,12 @@ public class HedgingInfoSetting extends Fragment {
                 values.put("t",dateView.getText().toString());
 
 
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, new Callback() {
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values,getContext(), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Toast.makeText(HedgingInfoSetting.this.getContext(), "网络连接错误，请重试", Toast.LENGTH_SHORT);
+                        dialog.setTitle("网络连接错误");
+                        dialog.setMessage("请稍后再试");
+                        dialogShow();
                     }
 
                     @Override
@@ -134,4 +142,22 @@ public class HedgingInfoSetting extends Fragment {
 
         return view;
     }
+
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(getActivity());
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+    private void dialogShow(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+    }
+
 }

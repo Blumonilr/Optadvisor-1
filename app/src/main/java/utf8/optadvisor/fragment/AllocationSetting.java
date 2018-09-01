@@ -44,46 +44,8 @@ public class AllocationSetting extends Fragment {
         toolbar=(Toolbar)view.findViewById(R.id.allocation_toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ll=(LinearLayout)view.findViewById(R.id.allocation_ll);
-        setting=new AllocationSettingPage(getContext());
+        setting=new AllocationSettingPage(getContext(),this);
         ll.addView(setting);
-
-        final Context context=getContext();
-
-        Button bt=(Button)view.findViewById(R.id.allocation_setting_next);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String,String> values=new HashMap<>();
-                values.put("m0",setting.getM0());
-                values.put("k",setting.getK());
-                values.put("t",setting.getDate());
-                values.put("combination",setting.getCombination()+"");
-                values.put("p1",setting.getP1());
-                values.put("p2",setting.getP2());
-                values.put("sigma1",setting.getSigma1());
-                values.put("sigma2",setting.getSigma2());
-
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Toast.makeText(context,"网络连接错误",Toast.LENGTH_SHORT);
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        AllocationResponse responseAllocation=new Gson().fromJson(responseMsg.getData().toString(),AllocationResponse.class);
-                        ll.removeAllViews();
-                        ll.addView(new AllocationInfoPage(context,responseAllocation,AllocationSetting.this));
-                    }
-                });
-
-
-            }
-        });
-
-
-
 
         return view;
     }

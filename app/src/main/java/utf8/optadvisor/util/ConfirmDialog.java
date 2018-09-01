@@ -2,8 +2,10 @@ package utf8.optadvisor.util;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,7 @@ public class ConfirmDialog extends Dialog {
     private Button cancel;
     AllocationResponse allocationResponse;
     AllocationInfoPage allocationInfoPage;
+    private AlertDialog.Builder sdialog;
 
 
     public ConfirmDialog(Context context, AllocationResponse allocationResponse, AllocationInfoPage allocationInfoPage) {
@@ -68,6 +71,8 @@ public class ConfirmDialog extends Dialog {
         confirm=(Button)view.findViewById(R.id.dialog_confirm_confirm);
         cancel=(Button)view.findViewById(R.id.dialog_confirm_cancel);
 
+        initDialog();
+
         ArrayList<String> arr=new ArrayList<>();
         arr.add("资产配置");
         type.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,arr));
@@ -90,8 +95,7 @@ public class ConfirmDialog extends Dialog {
             public void onClick(View view) {
                 if (name.getText().toString() != null && type.getSelectedItem() != null && back.getSelectedItem() != null) {
                     Map<String, String> values = new HashMap<>();
-                    values.put("options", new Gson().toJson(allocationResponse.getOptions(), new TypeToken<ArrayList<Option>>() {
-                    }.getType()));
+                    values.put("options", new Gson().toJson(allocationResponse.getOptions(), new TypeToken<ArrayList<Option>>() {}.getType()));
                     values.put("type", "0");
                     values.put("trackingStatus", back.getSelectedItem().toString().equals("是") ? "true" : "false");
                     values.put("m0", allocationResponse.getM0() + "");
@@ -110,15 +114,16 @@ public class ConfirmDialog extends Dialog {
                     values.put("em", "" + allocationResponse.getEm());
                     values.put("beta", "" + allocationResponse.getBeta());
 
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values, new Callback() {
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Toast.makeText(allocationInfoPage.getContext(), "添加失败", Toast.LENGTH_SHORT);
+                            sdialog.setTitle("网络连接错误");
+                            sdialog.setMessage("请稍后再试");
+                            dialogShow();
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Toast.makeText(allocationInfoPage.getContext(), "添加成功", Toast.LENGTH_SHORT);
                             dialog.dismiss();
                         }
                     });
@@ -136,5 +141,22 @@ public class ConfirmDialog extends Dialog {
         dialogWindow.setAttributes(lp);
     }
 
+
+    private void initDialog(){
+        sdialog=new AlertDialog.Builder(allocationInfoPage.getAllocationSetting().getActivity());
+        sdialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+    private void dialogShow(){
+        allocationInfoPage.getAllocationSetting().getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sdialog.show();
+            }
+        });
+    }
 
 }

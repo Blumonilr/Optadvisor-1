@@ -1,9 +1,12 @@
 package utf8.optadvisor.util;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -11,12 +14,23 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.AllocationResponse;
+import utf8.optadvisor.domain.response.ResponseMsg;
+import utf8.optadvisor.fragment.AllocationSetting;
 
 public class AllocationSettingPage extends LinearLayout {
     ImageButton ib11;
@@ -32,6 +46,9 @@ public class AllocationSettingPage extends LinearLayout {
     LinearLayout linearLayout;
     EditText principle;
     EditText maxLoss;
+    AllocationSettingSeekbar price;
+    AllocationSettingSeekbar wave;
+    private AlertDialog.Builder dialog;
 
     private char combination;
     private String date;
@@ -42,10 +59,17 @@ public class AllocationSettingPage extends LinearLayout {
     private String sigma1;
     private String sigma2;
 
+    private AllocationSetting allocationSetting;
 
-    public AllocationSettingPage(final Context context) {
+    public AllocationSettingPage(final Context context,final AllocationSetting allocationSetting) {
         super(context);
         inflate(context, R.layout.linearlayout_allocation_setting, this);
+        this.allocationSetting=allocationSetting;
+
+        initDialog();
+        price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
+        wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
+
         ib11=(ImageButton)findViewById(R.id.allocation_ib_11);
         ib12=(ImageButton)findViewById(R.id.allocation_ib_12);
         ib13=(ImageButton)findViewById(R.id.allocation_ib_13);
@@ -72,16 +96,12 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
+                price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
                 price.setContent(true,true);
                 linearLayout.addView(price);
-                p1=price.getETF()+"";
-                p2="4";
-                AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
+                wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
                 wave.setContent(false,true);
                 linearLayout.addView(wave);
-                sigma1=wave.getSigma()+"";
-                sigma2="50";
                 combination='A';
             }
         });
@@ -99,13 +119,9 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
+                wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
                 wave.setContent(false,true);
                 linearLayout.addView(wave);
-                p1=wave.getETF()+"";
-                p2=wave.getETF()+"";
-                sigma1=wave.getSigma()+"";
-                sigma2="50";
                 combination='B';
             }
         });
@@ -123,16 +139,12 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
+                price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
                 price.setContent(true,false);
                 linearLayout.addView(price);
-                p1="0";
-                p2=price.getETF()+"";
-                AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
+                wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
                 wave.setContent(false,true);
                 linearLayout.addView(wave);
-                sigma1=wave.getSigma()+"";
-                sigma2="50";
                 combination='C';
             }
         });
@@ -150,13 +162,9 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
+                price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
                 price.setContent(true,true);
                 linearLayout.addView(price);
-                p1=price.getETF()+"";
-                p2="4";
-                sigma1=""+price.getSigma();
-                sigma2=""+price.getSigma();
                 combination='D';
             }
         });
@@ -189,13 +197,9 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
+                price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
                 price.setContent(true,false);
                 linearLayout.addView(price);
-                p1="0";
-                p2=price.getETF()+"";
-                sigma1=""+price.getSigma();
-                sigma2=""+price.getSigma();
                 combination='E';
             }
         });
@@ -213,16 +217,12 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
+                price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
                 price.setContent(true,true);
                 linearLayout.addView(price);
-                p1=price.getETF()+"";
-                p2="4";
-                AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
+                wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
                 wave.setContent(false,false);
                 linearLayout.addView(wave);
-                sigma1="0";
-                sigma2=""+wave.getSigma();
                 combination='F';
             }
         });
@@ -240,13 +240,9 @@ public class AllocationSettingPage extends LinearLayout {
                 ib12.setActivated(false);
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
+                wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
                 wave.setContent(false,false);
                 linearLayout.addView(wave);
-                p1=""+wave.getETF();
-                p2=""+wave.getETF();
-                sigma1="0";
-                sigma2=""+wave.getSigma();
                 combination='G';
             }
         });
@@ -264,16 +260,12 @@ public class AllocationSettingPage extends LinearLayout {
                 ib32.setActivated(false);
                 ib12.setActivated(false);
                 linearLayout.removeAllViews();
-                AllocationSettingSeekbar price=new AllocationSettingSeekbar(context);
+                price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
                 price.setContent(true,false);
                 linearLayout.addView(price);
-                p1="0";
-                p2=price.getETF()+"";
-                AllocationSettingSeekbar wave=new AllocationSettingSeekbar(context);
+                wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
                 wave.setContent(false,false);
                 linearLayout.addView(wave);
-                sigma1="0";
-                sigma2=wave.getSigma()+"";
                 combination='H';
             }
         });
@@ -308,6 +300,41 @@ public class AllocationSettingPage extends LinearLayout {
         SpinnerAdapter adapter=new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,array);
         time.setAdapter(adapter);
 
+        Button bt=(Button)findViewById(R.id.allocation_setting_next);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String,String> values=new HashMap<>();
+                values.put("m0",getM0());
+                values.put("k",getK());
+                values.put("t",getDate());
+                values.put("combination",getCombination()+"");
+                values.put("p1",getP1());
+                values.put("p2",getP2());
+                values.put("sigma1",getSigma1());
+                values.put("sigma2",getSigma2());
+
+
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values,getContext(), new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        dialog.setTitle("网络连接错误");
+                        dialog.setMessage("请稍后再试");
+                        dialogShow();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                        AllocationResponse responseAllocation=new Gson().fromJson(responseMsg.getData().toString(),AllocationResponse.class);
+                        allocationSetting.getLL().removeAllViews();
+                        allocationSetting.getLL().addView(new AllocationInfoPage(context,responseAllocation,allocationSetting));
+                    }
+                });
+
+
+            }
+        });
 
     }
 
@@ -328,18 +355,144 @@ public class AllocationSettingPage extends LinearLayout {
     }
 
     public String getP1() {
+        switch (combination) {
+            case 'A' :
+                p1=price.getETF()+"";
+                break;
+            case 'B':
+                p1=wave.getETF()+"";
+                break;
+            case 'C':
+                p1="0";
+                break;
+            case 'D' :
+                p1=price.getETF()+"";
+                break;
+            case 'E':
+                p1="0";
+                break;
+            case 'F':
+                p1=price.getETF()+"";
+                break;
+            case 'G' :
+                p1=wave.getETF()+"";
+                break;
+            case 'H':
+                p1="0";
+                break;
+
+        }
+
         return p1;
     }
 
     public String getP2() {
+        switch (combination) {
+            case 'A' :
+                p2="4";
+                break;
+            case 'B':
+                p2=wave.getETF()+"";
+                break;
+            case 'C':
+                p2=price.getETF()+"";
+                break;
+            case 'D' :
+                p2="4";
+                break;
+            case 'E':
+                p2=price.getETF()+"";
+                break;
+            case 'F':
+                p2="4";
+                break;
+            case 'G' :
+                p2=wave.getETF()+"";
+                break;
+            case 'H':
+                p2=price.getETF()+"";
+                break;
+
+        }
         return p2;
     }
 
     public String getSigma1() {
+        switch (combination) {
+            case 'A' :
+                sigma1=wave.getSigma()+"";
+                break;
+            case 'B':
+                sigma1=wave.getSigma()+"";
+                break;
+            case 'C':
+                sigma1=wave.getSigma()+"";
+                break;
+            case 'D' :
+                sigma1=price.getSigma()+"";
+                break;
+            case 'E':
+                sigma1=price.getSigma()+"";;
+                break;
+            case 'F':
+                sigma1="0";
+                break;
+            case 'G' :
+                sigma1="0";
+                break;
+            case 'H':
+                sigma1="0";
+                break;
+
+        }
         return sigma1;
     }
 
     public String getSigma2() {
+        switch (combination) {
+            case 'A' :
+                sigma2="50";
+                break;
+            case 'B':
+                sigma2="50";
+                break;
+            case 'C':
+                sigma2="50";
+                break;
+            case 'D' :
+                sigma2=price.getSigma()+"";
+                break;
+            case 'E':
+                sigma2=price.getSigma()+"";;
+                break;
+            case 'F':
+                sigma2=wave.getSigma()+"";
+                break;
+            case 'G' :
+                sigma2=wave.getSigma()+"";
+                break;
+            case 'H':
+                sigma2=wave.getSigma()+"";
+                break;
+
+        }
         return sigma2;
+    }
+
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(allocationSetting.getActivity());
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+    private void dialogShow(){
+        allocationSetting.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 }
