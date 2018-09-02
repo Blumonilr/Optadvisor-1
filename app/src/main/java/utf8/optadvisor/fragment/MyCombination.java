@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,10 +24,14 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,6 +57,7 @@ import utf8.optadvisor.util.ActivityJumper;
 import utf8.optadvisor.util.CommaHandler;
 import utf8.optadvisor.util.ExpandableAdapter;
 import utf8.optadvisor.util.NetUtil;
+import utf8.optadvisor.util.PortfolioXFormatter;
 
 /**
  * 对我的组合的管理
@@ -569,12 +575,25 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         Description description = new Description();
         description.setText("组合表现");
         description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
-        description.setTextSize(10);
+        description.setTextSize(18);
         lineChart.setDescription(description);//设置图表描述信息
         lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
         lineChart.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart.setTouchEnabled(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleXEnabled(true);// 缩放
+
+        XAxis xAxis=lineChart.getXAxis();
+        xAxis.setValueFormatter(new PortfolioXFormatter());
+        xAxis.setLabelCount(6,false);
+        xAxis.setGranularity(1f);
+        xAxis.setAxisLineWidth(1f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        YAxis yAxis=lineChart.getAxisRight();
+        yAxis.setEnabled(false);
 
         refreshChartData();
     }
@@ -598,15 +617,20 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                     Log.d("我的组合","responseMsg的code"+(responseMsg.getCode()));
                     Log.d("我的组合","responseMsg的data是空的"+(responseMsg.getData()==null));
+                    Log.d("我的组合",new Gson().toJson(responseMsg.getData()));
                     if (responseMsg.getData() != null) {
-                        MyCombinationResponse myCombinationResponse = new Gson().fromJson(responseMsg.getData().toString(), MyCombinationResponse.class);
+                        MyCombinationResponse myCombinationResponse = new Gson().fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), MyCombinationResponse.class);
                         String[][] graph = myCombinationResponse.getGraph();
+                        Log.d("我的组合","graph是空的"+(graph==null));
                         if (graph != null) {
-                            if (toDraw.getType() == 1) {//资产配置
+                            if (toDraw.getType() == 0) {//资产配置
+                                Log.d("我的组合","画资产配置");
                                 drawRecommend(graph);
-                            } else if (toDraw.getType() == 2) {
+                            } else if (toDraw.getType() == 1) {
+                                Log.d("我的组合","画套保");
                                 drawHedge(graph);
-                            } else if (toDraw.getType() == 3) {
+                            } else if (toDraw.getType() == 2) {
+                                Log.d("我的组合","画diy");
                                 drawDiy(graph);
                             }
                         }
@@ -630,14 +654,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 }
                 LineDataSet set1;
                 LineDataSet set2;
-/*                            if(lineChart.getData()!=null&&lineChart.getData().getDataSetCount()>0){
-                                set1= (LineDataSet)lineChart.getData().getDataSetByIndex(0);
-                                set1.setValues(backTestData);
-                                set2 = (LineDataSet) lineChart.getData().getDataSetByIndex(1);
-                                set2.setValues(profitData);
-                                lineChart.getData().notifyDataChanged();
-                                lineChart.notifyDataSetChanged();
-                            } else{*/
+
                 set1 = new LineDataSet(backTestData, "回测收益曲线");
                 set2 = new LineDataSet(profitData,"资产收益曲线");
                 setChartDataSet(set1);
@@ -700,21 +717,43 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             public void run() {
                 ArrayList<Entry> data1 = new ArrayList<>();
                 for (int i = 0; i < graph[0].length; i++) {
-                    String date=graph[0][i].replace("-",".");
-                    data1.add(new Entry(Float.parseFloat(date), Float.parseFloat(graph[1][i])));
+                    data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
                 }
-                LineDataSet set1;
-                set1 = new LineDataSet(data1, "回测收益曲线");
-                setChartDataSet(set1);
+                if (lineChart.getData() != null &&
+                        lineChart.getData().getDataSetCount() > 0) {
+                    //获取数据1
+                    Log.d("我的组合","diy再次画图");
+                    LineDataSet  set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
+                    set1.setValues(data1);
+                    set1.setLabel("回测收益曲线");
+                    /*int count=lineData.getDataSetCount();
+                    for(int i=0;i<count-1;i++){
+                        Log.d("我的组合","diy去除一条线");
+                        lineData.removeDataSet(lineData.getDataSetCount() - 1);
+                    }//从末尾去除多余的折线*/
+                    //刷新数据
+                    lineChart.getData().notifyDataChanged();
+                    lineChart.notifyDataSetChanged();
+                    Log.d("我的组合",((LineDataSet) lineChart.getData().getDataSetByIndex(0)).toSimpleString());
+                   // lineChart.invalidate();
+                } else {
+                    Log.d("我的组合","diy初次画图");
+                    LineDataSet set1= new LineDataSet(data1, "回测收益曲线");
+                    setChartDataSet(set1);
 
-                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                dataSets.add(set1);
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(set1);
 
-                LineData data = new LineData(dataSets);
+                    LineData data = new LineData(dataSets);
 
-                lineChart.setData(data);
+                    lineChart.setData(data);
 
-                lineChart.invalidate();
+                    XAxis xAxis = lineChart.getXAxis();
+                    xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                    lineChart.setVisibleXRangeMaximum(8f);//只有在设置了数据源以后才能设置，x轴最大显示数
+                    lineChart.invalidate();
+                }
             }
         });
     }
@@ -735,6 +774,18 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
     }
 
+
+    /**
+     * 把graph的日期转换成相对序号
+     */
+    private float handleDate(String str){
+        if(TextUtils.isEmpty(str)) return 0;
+        int index=str.indexOf("-");
+        String year=str.substring(0,index);
+        String month=str.substring(index+1);
+        Log.d("转化"+str, String.valueOf((Float.parseFloat(year)-2015)*12+Float.parseFloat(month)));
+        return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
+    }
 
 }
 
