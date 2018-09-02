@@ -9,7 +9,7 @@ public class Portfolio {
 
     private Option[] options;
 
-    private int type; //type指1：资产配置组合 2：套期保值组合 3：DIY组合
+    private int type; //type指0：资产配置组合 1：套期保值组合 2：DIY组合
     private boolean trackingStatus;
 
     //期权组合和DIY要有的东西
