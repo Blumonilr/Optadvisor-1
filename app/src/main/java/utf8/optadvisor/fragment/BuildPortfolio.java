@@ -17,7 +17,7 @@ public class BuildPortfolio extends Fragment {
 
     Button portfolio;
     Button hedging;
-    Button DIY;
+    Button diyButton;
     LinearLayout ll;
     DIY diy;
     AllocationSetting allocationSetting;
@@ -35,7 +35,11 @@ public class BuildPortfolio extends Fragment {
 
         portfolio= view.findViewById(R.id.portfolio);
         hedging=view.findViewById(R.id.hedge);
-        DIY=view.findViewById(R.id.DIY);
+        diyButton=view.findViewById(R.id.DIY);
+
+        portfolio.setTextColor(view.getResources().getColor(R.color.colorButton,null));
+        hedging.setTextColor(view.getResources().getColor(R.color.colorDarkGray,null));
+        diyButton.setTextColor(view.getResources().getColor(R.color.colorDarkGray,null));
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         if(allocationSetting==null){
@@ -45,9 +49,12 @@ public class BuildPortfolio extends Fragment {
         }
         transaction.show(allocationSetting);
 
-        DIY.setOnClickListener(new View.OnClickListener() {
+        diyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                portfolio.setTextColor(v.getResources().getColor(R.color.colorDarkGray,null));
+                hedging.setTextColor(v.getResources().getColor(R.color.colorDarkGray,null));
+                diyButton.setTextColor(v.getResources().getColor(R.color.colorButton,null));
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 if(diy==null){
                     diy=new DIY();
@@ -63,6 +70,9 @@ public class BuildPortfolio extends Fragment {
         portfolio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                portfolio.setTextColor(v.getResources().getColor(R.color.colorButton,null));
+                hedging.setTextColor(v.getResources().getColor(R.color.colorDarkGray,null));
+                diyButton.setTextColor(v.getResources().getColor(R.color.colorDarkGray,null));
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 if(allocationSetting==null){
                     allocationSetting=new AllocationSetting();
@@ -77,6 +87,9 @@ public class BuildPortfolio extends Fragment {
         hedging.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                portfolio.setTextColor(v.getResources().getColor(R.color.colorDarkGray,null));
+                hedging.setTextColor(v.getResources().getColor(R.color.colorButton,null));
+                diyButton.setTextColor(v.getResources().getColor(R.color.colorDarkGray,null));
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 if(hedgingInfoSetting==null){
                     hedgingInfoSetting=new HedgingInfoSetting();

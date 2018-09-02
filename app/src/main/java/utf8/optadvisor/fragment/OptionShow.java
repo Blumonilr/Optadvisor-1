@@ -119,7 +119,7 @@ public class OptionShow extends Fragment {
      */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_option_show, container, false);
+        final View view = inflater.inflate(R.layout.fragment_option_show, container, false);
         present_price= view.findViewById(R.id.present_price);
         ups_and_downs= view.findViewById(R.id.ups_and_downs);
         yesterday_end=view.findViewById(R.id.yesterday_end);
@@ -137,15 +137,15 @@ public class OptionShow extends Fragment {
         candleStickChart=(CandleStickChart) view.findViewById(R.id.candle_stick_chart);
         initCandleStickChart();
 
-
-
-
-
-        Button button1=view.findViewById(R.id.button_50ETF);
-        Button button2= view.findViewById(R.id.button_option);
+        final Button button1=view.findViewById(R.id.button_50ETF);
+        final Button button2= view.findViewById(R.id.button_option);
+        button1.setTextColor(view.getResources().getColor(R.color.colorButton,null));
+        button2.setTextColor(view.getResources().getColor(R.color.colorDarkGray, null));
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button1.setTextColor(view.getResources().getColor(R.color.colorButton,null));
+                button2.setTextColor(view.getResources().getColor(R.color.colorDarkGray, null));
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 if(optionContract!=null){
                     transaction.hide(optionContract);
@@ -156,6 +156,8 @@ public class OptionShow extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button2.setTextColor(view.getResources().getColor(R.color.colorButton,null));
+                button1.setTextColor(view.getResources().getColor(R.color.colorDarkGray, null));
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 if(optionContract==null){
                     optionContract=new OptionContract();

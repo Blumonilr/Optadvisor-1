@@ -14,25 +14,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="7dp">
+        android:layout_marginBottom="5dp">
         <Button
             android:id="@+id/portfolio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="定制投资方案"/>
+            style="@style/MainTopButton"
+            android:text="@string/recommend_text"/>
         <Button
             android:id="@+id/hedge"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="套期保值"/>
+            style="@style/MainTopButton"
+            android:text="@string/hedge_text"/>
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/MainTopButton"
             android:id="@+id/DIY"
-            android:text="DIY"/>
+            android:text="@string/diy_text"/>
     </LinearLayout>
 
     <ScrollView
