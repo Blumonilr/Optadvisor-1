@@ -110,7 +110,7 @@ public class DIY extends Fragment {
                 case SEND_DATA:
                     String value=(String) msg.obj;
                     value="{\"options\""+value.substring(value.indexOf("optionList")+11,value.length()-2)+",\"name\": \"portfolioName\",\n" +
-                            "\t\"type\": 0,\n" +
+                            "\t\"type\": 2,\n" +
                             "\t\"trackingStatus\": false"+"}";
                     System.out.println("DIY传数据库"+value);
                     NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio",value, getContext(), new okhttp3.Callback() {
@@ -282,7 +282,13 @@ public class DIY extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                String value=response.body().string();
-                mHandler.obtainMessage(SEND_DATA,value).sendToTarget();
+               if(value.contains("1008")){
+                   dialog.setTitle("网络连接错误");
+                   dialog.setMessage("请重试");
+                   dialogShow();
+               }else {
+                   mHandler.obtainMessage(SEND_DATA, value).sendToTarget();
+               }
             }
         });
     }
