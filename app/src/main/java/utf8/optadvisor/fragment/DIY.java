@@ -1,5 +1,6 @@
 package utf8.optadvisor.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -123,6 +124,21 @@ public class DIY extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            final ProgressDialog progressDialog=new ProgressDialog(getContext());
+                            progressDialog.setTitle("请稍等");
+                            progressDialog.setMessage("Loading...");
+                            progressDialog.show();
+                            final CountDownTimer timer = new CountDownTimer(2000, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    progressDialog.dismiss();
+                                }
+                            };
+                            timer.start();
                         }
                     });
 
@@ -269,7 +285,6 @@ public class DIY extends Fragment {
         Gson gson=new Gson();
         String value=gson.toJson(option_list);
         value="{\"options\": "+value+"}";
-
         System.out.println("json"+value);
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
             @Override
