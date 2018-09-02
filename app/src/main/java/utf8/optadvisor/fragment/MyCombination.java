@@ -584,6 +584,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleXEnabled(true);// 缩放
+        lineChart.setScaleYEnabled(false);
 
         XAxis xAxis=lineChart.getXAxis();
         xAxis.setValueFormatter(new PortfolioXFormatter());
@@ -648,28 +649,30 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 ArrayList<Entry> backTestData = new ArrayList<>();
                 ArrayList<Entry> profitData=new ArrayList<>();
                 for (int i = 0; i < graph[0].length; i++) {
-                    String date=graph[0][i].replace("-",".");
-                    backTestData.add(new Entry(Float.parseFloat(date), Float.parseFloat(graph[1][i])));
-                    profitData.add(new Entry(Float.parseFloat(date), Float.parseFloat(graph[2][i])));
+                    backTestData.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
+                    profitData.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[2][i])));
                 }
-                LineDataSet set1;
-                LineDataSet set2;
+                LineDataSet set1= new LineDataSet(backTestData, "回测收益曲线");
+                LineDataSet set2= new LineDataSet(profitData,"资产收益曲线");
 
-                set1 = new LineDataSet(backTestData, "回测收益曲线");
-                set2 = new LineDataSet(profitData,"资产收益曲线");
-                setChartDataSet(set1);
-                setChartDataSet(set2);
+                setChartDataSet(set1,0);
+                setChartDataSet(set2,1);
+
                 //保存LineDataSet集合
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                dataSets.add(set1); // add the datasets
+                dataSets.add(set1);
                 dataSets.add(set2);
                 //创建LineData对象 属于LineChart折线图的数据集合
                 LineData data = new LineData(dataSets);
                 // 添加到图表中
                 lineChart.setData(data);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                lineChart.setVisibleXRangeMaximum(8f);
                 //绘制图表
                 lineChart.invalidate();
-                // }
             }
         });
     }
@@ -683,19 +686,16 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 ArrayList<Entry> data3=new ArrayList<>();
                 for (int i = 0; i < graph[0].length; i++) {
                     String date=graph[0][i].replace("-",".");
-                    data1.add(new Entry(Float.parseFloat(date), Float.parseFloat(graph[1][i])));
-                    data2.add(new Entry(Float.parseFloat(date), Float.parseFloat(graph[2][i])));
-                    data3.add(new Entry(Float.parseFloat(date), Float.parseFloat(graph[3][i])));
+                    data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
+                    data2.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[2][i])));
+                    data3.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[3][i])));
                 }
-                LineDataSet set1;
-                LineDataSet set2;
-                LineDataSet set3;
-                set1 = new LineDataSet(data1, "持有收益");
-                set2 = new LineDataSet(data2,"未持有收益");
-                set3=new LineDataSet(data3,"收益差");
-                setChartDataSet(set1);
-                setChartDataSet(set2);
-                setChartDataSet(set3);
+                LineDataSet set1= new LineDataSet(data1, "持有收益");
+                LineDataSet set2= new LineDataSet(data2,"未持有收益");
+                LineDataSet set3= new LineDataSet(data3,"收益差");
+                setChartDataSet(set1,0);
+                setChartDataSet(set2,1);
+                setChartDataSet(set3,2);
 
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(set1);
@@ -705,6 +705,11 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 LineData data = new LineData(dataSets);
 
                 lineChart.setData(data);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                lineChart.setVisibleXRangeMaximum(8f);
 
                 lineChart.invalidate();
             }
@@ -719,41 +724,23 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 for (int i = 0; i < graph[0].length; i++) {
                     data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
                 }
-                if (lineChart.getData() != null &&
-                        lineChart.getData().getDataSetCount() > 0) {
-                    //获取数据1
-                    Log.d("我的组合","diy再次画图");
-                    LineDataSet  set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
-                    set1.setValues(data1);
-                    set1.setLabel("回测收益曲线");
-                    /*int count=lineData.getDataSetCount();
-                    for(int i=0;i<count-1;i++){
-                        Log.d("我的组合","diy去除一条线");
-                        lineData.removeDataSet(lineData.getDataSetCount() - 1);
-                    }//从末尾去除多余的折线*/
-                    //刷新数据
-                    lineChart.getData().notifyDataChanged();
-                    lineChart.notifyDataSetChanged();
-                    Log.d("我的组合",((LineDataSet) lineChart.getData().getDataSetByIndex(0)).toSimpleString());
-                   // lineChart.invalidate();
-                } else {
-                    Log.d("我的组合","diy初次画图");
-                    LineDataSet set1= new LineDataSet(data1, "回测收益曲线");
-                    setChartDataSet(set1);
 
-                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                    dataSets.add(set1);
+                LineDataSet set1= new LineDataSet(data1, "回测收益曲线");
+                setChartDataSet(set1,0);
 
-                    LineData data = new LineData(dataSets);
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
 
-                    lineChart.setData(data);
 
-                    XAxis xAxis = lineChart.getXAxis();
-                    xAxis.setValueFormatter(new PortfolioXFormatter());
+                LineData data = new LineData(dataSets);
 
-                    lineChart.setVisibleXRangeMaximum(8f);//只有在设置了数据源以后才能设置，x轴最大显示数
-                    lineChart.invalidate();
-                }
+                lineChart.setData(data);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                lineChart.setVisibleXRangeMaximum(8f);//只有在设置了数据源以后才能设置，x轴最大显示数
+                lineChart.invalidate();
             }
         });
     }
@@ -761,16 +748,28 @@ public class MyCombination extends Fragment implements View.OnClickListener {
     /**
      * 设置dataSet
      */
-    private void setChartDataSet(LineDataSet lineDataSet){
-        lineDataSet.setColor(Color.BLACK);
-        lineDataSet.setCircleColor(Color.BLACK);
+    private void setChartDataSet(LineDataSet lineDataSet,int type){
+        if(type==0){
+            lineDataSet.setColor(Color.RED);
+            lineDataSet.setCircleColor(Color.RED);
+            lineDataSet.setValueTextColor(Color.RED);
+        }else if(type==1){
+            lineDataSet.setColor(Color.BLUE);
+            lineDataSet.setCircleColor(Color.BLUE);
+            lineDataSet.setValueTextColor(Color.BLUE);
+        }
+        else {
+            lineDataSet.setColor(Color.BLACK);
+            lineDataSet.setCircleColor(Color.BLACK);
+            lineDataSet.setValueTextColor(Color.BLACK);
+        }
         lineDataSet.setLineWidth(1f);//设置线宽
         lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
         lineDataSet.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
         lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
         lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
-        lineDataSet.setValueTextSize(9f);//设置显示值的文字大小
+        lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
     }
 
@@ -783,7 +782,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         int index=str.indexOf("-");
         String year=str.substring(0,index);
         String month=str.substring(index+1);
-        Log.d("转化"+str, String.valueOf((Float.parseFloat(year)-2015)*12+Float.parseFloat(month)));
+
         return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
     }
 
