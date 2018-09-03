@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.about:
                         Log.d("Main","toAbout");
+                        ActivityJumper.rightEnterLeftExit(MainActivity.this,MainActivity.this,GuideActivity.class);
                         break;
                     case R.id.quit:
                         NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/logout", new Callback() {
