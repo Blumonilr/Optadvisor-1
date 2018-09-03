@@ -111,6 +111,7 @@ public class HedgingInfoSetting extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textView.setText(Double.toString(progress/100.0));
+                
             }
 
             @Override
