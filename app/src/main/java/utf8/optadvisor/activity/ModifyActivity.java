@@ -29,7 +29,7 @@ import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.entity.User;
 import utf8.optadvisor.domain.response.ResponseMsg;
-import utf8.optadvisor.util.ModifyItem;
+import utf8.optadvisor.widget.ModifyItem;
 import utf8.optadvisor.util.NetUtil;
 
 public class ModifyActivity extends AppCompatActivity {

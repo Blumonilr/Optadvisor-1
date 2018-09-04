@@ -217,6 +217,8 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.personal_info:
                         Log.d("Main","toPersonalInfo");
+                        Intent intent=new Intent(MainActivity.this,UserInfoActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.message_center:
                         Log.d("Main","toMessageCenter");

@@ -77,7 +77,7 @@
             android:background="#BDBDBD"/>
 
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
         android:id="@+id/user_info_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

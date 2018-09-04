@@ -5,12 +5,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
@@ -25,6 +22,8 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.entity.Option;
 import utf8.optadvisor.fragment.AllocationSetting;
+import utf8.optadvisor.widget.OptionButton;
+import utf8.optadvisor.widget.UserInfoMenuItem;
 
 public class AllocationInfoPage extends LinearLayout {
 

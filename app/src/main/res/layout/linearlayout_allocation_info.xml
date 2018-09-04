@@ -70,77 +70,77 @@
             android:text="看涨期权"
             android:textSize="18sp"/>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_soldprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_finalprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_delta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_gamma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_theta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_vega"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_rho"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
     </LinearLayout>
 
@@ -167,77 +167,77 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_guarantee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_delta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_gamma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_theta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_vega"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_rho"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_expectation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
-        <utf8.optadvisor.util.UserInfoMenuItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/allocation_item_group_risk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
 
-        </utf8.optadvisor.util.UserInfoMenuItem>
+        </utf8.optadvisor.widget.UserInfoMenuItem>
 
     </LinearLayout>
 
@@ -263,21 +263,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <utf8.optadvisor.util.UserInfoMenuItem
+                <utf8.optadvisor.widget.UserInfoMenuItem
                     android:id="@+id/allocation_item_property_expectation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp">
 
-                </utf8.optadvisor.util.UserInfoMenuItem>
+                </utf8.optadvisor.widget.UserInfoMenuItem>
 
-                <utf8.optadvisor.util.UserInfoMenuItem
+                <utf8.optadvisor.widget.UserInfoMenuItem
                     android:id="@+id/allocation_item_property_risk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp">
 
-                </utf8.optadvisor.util.UserInfoMenuItem>
+                </utf8.optadvisor.widget.UserInfoMenuItem>
 
             </LinearLayout>
 
