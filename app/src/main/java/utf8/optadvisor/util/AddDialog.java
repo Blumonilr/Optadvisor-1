@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,24 +30,26 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.AllocationResponse;
+import utf8.optadvisor.domain.HedgingResponse;
 import utf8.optadvisor.domain.entity.Option;
+import utf8.optadvisor.fragment.HedgingInfoDisplay;
+import utf8.optadvisor.fragment.HedgingInfoSetting;
 
-public class ConfirmDialog extends Dialog {
+public class AddDialog extends Dialog {
 
     private EditText name;
     private Spinner type;
     private Spinner back;
     private Button confirm;
     private Button cancel;
-    AllocationResponse allocationResponse;
-    AllocationInfoPage allocationInfoPage;
+    HedgingResponse hedgingResponse;
+    HedgingInfoSetting hedgingInfoSetting;
     private AlertDialog.Builder sdialog;
 
-
-    public ConfirmDialog(Context context, AllocationResponse allocationResponse, AllocationInfoPage allocationInfoPage) {
+    public AddDialog(Context context, HedgingResponse hedgingResponse, HedgingInfoSetting hedgingInfoSetting) {
         super(context);
-        this.allocationResponse=allocationResponse;
-        this.allocationInfoPage=allocationInfoPage;
+        this.hedgingResponse=hedgingResponse;
+        this.hedgingInfoSetting=hedgingInfoSetting;
     }
 
 
@@ -75,14 +75,14 @@ public class ConfirmDialog extends Dialog {
         initDialog();
 
         ArrayList<String> arr=new ArrayList<>();
-        arr.add("资产配置");
+        arr.add("套期保值");
         type.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,arr));
 
         ArrayList<String > array=new ArrayList<>();
         array.add("是"); array.add("否");
         back.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,array));
 
-        final ConfirmDialog dialog=this;
+        final AddDialog dialog=this;
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,26 +96,14 @@ public class ConfirmDialog extends Dialog {
             public void onClick(View view) {
                 if (name.getText().toString() != null && type.getSelectedItem() != null && back.getSelectedItem() != null) {
                     Map<String, String> values = new HashMap<>();
-                    values.put("options", new Gson().toJsonTree(allocationResponse.getOptions(), new TypeToken<ArrayList<Option>>() {}.getType()).toString().replaceAll(" ",""));
+                    List<Option> list=new ArrayList<>(); list.add(hedgingResponse.getOption());
+                    values.put("options", new Gson().toJsonTree(list, new TypeToken<ArrayList<Option>>() {}.getType()).toString().replaceAll(" ",""));
                     values.put("name","\"" + name.getText().toString()+"\"");
-                    values.put("type", "\"" + "0"+"\"");
+                    values.put("type", "\"" + "1"+"\"");
                     values.put("trackingStatus", "\"" + (back.getSelectedItem().toString().equals("是") ? "true" : "false")+"\"");
-                    values.put("m0", "\"" + allocationResponse.getM0()+"\"");
-                    values.put("k", "\"" + allocationResponse.getK() +"\"");
-                    values.put("p1", "\"" + allocationResponse.getP1()+"\"");
-                    values.put("p2", "\"" + allocationResponse.getP2()+"\"");
-                    values.put("sigma1", "\"" + allocationResponse.getSigma1()+"\"");
-                    values.put("sigma2", "\"" + allocationResponse.getSigma2()+"\"");
-                    values.put("cost", "\"" +  allocationResponse.getCost()+"\"");
-                    values.put("bond", "\"" + allocationResponse.getBond()+"\"");
-                    values.put("z_delta", "\"" + allocationResponse.getZ_delta()+"\"");
-                    values.put("z_gamma", "\"" +  allocationResponse.getZ_gamma()+"\"");
-                    values.put("z_vega", "\"" +  allocationResponse.getZ_vega()+"\"");
-                    values.put("z_theta", "\"" +  allocationResponse.getZ_theta()+"\"");
-                    values.put("z_rho", "\"" +  allocationResponse.getZ_rho()+"\"");
-                    values.put("em", "\"" +  allocationResponse.getEm()+"\"");
-                    values.put("beta", "\"" + allocationResponse.getBeta()+"\"");
-                    values.put("graph",new Gson().toJson(allocationResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
+                    values.put("graph",new Gson().toJson(hedgingResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
+                    values.put("iK",hedgingResponse.getIk()+"");
+                    values.put("sExp",hedgingInfoSetting.getsExp());
 
                     NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override
@@ -132,7 +120,7 @@ public class ConfirmDialog extends Dialog {
                     });
                 }
                 else{
-                    Toast.makeText(allocationInfoPage.getContext(), "请填写完整信息", Toast.LENGTH_SHORT);
+                    Toast.makeText(hedgingInfoSetting.getContext(), "请填写完整信息", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -146,7 +134,7 @@ public class ConfirmDialog extends Dialog {
 
 
     private void initDialog(){
-        sdialog=new AlertDialog.Builder(allocationInfoPage.getAllocationSetting().getActivity());
+        sdialog=new AlertDialog.Builder(hedgingInfoSetting.getActivity());
         sdialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -154,7 +142,7 @@ public class ConfirmDialog extends Dialog {
         });
     }
     private void dialogShow(){
-        allocationInfoPage.getAllocationSetting().getActivity().runOnUiThread(new Runnable() {
+        hedgingInfoSetting.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 sdialog.show();

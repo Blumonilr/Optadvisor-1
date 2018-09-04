@@ -71,7 +71,7 @@
             android:background="#BDBDBD"/>
 
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.util.ModifyItem
+        <utf8.optadvisor.widget.ModifyItem
             android:id="@+id/user_info_modify_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

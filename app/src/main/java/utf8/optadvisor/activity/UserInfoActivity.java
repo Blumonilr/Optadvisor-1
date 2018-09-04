@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,8 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -30,9 +30,8 @@ import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.entity.User;
 import utf8.optadvisor.domain.response.ResponseMsg;
-import utf8.optadvisor.util.ActivityJumper;
 import utf8.optadvisor.util.NetUtil;
-import utf8.optadvisor.util.UserInfoMenuItem;
+import utf8.optadvisor.widget.UserInfoMenuItem;
 
 public class UserInfoActivity extends AppCompatActivity {
 
@@ -59,6 +58,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        initDialog();
     }
 
     private void intiMenuItem() {
@@ -76,13 +76,16 @@ public class UserInfoActivity extends AppCompatActivity {
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", UserInfoActivity.this, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(UserInfoActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT);
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("登出时发生错误，请重试");
+                dialogShow();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                User user = (User) responseMsg.getData();
+                System.out.println(responseMsg.getData().toString());
+                User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
                 name.setInfoTextRight(user.getName());
                 account.setInfoTextRight(user.getUsername());
                 gender.setInfoTextRight(user.getGender());
@@ -102,7 +105,7 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private static int getAge(String date) throws ParseException {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         Date dateOfBirth = df.parse(date);
         int age = 0;
         Calendar born = Calendar.getInstance();
@@ -123,5 +126,23 @@ public class UserInfoActivity extends AppCompatActivity {
         }
         return age;
 
+    }
+
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(UserInfoActivity.this);
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+    }
+
+    private void dialogShow(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 }

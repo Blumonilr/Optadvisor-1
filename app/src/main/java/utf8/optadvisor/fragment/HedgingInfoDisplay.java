@@ -1,9 +1,11 @@
 package utf8.optadvisor.fragment;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -20,7 +22,11 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.HedgingResponse;
+import utf8.optadvisor.util.AddDialog;
+import utf8.optadvisor.util.AllocationInfoPage;
+import utf8.optadvisor.util.ConfirmDialog;
 import utf8.optadvisor.util.HedgingMenuItem;
 
 
@@ -52,9 +58,13 @@ public class HedgingInfoDisplay extends ScrollView {
     private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     private List<Line> lines = new ArrayList<Line>();
 
-    public HedgingInfoDisplay(Context context, HedgingResponse hedging) {
+    private Button add;
+    private HedgingInfoSetting mainActivity;
+
+    public HedgingInfoDisplay(final Context context, final HedgingResponse hedging, final HedgingInfoSetting mainActivity) {
         super(context);
         inflate(context,R.layout.fragment_hedging_info_display,  this);
+        this.mainActivity=mainActivity;
         this.response=hedging;
         TextView title=(TextView)findViewById(R.id.tv_table_title_left);
         title.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyh.ttc"));
@@ -85,6 +95,15 @@ public class HedgingInfoDisplay extends ScrollView {
         vega=findViewById(R.id.hedging_vega);
         rho=findViewById(R.id.hedging_rho);
         maxLoss=findViewById(R.id.hedging_maxloss);
+
+        add=findViewById(R.id.hedging_info_bt_add);
+        add.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddDialog add=new AddDialog(context,hedging,mainActivity);
+                add.show();
+            }
+        });
 
         getAxisXLables();//获取x轴的标注
         getAxisPoints();//获取坐标点

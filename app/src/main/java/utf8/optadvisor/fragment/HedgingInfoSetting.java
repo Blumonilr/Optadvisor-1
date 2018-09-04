@@ -62,6 +62,12 @@ public class HedgingInfoSetting extends Fragment {
 
     private static final int INFO_SUCCESS = 0;
     private static final int INFO_FAILURE = 1;
+
+    private String n;
+    private String iK;
+    private String pAsset;
+    private String sExp;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
@@ -70,7 +76,7 @@ public class HedgingInfoSetting extends Fragment {
                     String info = (String) msg.obj;
                     HedgingResponse responseOption=new Gson().fromJson(info,HedgingResponse.class);
                     ll.removeAllViews();
-                    ll.addView(new HedgingInfoDisplay(getContext(),responseOption));
+                    ll.addView(new HedgingInfoDisplay(getContext(),responseOption,HedgingInfoSetting.this));
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
@@ -111,7 +117,7 @@ public class HedgingInfoSetting extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textView.setText(Double.toString(progress/100.0));
-                
+
             }
 
             @Override
@@ -146,6 +152,7 @@ public class HedgingInfoSetting extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HedgingInfoSetting.this.sExp=et2.getText().toString();
                 Map<String,String> values=new HashMap<>();
                 values.put("n0",et1.getText().toString());
 
@@ -167,8 +174,15 @@ public class HedgingInfoSetting extends Fragment {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        mHandler.obtainMessage(INFO_SUCCESS,responseMsg.getData().toString()).sendToTarget();
-                        System.out.println(responseMsg.getData().toString());
+                        if(responseMsg.getData().toString()==null){
+                            dialog.setTitle("网络连接错误");
+                            dialog.setMessage("请重新点击");
+                            dialogShow();
+                        }
+                        else {
+                            mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
+                            System.out.println(responseMsg.getData().toString());
+                        }
                     }
                 });
 
@@ -195,4 +209,23 @@ public class HedgingInfoSetting extends Fragment {
         });
     }
 
+    public String getN(){
+        return n;
+    }
+
+    public String getiK() {
+        return iK;
+    }
+
+    public String getpAsset() {
+        return pAsset;
+    }
+
+    public String getsExp() {
+        return sExp;
+    }
+
+    public Handler getmHandler() {
+        return mHandler;
+    }
 }
