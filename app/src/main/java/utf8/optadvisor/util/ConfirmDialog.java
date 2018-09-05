@@ -79,7 +79,7 @@ public class ConfirmDialog extends Dialog {
         type.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,arr));
 
         ArrayList<String > array=new ArrayList<>();
-        array.add("否");
+        array.add("否"); array.add("是");
         back.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,array));
 
         final ConfirmDialog dialog=this;
