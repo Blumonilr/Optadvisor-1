@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         preferences=getSharedPreferences("userInfo",MODE_PRIVATE);
+        System.out.println(preferences.getString("username",null)+preferences.getString("password",null));
 
         initOptionShowButton();
         initBuildPortfolioButton();
@@ -225,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.about:
                         Log.d("Main","toAbout");
+                        ActivityJumper.rightEnterLeftExit(MainActivity.this,MainActivity.this,GuideActivity.class);
                         break;
                     case R.id.quit:
                         NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/logout", new Callback() {

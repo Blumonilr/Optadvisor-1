@@ -2,6 +2,8 @@ package utf8.optadvisor.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -69,11 +71,12 @@ public class MyLogInterceptor implements Interceptor {
                     editor.apply();
                 }
             });
+            
             Request requestAgain = chain.request().newBuilder()
-                    .header("cookie",sharedPreferences.getString("cookie","456789"))
+                    .header("cookie", sharedPreferences.getString("cookie", "456789"))
                     .build();
             Response responseAgain = chain.proceed(requestAgain);
-            String content= responseAgain.body().string();
+            String content = responseAgain.body().string();
             MediaType mediaType = responseAgain.body().contentType();
             return response.newBuilder()
                     .body(ResponseBody.create(mediaType,content))

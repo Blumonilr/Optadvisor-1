@@ -3,11 +3,10 @@ package utf8.optadvisor.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Path;
-import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,17 +22,19 @@ import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -50,10 +51,13 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.activity.DetailActivity;
 import utf8.optadvisor.domain.entity.Option;
 import utf8.optadvisor.domain.entity.Portfolio;
+import utf8.optadvisor.domain.response.MyCombinationResponse;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ActivityJumper;
+import utf8.optadvisor.util.CommaHandler;
 import utf8.optadvisor.util.ExpandableAdapter;
 import utf8.optadvisor.util.NetUtil;
+import utf8.optadvisor.util.PortfolioXFormatter;
 
 /**
  * 对我的组合的管理
@@ -74,10 +78,10 @@ public class MyCombination extends Fragment implements View.OnClickListener {
     private int[] buttonChosen;
     private ExpandableAdapter expandableAdapter;
 
-    private Portfolio currentPortfolio;
+    private Portfolio currentPortfolio;//当前组合
 
-    private List<String> portfolioNames;
-    private List<Portfolio> currentPortfolioList;
+    private List<String> portfolioNames;//下拉框里的组合名集合
+    private List<Portfolio> currentPortfolioList;//下拉框里的组合集合
 
     private AlertDialog.Builder dialog;
 
@@ -119,9 +123,16 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 portfolioNames.clear();
                 currentPortfolioList=new ArrayList<>();
                 ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
+                Log.d("我的组合：","组合列表信息是空的"+(responseMsg.getData()==null));
                 if(responseMsg.getData()!=null) {
+                    Log.d("我的组合：","组合列表信息"+new Gson().toJson(responseMsg.getData()));
                     java.lang.reflect.Type listType = new TypeToken<List<Portfolio>>() {}.getType();
-                    List<Portfolio> portfolios= new Gson().fromJson(responseMsg.getData().toString(), listType);
+                    Gson gs = new GsonBuilder()
+                            .setPrettyPrinting()
+                            .disableHtmlEscaping()
+                            .create();
+                    Log.d("我的组合：","新组合列表信息"+CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()));
+                    List<Portfolio> portfolios= gs.fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), listType);
                     for (Portfolio portfolio : portfolios) {
                         if (buttonChosen[0] == 1) {
                             if (portfolio.getType() == 0) {
@@ -379,7 +390,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * 当前组合变更，通知expandList改变
+     * 当前组合变更时，通知expandList改变
      */
     private void currentPortfolioChange(final boolean spinnerChanged){
         Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
@@ -401,6 +412,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 expandableListView.expandGroup(0);
             }
         });
+        refreshChartData();//更新图片
     }
 
     /**
@@ -523,106 +535,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         listView.requestLayout();
     }
 
-    private void initLineChart() {
-        lineChart = view.findViewById(R.id.my_line_chart);
-        Description description = new Description();
-        description.setText("组合表现");
-        description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
-        description.setTextSize(20);
-        lineChart.setDescription(description);//设置图表描述信息
-        lineChart.setNoDataText("没有数据熬");//没有数据时显示的文字
-        lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
-        lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
-        lineChart.setDrawBorders(false);//禁止绘制图表边框的线
-        //lineChart.setBorderColor(); //设置 chart 边框线的颜色。
-        //lineChart.setBorderWidth(); //设置 chart 边界线的宽度，单位 dp。
-        //lineChart.setLogEnabled(true);//打印日志
-        //lineChart.notifyDataSetChanged();//刷新数据
-        //lineChart.invalidate();//重绘
-        bindData();
-    }
-
-    /**
-     * 绘图——绑定数据
-     */
-    private void bindData() {
-        ArrayList<Entry> values1 = new ArrayList<>();
-        ArrayList<Entry> values2 = new ArrayList<>();
-
-        values1.add(new Entry(4, 10));
-        values1.add(new Entry(6, 15));
-        values1.add(new Entry(9, 20));
-        values1.add(new Entry(12, 5));
-        values1.add(new Entry(15, 30));
-
-        values2.add(new Entry(3, 110));
-        values2.add(new Entry(6, 115));
-        values2.add(new Entry(9, 130));
-        values2.add(new Entry(12, 85));
-        values2.add(new Entry(15, 90));
-
-        //LineDataSet每一个对象就是一条连接线
-        LineDataSet set1;
-        LineDataSet set2;
-
-        //判断图表中原来是否有数据
-        if (lineChart.getData() != null &&
-                lineChart.getData().getDataSetCount() > 0) {
-            //获取数据1
-            set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
-            set1.setValues(values1);
-            set2 = (LineDataSet) lineChart.getData().getDataSetByIndex(1);
-            set2.setValues(values2);
-            //刷新数据
-            lineChart.getData().notifyDataChanged();
-            lineChart.notifyDataSetChanged();
-        } else {
-            //设置数据1  参数1：数据源 参数2：图例名称
-            set1 = new LineDataSet(values1, "测试数据1");
-            set1.setColor(Color.BLACK);
-            set1.setCircleColor(Color.BLACK);
-            set1.setLineWidth(1f);//设置线宽
-            set1.setCircleRadius(3f);//设置焦点圆心的大小
-            set1.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
-            set1.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
-            set1.setHighlightEnabled(true);//是否禁用点击高亮线
-            set1.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
-            set1.setValueTextSize(9f);//设置显示值的文字大小
-            set1.setDrawFilled(false);//设置禁用范围背景填充
-
-            //格式化显示数据
-            final DecimalFormat mFormat = new DecimalFormat("###,###,##0");
-            set1.setValueFormatter(new IValueFormatter() {
-                @Override
-                public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                    return mFormat.format(value);
-                }
-            });
-            set1.setFillColor(Color.BLACK);
-
-
-            //设置数据2
-            set2 = new LineDataSet(values2, "测试数据2");
-            set2.setColor(Color.GRAY);
-            set2.setCircleColor(Color.GRAY);
-            set2.setLineWidth(1f);
-            set2.setCircleRadius(3f);
-            set2.setValueTextSize(10f);
-
-            //保存LineDataSet集合
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the datasets
-            dataSets.add(set2);
-            //创建LineData对象 属于LineChart折线图的数据集合
-            LineData data = new LineData(dataSets);
-            // 添加到图表中
-            lineChart.setData(data);
-            //绘制图表
-            lineChart.invalidate();
-        }
-
-    }
-
     @Override
     public void onClick(View view) {
         for(Button each:buttons) {
@@ -650,5 +562,229 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         }
         refreshCombination();
     }
+
+    /**********************************************************************************************************************
+     ***************************                   所有和制图直接相关的方法               **********************************
+     **********************************************************************************************************************/
+
+    /**
+     * 画回测图
+     */
+    private void initLineChart() {
+        lineChart = view.findViewById(R.id.linechart);
+        Description description = new Description();
+        description.setText("组合表现");
+        description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
+        description.setTextSize(18);
+        lineChart.setDescription(description);//设置图表描述信息
+        lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
+        lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
+        lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
+        lineChart.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart.setTouchEnabled(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleXEnabled(true);// 缩放
+        lineChart.setScaleYEnabled(false);
+
+        XAxis xAxis=lineChart.getXAxis();
+        xAxis.setValueFormatter(new PortfolioXFormatter());
+        xAxis.setLabelCount(6,false);
+        xAxis.setGranularity(1f);
+        xAxis.setAxisLineWidth(1f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        YAxis yAxis=lineChart.getAxisRight();
+        yAxis.setEnabled(false);
+
+        refreshChartData();
+    }
+
+    /**
+     * 刷新数据
+     */
+    private void refreshChartData() {
+        Log.d("我的组合","刷新图表方法被执行");
+        final Portfolio toDraw=currentPortfolio;
+
+        if(toDraw!=null) {
+            Log.d("我的组合","当前组合的id是"+toDraw.getId());
+            NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio/" + toDraw.getId(), this.getContext(), new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                    Log.d("我的组合","responseMsg的code"+(responseMsg.getCode()));
+                    Log.d("我的组合","responseMsg的data是空的"+(responseMsg.getData()==null));
+                    Log.d("我的组合",new Gson().toJson(responseMsg.getData()));
+                    if (responseMsg.getData() != null) {
+                        MyCombinationResponse myCombinationResponse = new Gson().fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), MyCombinationResponse.class);
+                        String[][] graph = myCombinationResponse.getGraph();
+                        Log.d("我的组合","graph是空的"+(graph==null));
+                        if (graph != null) {
+                            if (toDraw.getType() == 0) {//资产配置
+                                Log.d("我的组合","画资产配置");
+                                drawRecommend(graph);
+                            } else if (toDraw.getType() == 1) {
+                                Log.d("我的组合","画套保");
+                                drawHedge(graph);
+                            } else if (toDraw.getType() == 2) {
+                                Log.d("我的组合","画diy");
+                                drawDiy(graph);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void drawRecommend(final String[][] graph){
+        Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Entry> backTestData = new ArrayList<>();
+                ArrayList<Entry> profitData=new ArrayList<>();
+                for (int i = 0; i < graph[0].length; i++) {
+                    backTestData.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
+                    profitData.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[2][i])));
+                }
+                LineDataSet set1= new LineDataSet(backTestData, "回测收益曲线");
+                LineDataSet set2= new LineDataSet(profitData,"资产收益曲线");
+
+                setChartDataSet(set1,0);
+                setChartDataSet(set2,1);
+
+                //保存LineDataSet集合
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
+                dataSets.add(set2);
+                //创建LineData对象 属于LineChart折线图的数据集合
+                LineData data = new LineData(dataSets);
+                // 添加到图表中
+                lineChart.setData(data);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                lineChart.setVisibleXRangeMaximum(8f);
+                //绘制图表
+                lineChart.invalidate();
+            }
+        });
+    }
+
+    private void drawHedge(final String[][] graph){
+        Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Entry> data1 = new ArrayList<>();
+                ArrayList<Entry> data2=new ArrayList<>();
+                ArrayList<Entry> data3=new ArrayList<>();
+                for (int i = 0; i < graph[0].length; i++) {
+                    String date=graph[0][i].replace("-",".");
+                    data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
+                    data2.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[2][i])));
+                    data3.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[3][i])));
+                }
+                LineDataSet set1= new LineDataSet(data1, "持有收益");
+                LineDataSet set2= new LineDataSet(data2,"未持有收益");
+                LineDataSet set3= new LineDataSet(data3,"收益差");
+                setChartDataSet(set1,0);
+                setChartDataSet(set2,1);
+                setChartDataSet(set3,2);
+
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
+                dataSets.add(set2);
+                dataSets.add(set3);
+
+                LineData data = new LineData(dataSets);
+
+                lineChart.setData(data);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                lineChart.setVisibleXRangeMaximum(8f);
+
+                lineChart.invalidate();
+            }
+        });
+    }
+
+    private void drawDiy(final String[][] graph){
+        Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Entry> data1 = new ArrayList<>();
+                for (int i = 0; i < graph[0].length; i++) {
+                    data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
+                }
+
+                LineDataSet set1= new LineDataSet(data1, "回测收益曲线");
+                setChartDataSet(set1,0);
+
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set1);
+
+
+                LineData data = new LineData(dataSets);
+
+                lineChart.setData(data);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new PortfolioXFormatter());
+
+                lineChart.setVisibleXRangeMaximum(8f);//只有在设置了数据源以后才能设置，x轴最大显示数
+                lineChart.invalidate();
+            }
+        });
+    }
+
+    /**
+     * 设置dataSet
+     */
+    private void setChartDataSet(LineDataSet lineDataSet,int type){
+        if(type==0){
+            lineDataSet.setColor(Color.RED);
+            lineDataSet.setCircleColor(Color.RED);
+            lineDataSet.setValueTextColor(Color.RED);
+        }else if(type==1){
+            lineDataSet.setColor(Color.BLUE);
+            lineDataSet.setCircleColor(Color.BLUE);
+            lineDataSet.setValueTextColor(Color.BLUE);
+        }
+        else {
+            lineDataSet.setColor(Color.BLACK);
+            lineDataSet.setCircleColor(Color.BLACK);
+            lineDataSet.setValueTextColor(Color.BLACK);
+        }
+        lineDataSet.setLineWidth(1f);//设置线宽
+        lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
+        lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
+        lineDataSet.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
+        lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
+        lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
+        lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
+        lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
+    }
+
+
+    /**
+     * 把graph的日期转换成相对序号
+     */
+    private float handleDate(String str){
+        if(TextUtils.isEmpty(str)) return 0;
+        int index=str.indexOf("-");
+        String year=str.substring(0,index);
+        String month=str.substring(index+1);
+
+        return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
+    }
+
 }
 

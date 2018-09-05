@@ -17,10 +17,12 @@ import android.widget.RelativeLayout;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.response.ResponseMsg;
@@ -163,6 +165,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
                 if(responseMsg.getCode()==0){
+                    Headers headers = response.headers();
+                    List<String> cookies = headers.values("Set-Cookie");
+                    String session = cookies.get(0);
+                    String cookie = session.substring(0, session.indexOf(";"));
+                    editor.putString("cookie",cookie);
+                    editor.apply();
                     editor.putBoolean("isLogined",true);
                     editor.apply();
 

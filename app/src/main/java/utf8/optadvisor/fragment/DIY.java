@@ -1,5 +1,6 @@
 package utf8.optadvisor.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -56,7 +57,7 @@ public class DIY extends Fragment {
     private ArrayAdapter<String> spinner_adapter;
     private LeftAdapter leftAdapter=new LeftAdapter(left_data);
     private ControllerAdapter controllerAdapter=new ControllerAdapter(controller_data);
-    private FloatingActionButton fb;
+    private Button fb;
     private RecyclerView options_view;
     private RecyclerView controllers_view;
     private Spinner spinner;
@@ -65,6 +66,7 @@ public class DIY extends Fragment {
     private final int MONTHS_GET=2;
     private final int MONTHS_FAIL=3;
     private final int GET_EXPIRETIME=4;
+    private final int SEND_DATA=5;
     private Button bt1;
     private ProgressBar progressBar;
     private AlertDialog.Builder dialog;
@@ -106,6 +108,41 @@ public class DIY extends Fragment {
                     System.out.print("sss");
                     sendDIY(et);
                     break;
+                case SEND_DATA:
+                    String value=(String) msg.obj;
+                    value="{\"options\""+value.substring(value.indexOf("optionList")+11,value.length()-2)+",\"name\": \"portfolioName\",\n" +
+                            "\t\"type\": 2,\n" +
+                            "\t\"trackingStatus\": false"+"}";
+                    System.out.println("DIY传数据库"+value);
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio",value, getContext(), new okhttp3.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            dialog.setTitle("网络连接错误");
+                            dialog.setMessage("请稍后再试");
+                            dialogShow();
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            final ProgressDialog progressDialog=new ProgressDialog(getContext());
+                            progressDialog.setTitle("请稍等");
+                            progressDialog.setMessage("Loading...");
+                            progressDialog.show();
+                            final CountDownTimer timer = new CountDownTimer(2000, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    progressDialog.dismiss();
+                                }
+                            };
+                            timer.start();
+                        }
+                    });
+
+
 
             }
         }
@@ -248,7 +285,6 @@ public class DIY extends Fragment {
         Gson gson=new Gson();
         String value=gson.toJson(option_list);
         value="{\"options\": "+value+"}";
-
         System.out.println("json"+value);
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
             @Override
@@ -260,10 +296,14 @@ public class DIY extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String get_info=response.body().string();
-                System.out.println("回传"+get_info);
-                //这里是回传的diy信息
-
+               String value=response.body().string();
+               if(value.contains("1008")){
+                   dialog.setTitle("网络连接错误");
+                   dialog.setMessage("请重试");
+                   dialogShow();
+               }else {
+                   mHandler.obtainMessage(SEND_DATA, value).sendToTarget();
+               }
             }
         });
     }

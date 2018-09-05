@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,17 +17,13 @@ import utf8.optadvisor.util.ActivityJumper;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private boolean rightExit;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        rightExit=false;
+
         Intent intent=getIntent();
-        if(intent.getBooleanExtra("fromMyCombination",false)){
-            rightExit=true;
-        }
+
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolBar);
         CollapsingToolbarLayout collapsingToolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         ImageView background=(ImageView)findViewById(R.id.background);
@@ -51,8 +48,29 @@ public class DetailActivity extends AppCompatActivity {
         textView.setText(content);
     }
 
+    /**
+     * 重写Home键实现滑动切换界面
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                exit();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
     @Override
     public void onBackPressed() {
+        exit();
+    }
+    /**
+     * 滑动退出
+     */
+    private void exit(){
         finish();
         overridePendingTransition(R.anim.activity_left_enter,R.anim.activity_right_exit);
     }

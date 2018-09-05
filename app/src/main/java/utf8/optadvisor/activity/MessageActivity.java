@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -193,4 +194,30 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 重写Home键实现滑动切换界面
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                exit();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+    /**
+     * 滑动退出
+     */
+    private void exit(){
+        finish();
+        overridePendingTransition(R.anim.activity_left_enter,R.anim.activity_right_exit);
+    }
 }
