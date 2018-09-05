@@ -15,18 +15,6 @@
         android:orientation="vertical"
         android:background="@color/textWhite">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/hedging_title"
-        android:text="套期保值信息设置"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:background="@color/colorButton"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

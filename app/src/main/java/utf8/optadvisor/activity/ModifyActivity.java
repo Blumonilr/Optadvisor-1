@@ -1,7 +1,9 @@
 package utf8.optadvisor.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,6 +37,8 @@ import utf8.optadvisor.util.NetUtil;
 
 public class ModifyActivity extends AppCompatActivity {
 
+    private AlertDialog.Builder dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +51,17 @@ public class ModifyActivity extends AppCompatActivity {
         ImageView userHead = (ImageView) findViewById(R.id.user_modify_head);
         Glide.with(this).load(R.drawable.default_user_head).bitmapTransform(new CropCircleTransformation(this)).into(userHead);
         intiMenuItem();
+        initDialog();
 
+    }
 
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(ModifyActivity.this);
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
     }
 
     private void intiMenuItem() {
@@ -71,7 +85,7 @@ public class ModifyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                User user = (User) responseMsg.getData();
+                User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
                 name.setInfoTextRight(user.getName());
                 account.setInfoTextRight(user.getUsername());
                 gender.setInfoTextRight(user.getGender());
@@ -103,7 +117,9 @@ public class ModifyActivity extends AppCompatActivity {
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values,ModifyActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Toast.makeText(ModifyActivity.this, "网络连接错误，更新失败", Toast.LENGTH_SHORT);
+                        dialog.setTitle("修改失败");
+                        dialog.setMessage("请检查网络连接");
+                        dialogShow();
                     }
 
                     @Override
@@ -147,5 +163,15 @@ public class ModifyActivity extends AppCompatActivity {
         }
         return age;
 
+    }
+
+    private void dialogShow(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                dialog.show();
+            }
+        });
     }
 }

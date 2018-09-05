@@ -79,7 +79,7 @@ public class AddDialog extends Dialog {
         type.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,arr));
 
         ArrayList<String > array=new ArrayList<>();
-        array.add("是"); array.add("否");
+        array.add("否"); array.add("是");
         back.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,array));
 
         final AddDialog dialog=this;
@@ -102,8 +102,8 @@ public class AddDialog extends Dialog {
                     values.put("type", "\"" + "1"+"\"");
                     values.put("trackingStatus", "\"" + (back.getSelectedItem().toString().equals("是") ? "true" : "false")+"\"");
                     values.put("graph",new Gson().toJson(hedgingResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
-                    values.put("iK",hedgingResponse.getIk()+"");
-                    values.put("sExp",hedgingInfoSetting.getsExp());
+                    values.put("iK","\""+hedgingResponse.getIk()+"\"");
+                    values.put("sExp","\""+hedgingInfoSetting.getsExp()+"\"");
 
                     NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override

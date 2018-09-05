@@ -153,38 +153,43 @@ public class HedgingInfoSetting extends Fragment {
             @Override
             public void onClick(View v) {
                 HedgingInfoSetting.this.sExp=et2.getText().toString();
-                Map<String,String> values=new HashMap<>();
-                values.put("n0",et1.getText().toString());
+                if (et1.getText().toString()!=""&&textView.getText().toString()!=""&&et2.getText().toString()!=""&&date.getSelectedItem().toString()!="") {
+                    Map<String, String> values = new HashMap<>();
+                    values.put("n0", et1.getText().toString());
 
-                values.put("a",""+(Double.parseDouble(textView.getText().toString())));
+                    values.put("a", "" + (Double.parseDouble(textView.getText().toString())));
 
-                values.put("s_exp",et2.getText().toString());
+                    values.put("s_exp", et2.getText().toString());
 
-                values.put("t",date.getSelectedItem().toString());
+                    values.put("t", date.getSelectedItem().toString());
 
 
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values,getContext(), new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        dialog.setTitle("网络连接错误");
-                        dialog.setMessage("请稍后再试");
-                        dialogShow();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        if(responseMsg.getData().toString()==null){
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, getContext(), new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
                             dialog.setTitle("网络连接错误");
-                            dialog.setMessage("请重新点击");
+                            dialog.setMessage("请稍后再试");
                             dialogShow();
                         }
-                        else {
-                            mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
-                            System.out.println(responseMsg.getData().toString());
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                            if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
+                                dialog.setTitle("网络连接错误");
+                                dialog.setMessage("请重新点击");
+                                dialogShow();
+                            } else {
+                                mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else {
+                    dialog.setTitle("信息未填写完善");
+                    dialog.setMessage("请重新填写");
+                    dialogShow();
+                }
 
             }
         });

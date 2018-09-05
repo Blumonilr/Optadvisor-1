@@ -63,7 +63,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     String[] sigams = response2.split("\n");
                     String temp = "";
                     for (String s : sigams) {
-                        if (s.length() > 9)
+                        if ((s.charAt(0)=='9'&&s.length() > 10)||(s.charAt(0)!='9'&&s.length()>11))
                             temp = s;
                         else
                             break;
