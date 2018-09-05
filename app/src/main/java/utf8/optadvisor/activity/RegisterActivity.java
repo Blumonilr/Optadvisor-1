@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
         String username = edit_userName.getText().toString();
         String password = edit_password.getText().toString();
         String name = edit_name.getText().toString();
-        String birthday = datePicker.getYear() + "/" + datePicker.getMonth() +"/" +datePicker.getDayOfMonth();
+        String birthday = datePicker.getYear() + "-" + datePicker.getMonth() +"-" +datePicker.getDayOfMonth();
         String telephone = edit_telephone.getText().toString();
         String gender = null;
         if (radioGroup.getCheckedRadioButtonId() != -1) {
