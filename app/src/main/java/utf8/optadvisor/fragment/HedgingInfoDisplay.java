@@ -4,10 +4,20 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +38,12 @@ import utf8.optadvisor.util.AddDialog;
 import utf8.optadvisor.util.AllocationInfoPage;
 import utf8.optadvisor.util.ConfirmDialog;
 import utf8.optadvisor.util.HedgingMenuItem;
+import utf8.optadvisor.util.PortfolioXFormatter;
 
 
 public class HedgingInfoDisplay extends ScrollView {
 
-    private LineChartView lineChart;
+    private LineChart lineChart;
 
     private HedgingMenuItem id ;
     private HedgingMenuItem name;
@@ -49,14 +60,7 @@ public class HedgingInfoDisplay extends ScrollView {
     private HedgingMenuItem maxLoss;
     private HedgingResponse response;
 
-    int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05"),Color.parseColor("#4876FF")};
-    String[] dates;//X轴的标注
-    ArrayList<Float> score1=new ArrayList<>();//图表的数据
-    ArrayList<Float> score2=new ArrayList<>();
-    ArrayList<Float> score3=new ArrayList<>();
-    List<List<Float>> scores=new ArrayList<>();
-    private List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
-    private List<Line> lines = new ArrayList<Line>();
+    private int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05"),Color.parseColor("#4876FF")};
 
     private Button add;
     private HedgingInfoSetting mainActivity;
@@ -68,19 +72,6 @@ public class HedgingInfoDisplay extends ScrollView {
         this.response=hedging;
         TextView title=(TextView)findViewById(R.id.tv_table_title_left);
         title.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyh.ttc"));
-
-        dates=response.getGraph()[0];
-        lineChart = (LineChartView)findViewById(R.id.line_chart);
-        for (String s:response.getGraph()[1])
-            score1.add(Float.parseFloat(s));
-        scores.add(score1);
-        for (String s:response.getGraph()[2])
-            score2.add(Float.parseFloat(s));
-        scores.add(score2);
-        for (String s:response.getGraph()[3])
-            score3.add(Float.parseFloat(s));
-        scores.add(score3);
-
 
         id = findViewById(R.id.hedging_id);
         name =findViewById(R.id.hedging_name);
@@ -105,8 +96,6 @@ public class HedgingInfoDisplay extends ScrollView {
             }
         });
 
-        getAxisXLables();//获取x轴的标注
-        getAxisPoints();//获取坐标点
         initLineChart();//初始化
         initMenu();
     }
@@ -116,79 +105,68 @@ public class HedgingInfoDisplay extends ScrollView {
      */
     private void initLineChart(){
 
-        LineChartData data = new LineChartData();
-        data.setLines(lines);
+        lineChart = findViewById(R.id.line_chart);
+        Description description = new Description();
+        description.setText("组合表现");
+        description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
+        description.setTextSize(18);
+        lineChart.setDescription(description);//设置图表描述信息
+        lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
+        lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
+        lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
+        lineChart.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart.setTouchEnabled(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleXEnabled(true);// 缩放
+        lineChart.setScaleYEnabled(false);
 
-        //坐标轴
-        Axis axisX = new Axis(); //X轴
-        axisX.setHasTiltedLabels(true);  //X轴下面坐标轴字体是斜的显示还是直的，true是斜的显示
-//	    axisX.setTextColor(Color.WHITE);  //设置字体颜色
-        axisX.setTextColor(Color.parseColor("#D6D6D9"));//灰色
+        XAxis xAxis=lineChart.getXAxis();
+        xAxis.setValueFormatter(new PortfolioXFormatter());
+        xAxis.setLabelCount(6,false);
+        xAxis.setGranularity(1f);
+        xAxis.setAxisLineWidth(1f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-//	    axisX.setName("未来几天的天气");  //表格名称
-        axisX.setTextSize(11);//设置字体大小
-        axisX.setMaxLabelChars(7); //最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisValues.length
-        axisX.setValues(mAxisXValues);  //填充X轴的坐标名称
-        data.setAxisXBottom(axisX); //x 轴在底部
-//	    data.setAxisXTop(axisX);  //x 轴在顶部
-        axisX.setHasLines(true); //x 轴分割线
+        YAxis yAxis=lineChart.getAxisRight();
+        yAxis.setEnabled(false);
 
-
-        Axis axisY = new Axis();  //Y轴
-        axisY.setName("");//y轴标注
-        axisY.setTextSize(11);//设置字体大小
-        data.setAxisYLeft(axisY);  //Y轴设置在左边
-        //data.setAxisYRight(axisY);  //y轴设置在右边
-        //设置行为属性，支持缩放、滑动以及平移
-        lineChart.setInteractive(true);
-        lineChart.setZoomType(ZoomType.HORIZONTAL);  //缩放类型，水平
-        lineChart.setMaxZoom((float) 3);//缩放比例
-        lineChart.setLineChartData(data);
-        lineChart.setVisibility(View.VISIBLE);
-        /**注：下面的7，10只是代表一个数字去类比而已
-         * 尼玛搞的老子好辛苦！！！见（http://forum.xda-developers.com/tools/programming/library-hellocharts-charting-library-t2904456/page2）;
-         * 下面几句可以设置X轴数据的显示个数（x轴0-7个数据），当数据点个数小于（29）的时候，缩小到极致hellochart默认的是所有显示。当数据点个数大于（29）的时候，
-         * 若不设置axisX.setMaxLabelChars(int count)这句话,则会自动适配X轴所能显示的尽量合适的数据个数。
-         * 若设置axisX.setMaxLabelChars(int count)这句话,
-         * 33个数据点测试，若 axisX.setMaxLabelChars(10);里面的10大于v.right= 7; 里面的7，则
-         刚开始X轴显示7条数据，然后缩放的时候X轴的个数会保证大于7小于10
-         若小于v.right= 7;中的7,反正我感觉是这两句都好像失效了的样子 - -!
-         * 并且Y轴是根据数据的大小自动设置Y轴上限
-         * 若这儿不设置 v.right= 7; 这句话，则图表刚开始就会尽可能的显示所有数据，交互性太差
-         */
-        Viewport v = new Viewport(lineChart.getMaximumViewport());
-        v.left = 0;
-        v.right= 7;
-        lineChart.setCurrentViewport(v);
+        refreshChartData();
     }
 
-    /**
-     * X 轴的显示
-     */
-    private void getAxisXLables(){
-        for (int i = 0; i < dates.length; i++) {
-            mAxisXValues.add(new AxisValue(i).setLabel(dates[i]));
+    private void refreshChartData() {
+        ArrayList<Entry> data1 = new ArrayList<>();
+        ArrayList<Entry> data2=new ArrayList<>();
+        ArrayList<Entry> data3=new ArrayList<>();
+        for (int i = 0; i < response.getGraph()[0].length; i++) {
+//            String date=response.getGraph()[0][i].replace("-",".");
+            data1.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[1][i])));
+            data2.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[2][i])));
+            data3.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[3][i])));
         }
-    }
-    /**
-     * 图表的每个点的显示
-     */
-    private void getAxisPoints(){
-        for (int i = 0; i < scores.size(); i++) {
-            List<PointValue> mPointValues=new ArrayList<>();
-            for (int j = 0; j < scores.get(i).size(); j++)
-                mPointValues.add(new PointValue(j, scores.get(i).get(j)));
-            Line line = new Line(mPointValues).setColor(colors[i]);  //折线的颜色
-            line.setShape(ValueShape.CIRCLE);//折线图上每个数据点的形状  这里是圆形 （有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.SQUARE）
-            line.setCubic(false);//曲线是否平滑
-            line.setFilled(false);//是否填充曲线的面积
-            line.setHasLabels(true);//曲线的数据坐标是否加上备注
-            line.setHasLines(true);//是否用直线显示。如果为false 则没有曲线只有点显示
-            line.setHasPoints(true);//是否显示圆点 如果为false 则没有原点只有点显示
-            lines.add(line);
-        }
+        LineDataSet set1= new LineDataSet(data1, "持有收益");
+        LineDataSet set2= new LineDataSet(data2,"未持有收益");
+        LineDataSet set3= new LineDataSet(data3,"收益差");
+        setChartDataSet(set1,0);
+        setChartDataSet(set2,1);
+        setChartDataSet(set3,2);
 
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+        dataSets.add(set2);
+        dataSets.add(set3);
+
+        LineData data = new LineData(dataSets);
+
+        lineChart.setData(data);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setValueFormatter(new PortfolioXFormatter());
+
+        lineChart.setVisibleXRangeMaximum(8f);
+
+        lineChart.invalidate();
     }
+
 
     private void initMenu(){
 
@@ -237,5 +215,42 @@ public class HedgingInfoDisplay extends ScrollView {
         maxLoss.setMenuTextRight(response.getIk()+"");
         maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         maxLoss.setIconLeft(R.mipmap.ic_loss);
+    }
+
+    private float handleDate(String str){
+        if(TextUtils.isEmpty(str)) return 0;
+        int index=str.indexOf("-");
+        String year=str.substring(0,index);
+        String month=str.substring(index+1);
+
+        return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
+    }
+
+    /**
+     * 设置dataSet
+     */
+    private void setChartDataSet(LineDataSet lineDataSet,int type){
+        if(type==0){
+            lineDataSet.setColor(colors[0]);
+            lineDataSet.setCircleColor(colors[0]);
+            lineDataSet.setValueTextColor(colors[0]);
+        }else if(type==1){
+            lineDataSet.setColor(colors[1]);
+            lineDataSet.setCircleColor(colors[1]);
+            lineDataSet.setValueTextColor(colors[1]);
+        }
+        else {
+            lineDataSet.setColor(colors[2]);
+            lineDataSet.setCircleColor(colors[2]);
+            lineDataSet.setValueTextColor(colors[2]);
+        }
+        lineDataSet.setLineWidth(1f);//设置线宽
+        lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
+        lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
+        lineDataSet.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
+        lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
+        lineDataSet.setHighLightColor(colors[0]);//设置点击交点后显示交高亮线的颜色
+        lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
+        lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
     }
 }
