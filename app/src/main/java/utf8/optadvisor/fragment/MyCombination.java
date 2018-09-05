@@ -54,6 +54,7 @@ import utf8.optadvisor.domain.entity.Portfolio;
 import utf8.optadvisor.domain.response.MyCombinationResponse;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ActivityJumper;
+import utf8.optadvisor.util.ChartMarkerView;
 import utf8.optadvisor.util.CommaHandler;
 import utf8.optadvisor.util.ExpandableAdapter;
 import utf8.optadvisor.util.NetUtil;
@@ -104,6 +105,13 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         initDialog();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setHasOptionsMenu(true);//必须在此设置菜单显示
     }
 
     /**
@@ -244,7 +252,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Objects.requireNonNull(getActivity()).getMenuInflater().inflate(R.menu.combination_menu, menu);
+        MyCombination.this.getActivity().getMenuInflater().inflate(R.menu.combination_menu, menu);
     }
 
 
@@ -596,6 +604,10 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         YAxis yAxis=lineChart.getAxisRight();
         yAxis.setEnabled(false);
 
+        ChartMarkerView markerView = new ChartMarkerView(MyCombination.this.getContext(), R.layout.marker_view);
+        markerView.setChartView(lineChart);
+        lineChart.setMarker(markerView);//设置交互小图标
+
         refreshChartData();
     }
 
@@ -606,7 +618,10 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         Log.d("我的组合","刷新图表方法被执行");
         final Portfolio toDraw=currentPortfolio;
 
-        if(toDraw!=null) {
+        if(toDraw==null){
+            lineChart.clear();
+        }
+        else  {
             Log.d("我的组合","当前组合的id是"+toDraw.getId());
             NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio/" + toDraw.getId(), this.getContext(), new Callback() {
                 @Override
@@ -766,10 +781,11 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineDataSet.setLineWidth(1f);//设置线宽
         lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
-        lineDataSet.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
-        lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
+        lineDataSet.setHighlightLineWidth(0);//设置点击交点后显示高亮线宽
+        lineDataSet.setHighlightEnabled(true);//是否使用点击高亮线
         lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
-        lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
+        lineDataSet.setDrawValues(false);//不显示值
+        //lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
     }
 
