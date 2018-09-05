@@ -58,7 +58,7 @@
             android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="是否回传"
+            android:text="是否跟踪"
             android:layout_marginLeft="20dp"/>
 
         <Spinner
