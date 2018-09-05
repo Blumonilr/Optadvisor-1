@@ -105,7 +105,7 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private static int getAge(String date) throws ParseException {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateOfBirth = df.parse(date);
         int age = 0;
         Calendar born = Calendar.getInstance();

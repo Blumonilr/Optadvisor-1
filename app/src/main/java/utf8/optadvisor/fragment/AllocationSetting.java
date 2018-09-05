@@ -40,9 +40,6 @@ public class AllocationSetting extends Fragment {
                              Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_allocation, container, false);
-
-        toolbar=(Toolbar)view.findViewById(R.id.allocation_toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ll=(LinearLayout)view.findViewById(R.id.allocation_ll);
         setting=new AllocationSettingPage(getContext(),this);
         ll.addView(setting);
