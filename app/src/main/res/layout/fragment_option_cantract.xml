@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorLightWhite">
             <TextView
-                android:background="#FF4500"
+                android:textColor="#FF4500"
                 android:gravity="center"
                 android:text="看涨合约"
                 android:textSize="18sp"
@@ -35,7 +35,7 @@
                 android:background="@color/darkSlateGray"/>
 
             <TextView
-                android:background="#DAA520"
+                android:textColor="#DAA520"
                 android:gravity="center"
                 android:textSize="18sp"
                 android:text="看跌合约"
