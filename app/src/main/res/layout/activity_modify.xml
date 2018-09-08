@@ -111,18 +111,50 @@
             android:layout_marginLeft="15dp" />
 
 
-        <View
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#BDBDBD"
-            android:layout_marginLeft="15dp" />
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:background="@color/textWhite">
 
-        <utf8.optadvisor.widget.ModifyItem
-            android:id="@+id/user_info_modify_birth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:modify_text="生日"
-            android:background="#ffffff"/>
+            <TextView
+                android:id="@+id/modify_birth_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:ems="6"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textSize="16sp"
+                android:text="生日" />
+
+            <TextView
+                android:id="@+id/modify_birth_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="17dp"
+                android:layout_toEndOf="@id/modify_birth_left"
+                android:ellipsize="end"
+                android:ems="7"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:textSize="16sp">
+
+            </TextView>
+
+            <Button
+                android:id="@+id/modify_birth_bt"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:background="@color/colorAliceBlue"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/modify_birth_right"
+                android:textSize="16sp"
+                android:text="选择日期"/>
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

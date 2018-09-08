@@ -90,7 +90,7 @@ public class AddDialog extends Dialog {
                     values.put("name","\"" + name.getText().toString()+"\"");
                     values.put("type", "\"" + "1"+"\"");
                     values.put("trackingStatus", "\"" + "false"+"\"");
-                    values.put("graph",new Gson().toJson(hedgingResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
+                    values.put("graph",new Gson().toJson(hedgingResponse.getGraph(), new TypeToken<String[][]>() {}.getType()).replaceAll(" ",""));
                     values.put("iK","\""+hedgingResponse.getIk()+"\"");
                     values.put("sExp","\""+hedgingInfoSetting.getsExp()+"\"");
 
