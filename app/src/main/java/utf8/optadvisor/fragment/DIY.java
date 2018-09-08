@@ -250,7 +250,7 @@ public class DIY extends Fragment {
                             progressDialog.setMessage("Loading...");
                             progressDialog.show();
                             progressDialog.setCancelable(true);
-                            final CountDownTimer timer = new CountDownTimer(5000, 1000) {
+                            final CountDownTimer timer = new CountDownTimer(8000, 1000) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
                                 }

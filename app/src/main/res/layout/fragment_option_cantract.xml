@@ -4,7 +4,7 @@
     android:id="@+id/frame_option"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorButton"
+    android:background="@color/colorLightWhite"
     tools:context=".fragment.OptionContract">
 
     <LinearLayout
@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <Spinner
-            android:background="@color/colorLightWhite"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:id="@+id/choose_month">
@@ -23,6 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorLightWhite">
             <TextView
+                android:background="#FF4500"
                 android:gravity="center"
                 android:text="看涨合约"
                 android:textSize="18sp"
@@ -35,6 +35,7 @@
                 android:background="@color/darkSlateGray"/>
 
             <TextView
+                android:background="#DAA520"
                 android:gravity="center"
                 android:textSize="18sp"
                 android:text="看跌合约"
@@ -108,6 +109,10 @@
                         android:gravity="center"/>
                 </LinearLayout>
             </utf8.optadvisor.util.SyncHorizontalScrollView>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/darkSlateGray"/>
 
             <TextView
                 android:textSize="18sp"
@@ -116,6 +121,10 @@
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="行权价"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/darkSlateGray"/>
 
 
             <utf8.optadvisor.util.SyncHorizontalScrollView
@@ -201,6 +210,7 @@
            </android.support.v7.widget.RecyclerView>
        </utf8.optadvisor.util.SyncHorizontalScrollView>
        <android.support.v7.widget.RecyclerView
+           android:background="@color/colorGraySolid"
            android:id="@+id/strike_price_recycler_view"
            android:layout_width="0dp"
            android:layout_weight="1"
