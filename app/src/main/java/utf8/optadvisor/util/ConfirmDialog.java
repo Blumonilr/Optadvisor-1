@@ -37,8 +37,6 @@ import utf8.optadvisor.domain.entity.Option;
 public class ConfirmDialog extends Dialog {
 
     private EditText name;
-    private Spinner type;
-    private Spinner back;
     private Button confirm;
     private Button cancel;
     AllocationResponse allocationResponse;
@@ -67,20 +65,11 @@ public class ConfirmDialog extends Dialog {
         setContentView(view);
 
         name=(EditText)view.findViewById(R.id.dialog_confirm_name);
-        type=(Spinner)view.findViewById(R.id.dialog_confirm_type);
-        back=(Spinner)view.findViewById(R.id.dialog_confirm_back);
         confirm=(Button)view.findViewById(R.id.dialog_confirm_confirm);
         cancel=(Button)view.findViewById(R.id.dialog_confirm_cancel);
 
         initDialog();
 
-        ArrayList<String> arr=new ArrayList<>();
-        arr.add("资产配置");
-        type.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,arr));
-
-        ArrayList<String > array=new ArrayList<>();
-        array.add("否");
-        back.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,array));
 
         final ConfirmDialog dialog=this;
 
@@ -94,12 +83,12 @@ public class ConfirmDialog extends Dialog {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (name.getText().toString() != null && type.getSelectedItem() != null && back.getSelectedItem() != null) {
+                if (name.getText().toString() != null ) {
                     Map<String, String> values = new HashMap<>();
                     values.put("options", new Gson().toJsonTree(allocationResponse.getOptions(), new TypeToken<ArrayList<Option>>() {}.getType()).toString().replaceAll(" ",""));
                     values.put("name","\"" + name.getText().toString()+"\"");
                     values.put("type", "\"" + "0"+"\"");
-                    values.put("trackingStatus", "\"" + (back.getSelectedItem().toString().equals("是") ? "true" : "false")+"\"");
+                    values.put("trackingStatus", "\"" + "false"+"\"");
                     values.put("m0", "\"" + allocationResponse.getM0()+"\"");
                     values.put("k", "\"" + allocationResponse.getK() +"\"");
                     values.put("p1", "\"" + allocationResponse.getP1()+"\"");
