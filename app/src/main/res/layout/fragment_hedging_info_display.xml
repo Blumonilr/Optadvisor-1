@@ -32,8 +32,8 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="套期保值效果展示"
-                    android:textColor="#000000"
-                    android:textSize="35sp"
+                    android:textColor="@color/colorLightWhite"
+                    android:textSize="24sp"
                     android:paddingBottom="10dp"
                     />
 
@@ -247,84 +247,11 @@
                 android:layout_height="wrap_content"
                 android:text="组合表现"
                 android:layout_marginTop="10dp"
-                android:textColor="#000000"
+                android:textColor="@color/colorLightWhite"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:paddingBottom="10dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#ffffff">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:background="#BF0815" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="type1"
-                        android:layout_marginLeft="5dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:background="#088B05" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="type2"
-                        android:layout_marginLeft="5dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:background="#4876FF" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="type3"
-                        android:layout_marginLeft="5dp" />
-
-                </LinearLayout>
-            </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/line_chart"
