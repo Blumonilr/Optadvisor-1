@@ -154,6 +154,7 @@
     <string name="recommend_text">资产配置</string>
     <string name="hedge_text">套期保值</string>
     <string name="diy_text">DIY</string>
+    <string name="welcome">欢迎您！</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

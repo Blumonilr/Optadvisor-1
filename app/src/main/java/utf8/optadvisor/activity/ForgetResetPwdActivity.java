@@ -61,7 +61,7 @@ public class ForgetResetPwdActivity extends AppCompatActivity {
                     Map<String,String> value=new HashMap<String,String>();
                     value.put("oldPassword",oldPassword.getText().toString());
                     value.put("newPassword",pwd1);
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/resetPassword", value, new Callback() {
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/resetPassword", value,ForgetResetPwdActivity.this, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             dialog.setTitle("网络连接错误");
@@ -92,6 +92,8 @@ public class ForgetResetPwdActivity extends AppCompatActivity {
                                     content="未知的错误，请重试";
                             }
                             if(content.length()>0){
+                                dialog.setTitle(title);
+                                dialog.setMessage(content);
                                 dialogShow();
                             }
                         }

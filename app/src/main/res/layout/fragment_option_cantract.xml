@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_height="wrap_content"
-                android:text="行权价"/>
+                android:text="行权价" />
 
 
             <utf8.optadvisor.util.SyncHorizontalScrollView

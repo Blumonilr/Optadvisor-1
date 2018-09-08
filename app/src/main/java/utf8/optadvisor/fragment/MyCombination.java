@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -131,15 +130,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 portfolioNames.clear();
                 currentPortfolioList=new ArrayList<>();
                 ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
-                Log.d("我的组合：","组合列表信息是空的"+(responseMsg.getData()==null));
                 if(responseMsg.getData()!=null) {
-                    Log.d("我的组合：","组合列表信息"+new Gson().toJson(responseMsg.getData()));
                     java.lang.reflect.Type listType = new TypeToken<List<Portfolio>>() {}.getType();
                     Gson gs = new GsonBuilder()
                             .setPrettyPrinting()
                             .disableHtmlEscaping()
                             .create();
-                    Log.d("我的组合：","新组合列表信息"+CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()));
                     List<Portfolio> portfolios= gs.fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), listType);
                     for (Portfolio portfolio : portfolios) {
                         if (buttonChosen[0] == 1) {
@@ -263,15 +259,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.delete_combination:
-                Log.d("我的组合","删除");
                 deleteCombination();
                 break;
             case R.id.reset_combination_name:
-                Log.d("我的组合","重命名");
                 renameCombination();
                 break;
             case R.id.change_combination_track:
-                Log.d("我的组合","更改状态");
                 changeTrackState();
                 break;
                 default:
@@ -379,7 +372,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 public void onResponse(Call call, Response response) throws IOException {
                     ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                     if(responseMsg.getCode()==0) {
-                        Log.d("我的组合：更改追踪" + id, String.valueOf(responseMsg.getCode()));
                         toChange.setTrackingStatus(!currentPortfolio.getTrackingStatus());
                         dialog.setTitle("更改成功");
                         String content = "已为您取消追踪"+toChange.getName();
@@ -473,8 +465,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 Intent intent=new Intent(getContext(), DetailActivity.class);
                 intent.putExtra("fromMyCombination",true);
-                Log.d("我的组合i", String.valueOf(i));
-                Log.d("我的组合i1", String.valueOf(i1));
                 StringBuilder optionDetail=new StringBuilder("");
                 Option option=currentPortfolio.getOptions()[i1];
                 if(option.getType()>0){
@@ -615,14 +605,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
      * 刷新数据
      */
     private void refreshChartData() {
-        Log.d("我的组合","刷新图表方法被执行");
         final Portfolio toDraw=currentPortfolio;
 
         if(toDraw==null){
             lineChart.clear();
         }
         else  {
-            Log.d("我的组合","当前组合的id是"+toDraw.getId());
             NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio/" + toDraw.getId(), this.getContext(), new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -631,22 +619,15 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                    Log.d("我的组合","responseMsg的code"+(responseMsg.getCode()));
-                    Log.d("我的组合","responseMsg的data是空的"+(responseMsg.getData()==null));
-                    Log.d("我的组合",new Gson().toJson(responseMsg.getData()));
                     if (responseMsg.getData() != null) {
                         MyCombinationResponse myCombinationResponse = new Gson().fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), MyCombinationResponse.class);
                         String[][] graph = myCombinationResponse.getGraph();
-                        Log.d("我的组合","graph是空的"+(graph==null));
                         if (graph != null) {
                             if (toDraw.getType() == 0) {//资产配置
-                                Log.d("我的组合","画资产配置");
                                 drawRecommend(graph);
                             } else if (toDraw.getType() == 1) {
-                                Log.d("我的组合","画套保");
                                 drawHedge(graph);
                             } else if (toDraw.getType() == 2) {
-                                Log.d("我的组合","画diy");
                                 drawDiy(graph);
                             }
                         }
