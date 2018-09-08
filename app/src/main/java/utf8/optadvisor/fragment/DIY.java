@@ -408,8 +408,4 @@ public class DIY extends Fragment {
             }
         });
     }
-
-
-
-
 }

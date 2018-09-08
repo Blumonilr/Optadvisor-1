@@ -2,6 +2,7 @@ package utf8.optadvisor.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
@@ -68,6 +69,8 @@ public class HedgingInfoSetting extends Fragment {
     private String pAsset;
     private String sExp;
 
+    private ProgressDialog progressDialog;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
@@ -92,6 +95,8 @@ public class HedgingInfoSetting extends Fragment {
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
 
         initDialog();
+
+        initProgessDialog();
 
         calendar = Calendar.getInstance();
         seekBar = (SeekBar) view.findViewById(R.id.progress);
@@ -152,6 +157,8 @@ public class HedgingInfoSetting extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
+
                 HedgingInfoSetting.this.sExp=et2.getText().toString();
                 if (et1.getText().toString()!=""&&textView.getText().toString()!=""&&et2.getText().toString()!=""&&date.getSelectedItem().toString()!="") {
                     Map<String, String> values = new HashMap<>();
@@ -170,10 +177,12 @@ public class HedgingInfoSetting extends Fragment {
                             dialog.setTitle("网络连接错误");
                             dialog.setMessage("请稍后再试");
                             dialogShow();
+                            progressDialog.dismiss();
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            progressDialog.dismiss();
                             ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                             if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
                                 dialog.setTitle("网络连接错误");
@@ -196,6 +205,16 @@ public class HedgingInfoSetting extends Fragment {
 
         return view;
     }
+
+    /**
+     * 设置进度条
+     */
+    private void initProgessDialog(){
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setTitle("请稍等");
+        progressDialog.setMessage("请求发送中");
+    }
+
 
     private void initDialog(){
         dialog=new AlertDialog.Builder(getActivity());
