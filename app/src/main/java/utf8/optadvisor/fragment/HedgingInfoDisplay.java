@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -64,6 +65,7 @@ public class HedgingInfoDisplay extends ScrollView {
     private int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05"),Color.parseColor("#4876FF")};
 
     private Button add;
+    private Button back;
     private HedgingInfoSetting mainActivity;
 
     public HedgingInfoDisplay(final Context context, final HedgingResponse hedging, final HedgingInfoSetting mainActivity) {
@@ -94,6 +96,14 @@ public class HedgingInfoDisplay extends ScrollView {
             public void onClick(View view) {
                 AddDialog add=new AddDialog(context,hedging,mainActivity);
                 add.show();
+            }
+        });
+
+        back=findViewById(R.id.hedging_info_bt_back);
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.refresh();
             }
         });
 

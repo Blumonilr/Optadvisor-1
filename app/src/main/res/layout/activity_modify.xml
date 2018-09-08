@@ -84,11 +84,11 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.widget.ModifyItem
+        <utf8.optadvisor.widget.UserInfoMenuItem
             android:id="@+id/user_info_modify_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:modify_text="账号"
+            app:info_text="账号"
             android:background="#ffffff"/>
 
         <View
@@ -110,12 +110,6 @@
             android:background="#BDBDBD"
             android:layout_marginLeft="15dp" />
 
-        <utf8.optadvisor.widget.ModifyItem
-            android:id="@+id/user_info_modify_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:modify_text="年龄"
-            android:background="#ffffff"/>
 
         <View
             android:layout_width="match_parent"
@@ -167,40 +161,6 @@
             android:layout_height="1dp"
             android:background="#BDBDBD"/>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#ffffff"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/introduction"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/icon_left"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:ellipsize="end"
-                android:ems="5"
-                android:lines="1"
-                android:text="简介"
-                android:textSize="16sp"/>
-
-            <EditText
-                android:id="@+id/user_info_modify_introduction"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@id/introduction"
-                android:ellipsize="end"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textSize="16sp"
-                android:background="@color/textWhite"
-                android:textColor="#000000" />
-
-        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

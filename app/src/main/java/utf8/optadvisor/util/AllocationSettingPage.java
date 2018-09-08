@@ -1,6 +1,7 @@
 package utf8.optadvisor.util;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
@@ -52,6 +53,7 @@ public class AllocationSettingPage extends LinearLayout {
     AllocationSettingSeekbar price;
     AllocationSettingSeekbar wave;
     private AlertDialog.Builder dialog;
+    private ProgressDialog progressDialog;
 
     private char combination;
     private String date;
@@ -76,6 +78,7 @@ public class AllocationSettingPage extends LinearLayout {
                     System.out.println(info);
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
                     allocationSetting.setView(responseAllocation);
+                    progressDialog.dismiss();
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
@@ -90,6 +93,9 @@ public class AllocationSettingPage extends LinearLayout {
         this.allocationSetting=allocationSetting;
 
         initDialog();
+
+        initProgessDialog();
+
         price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
         wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
 
@@ -320,6 +326,9 @@ public class AllocationSettingPage extends LinearLayout {
                 i++;
             }
         }
+        if (isInFive()){
+            array.remove(0);
+        }
         SpinnerAdapter adapter=new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,array);
         time.setAdapter(adapter);
 
@@ -328,6 +337,7 @@ public class AllocationSettingPage extends LinearLayout {
 
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 Map<String,String> values=new HashMap<>();
                 values.put("m0",getM0());
                 values.put("k",getK());
@@ -344,7 +354,7 @@ public class AllocationSettingPage extends LinearLayout {
                         dialog.setTitle("网络连接错误");
                         dialog.setMessage("请稍后再试");
                         dialogShow();
-
+                        progressDialog.dismiss();
                     }
 
                     @Override
@@ -358,6 +368,19 @@ public class AllocationSettingPage extends LinearLayout {
 
         });
 
+    }
+
+    private boolean isInFive() {
+        Calendar now=Calendar.getInstance();
+        int year=now.get(Calendar.YEAR);
+        int month=now.get(Calendar.MONTH)+1;
+        int day=now.get(Calendar.DAY_OF_MONTH);
+        int weekDay=0;
+        Calendar week=Calendar.getInstance();
+        week.set(year,month-1,1);
+        weekDay=week.get(Calendar.DAY_OF_WEEK);
+        int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
+        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
     }
 
     public char getCombination() {
@@ -516,5 +539,14 @@ public class AllocationSettingPage extends LinearLayout {
                 dialog.show();
             }
         });
+    }
+
+    /**
+     * 设置进度条
+     */
+    private void initProgessDialog(){
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setTitle("请稍等");
+        progressDialog.setMessage("请求发送中");
     }
 }
