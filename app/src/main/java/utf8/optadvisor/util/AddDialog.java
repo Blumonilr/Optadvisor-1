@@ -38,8 +38,6 @@ import utf8.optadvisor.fragment.HedgingInfoSetting;
 public class AddDialog extends Dialog {
 
     private EditText name;
-    private Spinner type;
-    private Spinner back;
     private Button confirm;
     private Button cancel;
     HedgingResponse hedgingResponse;
@@ -67,20 +65,11 @@ public class AddDialog extends Dialog {
         setContentView(view);
 
         name=(EditText)view.findViewById(R.id.dialog_confirm_name);
-        type=(Spinner)view.findViewById(R.id.dialog_confirm_type);
-        back=(Spinner)view.findViewById(R.id.dialog_confirm_back);
         confirm=(Button)view.findViewById(R.id.dialog_confirm_confirm);
         cancel=(Button)view.findViewById(R.id.dialog_confirm_cancel);
 
         initDialog();
 
-        ArrayList<String> arr=new ArrayList<>();
-        arr.add("套期保值");
-        type.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,arr));
-
-        ArrayList<String > array=new ArrayList<>();
-        array.add("否"); array.add("是");
-        back.setAdapter(new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_dropdown_item_1line,array));
 
         final AddDialog dialog=this;
 
@@ -94,13 +83,13 @@ public class AddDialog extends Dialog {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (name.getText().toString() != null && type.getSelectedItem() != null && back.getSelectedItem() != null) {
+                if (name.getText().toString() != null) {
                     Map<String, String> values = new HashMap<>();
                     List<Option> list=new ArrayList<>(); list.add(hedgingResponse.getOption());
                     values.put("options", new Gson().toJsonTree(list, new TypeToken<ArrayList<Option>>() {}.getType()).toString().replaceAll(" ",""));
                     values.put("name","\"" + name.getText().toString()+"\"");
                     values.put("type", "\"" + "1"+"\"");
-                    values.put("trackingStatus", "\"" + (back.getSelectedItem().toString().equals("是") ? "true" : "false")+"\"");
+                    values.put("trackingStatus", "\"" + "false"+"\"");
                     values.put("graph",new Gson().toJson(hedgingResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
                     values.put("iK","\""+hedgingResponse.getIk()+"\"");
                     values.put("sExp","\""+hedgingInfoSetting.getsExp()+"\"");
@@ -115,12 +104,16 @@ public class AddDialog extends Dialog {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            sdialog.setMessage("添加成功");
+                            dialogShow();
                             dialog.dismiss();
                         }
                     });
                 }
                 else{
-                    Toast.makeText(hedgingInfoSetting.getContext(), "请填写完整信息", Toast.LENGTH_SHORT);
+                    sdialog.setTitle("信息填写不完整");
+                    sdialog.setMessage("请填写完整信息");
+                    dialogShow();
                 }
             }
         });

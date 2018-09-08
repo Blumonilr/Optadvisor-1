@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.HedgingResponse;
 import utf8.optadvisor.domain.response.ResponseMsg;
@@ -46,6 +48,8 @@ import utf8.optadvisor.util.AllocationSettingPage;
 import utf8.optadvisor.util.NetUtil;
 
 public class HedgingInfoSetting extends Fragment {
+
+    private boolean isNull=true;
 
     private SeekBar seekBar;
     private EditText textView;
@@ -71,6 +75,10 @@ public class HedgingInfoSetting extends Fragment {
 
     private ProgressDialog progressDialog;
 
+    private LayoutInflater inflater;
+    private ViewGroup viewGroup;
+    private Bundle savedInstanceState;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
@@ -79,6 +87,7 @@ public class HedgingInfoSetting extends Fragment {
                     String info = (String) msg.obj;
                     HedgingResponse responseOption=new Gson().fromJson(info,HedgingResponse.class);
                     ll.removeAllViews();
+                    isNull=false;
                     ll.addView(new HedgingInfoDisplay(getContext(),responseOption,HedgingInfoSetting.this));
                     break;
                 case INFO_FAILURE:
@@ -93,6 +102,10 @@ public class HedgingInfoSetting extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
+        this.inflater=inflater;
+        this.viewGroup=container;
+        this.savedInstanceState=savedInstanceState;
+
 
         initDialog();
 
@@ -206,6 +219,7 @@ public class HedgingInfoSetting extends Fragment {
         return view;
     }
 
+
     /**
      * 设置进度条
      */
@@ -251,5 +265,16 @@ public class HedgingInfoSetting extends Fragment {
 
     public Handler getmHandler() {
         return mHandler;
+    }
+
+    public void refresh() {
+        if (!isNull) {
+            ll.removeAllViews();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            HedgingInfoSetting hedgingInfoSetting = new HedgingInfoSetting();
+            transaction.add(R.id.build_portfolio_ll, hedgingInfoSetting);
+            transaction.show(hedgingInfoSetting);
+            transaction.commit();
+        }
     }
 }

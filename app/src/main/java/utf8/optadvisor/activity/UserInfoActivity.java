@@ -77,14 +77,13 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 dialog.setTitle("网络连接错误");
-                dialog.setMessage("登出时发生错误，请重试");
+                dialog.setMessage("登陆时发生错误，请重试");
                 dialogShow();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                System.out.println(responseMsg.getData().toString());
                 User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
                 name.setInfoTextRight(user.getName());
                 account.setInfoTextRight(user.getUsername());

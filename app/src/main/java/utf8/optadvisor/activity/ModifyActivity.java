@@ -1,8 +1,11 @@
 package utf8.optadvisor.activity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,14 +33,48 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.entity.User;
 import utf8.optadvisor.domain.response.ResponseMsg;
+import utf8.optadvisor.util.AllocationSettingPage;
 import utf8.optadvisor.widget.ModifyItem;
 import utf8.optadvisor.util.NetUtil;
+import utf8.optadvisor.widget.UserInfoMenuItem;
 
 public class ModifyActivity extends AppCompatActivity {
 
+    private ModifyItem name ;
+    private UserInfoMenuItem account;
+    private ModifyItem gender;
+    private ModifyItem birth;
+    private ModifyItem phone;
+    private ModifyItem email;
+
     private AlertDialog.Builder dialog;
+
+    private static final int INFO_SUCCESS = 0;
+    private static final int INFO_FAILURE = 1;
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        public void handleMessage (Message msg) {//此方法在ui线程运行
+            switch (msg.what) {
+                case INFO_SUCCESS:
+                    String info = (String) msg.obj;
+                    System.out.println(info);
+                    User user = new Gson().fromJson(info,User.class);
+                    name.setInfoTextRight(user.getName());
+                    account.setInfoTextRight(user.getUsername());
+                    gender.setInfoTextRight(user.getGender());
+                    birth.setInfoTextRight(user.getBirthday());
+                    phone.setInfoTextRight(user.getTelephone());
+                    email.setInfoTextRight(user.getEmail());
+                    break;
+                case INFO_FAILURE:
+                    System.out.println("1fail");
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,40 +102,26 @@ public class ModifyActivity extends AppCompatActivity {
     }
 
     private void intiMenuItem() {
-        final ModifyItem name =  (ModifyItem)findViewById(R.id.user_info_modify_name);
-        final ModifyItem account = (ModifyItem) findViewById(R.id.user_info_modify_account);
-        final ModifyItem gender = (ModifyItem) findViewById(R.id.user_info_modify_gender);
-        final ModifyItem age = (ModifyItem) findViewById(R.id.user_info_modify_age);
-        final ModifyItem birth = (ModifyItem) findViewById(R.id.user_info_modify_birth);
-        final ModifyItem phone = (ModifyItem) findViewById(R.id.user_info_modify_phone);
-        final ModifyItem email = (ModifyItem) findViewById(R.id.user_info_modify_email);
-        final TextView intro = (TextView) findViewById(R.id.introduction);
-        final EditText introduction = (EditText) findViewById(R.id.user_info_modify_introduction);
+        name =  (ModifyItem)findViewById(R.id.user_info_modify_name);
+        account = (UserInfoMenuItem) findViewById(R.id.user_info_modify_account);
+        gender = (ModifyItem) findViewById(R.id.user_info_modify_gender);
+        birth = (ModifyItem) findViewById(R.id.user_info_modify_birth);
+        phone = (ModifyItem) findViewById(R.id.user_info_modify_phone);
+        email = (ModifyItem) findViewById(R.id.user_info_modify_email);
 
 
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo",ModifyActivity.this, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(ModifyActivity.this, "网络连接错误，请重试", Toast.LENGTH_SHORT);
+                dialog.setTitle("修改失败");
+                dialog.setMessage("请检查网络连接");
+                dialogShow();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
-                name.setInfoTextRight(user.getName());
-                account.setInfoTextRight(user.getUsername());
-                gender.setInfoTextRight(user.getGender());
-                try {
-                    age.setInfoTextRight("" + getAge(user.getBirthday()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                birth.setInfoTextRight(user.getBirthday());
-                phone.setInfoTextRight(user.getTelephone());
-                email.setInfoTextRight(user.getEmail());
-                intro.setTextColor(Color.GRAY);
-                introduction.setText("introduction");
+                mHandler.obtainMessage(INFO_SUCCESS,responseMsg.getData().toString()).sendToTarget();
             }
         });
 
@@ -135,7 +158,7 @@ public class ModifyActivity extends AppCompatActivity {
         password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ModifyActivity.this,ResetPasswordActivity.class);
+                Intent intent=new Intent(ModifyActivity.this,ForgetResetPwdActivity.class);
                 startActivity(intent);
             }
         });
