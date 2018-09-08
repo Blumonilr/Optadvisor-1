@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +70,7 @@ public class DIY extends Fragment {
     private final int GET_EXPIRETIME=4;
     private final int SEND_DATA=5;
     private Button bt1;
+    private MyCombination myCombination;
     private ProgressBar progressBar;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder dialog;
@@ -126,7 +128,6 @@ public class DIY extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-
                         }
                     });
 
