@@ -104,12 +104,16 @@ public class AddDialog extends Dialog {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            sdialog.setMessage("添加成功");
+                            dialogShow();
                             dialog.dismiss();
                         }
                     });
                 }
                 else{
-                    Toast.makeText(hedgingInfoSetting.getContext(), "请填写完整信息", Toast.LENGTH_SHORT);
+                    sdialog.setTitle("信息填写不完整");
+                    sdialog.setMessage("请填写完整信息");
+                    dialogShow();
                 }
             }
         });

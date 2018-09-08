@@ -2,11 +2,13 @@ package utf8.optadvisor.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.HedgingResponse;
 import utf8.optadvisor.domain.response.ResponseMsg;
@@ -45,6 +48,8 @@ import utf8.optadvisor.util.AllocationSettingPage;
 import utf8.optadvisor.util.NetUtil;
 
 public class HedgingInfoSetting extends Fragment {
+
+    private boolean isNull=true;
 
     private SeekBar seekBar;
     private EditText textView;
@@ -68,6 +73,12 @@ public class HedgingInfoSetting extends Fragment {
     private String pAsset;
     private String sExp;
 
+    private ProgressDialog progressDialog;
+
+    private LayoutInflater inflater;
+    private ViewGroup viewGroup;
+    private Bundle savedInstanceState;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
@@ -76,6 +87,7 @@ public class HedgingInfoSetting extends Fragment {
                     String info = (String) msg.obj;
                     HedgingResponse responseOption=new Gson().fromJson(info,HedgingResponse.class);
                     ll.removeAllViews();
+                    isNull=false;
                     ll.addView(new HedgingInfoDisplay(getContext(),responseOption,HedgingInfoSetting.this));
                     break;
                 case INFO_FAILURE:
@@ -90,8 +102,14 @@ public class HedgingInfoSetting extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
+        this.inflater=inflater;
+        this.viewGroup=container;
+        this.savedInstanceState=savedInstanceState;
+
 
         initDialog();
+
+        initProgessDialog();
 
         calendar = Calendar.getInstance();
         seekBar = (SeekBar) view.findViewById(R.id.progress);
@@ -152,6 +170,8 @@ public class HedgingInfoSetting extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
+
                 HedgingInfoSetting.this.sExp=et2.getText().toString();
                 if (et1.getText().toString()!=""&&textView.getText().toString()!=""&&et2.getText().toString()!=""&&date.getSelectedItem().toString()!="") {
                     Map<String, String> values = new HashMap<>();
@@ -170,10 +190,12 @@ public class HedgingInfoSetting extends Fragment {
                             dialog.setTitle("网络连接错误");
                             dialog.setMessage("请稍后再试");
                             dialogShow();
+                            progressDialog.dismiss();
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            progressDialog.dismiss();
                             ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                             if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
                                 dialog.setTitle("网络连接错误");
@@ -196,6 +218,17 @@ public class HedgingInfoSetting extends Fragment {
 
         return view;
     }
+
+
+    /**
+     * 设置进度条
+     */
+    private void initProgessDialog(){
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setTitle("请稍等");
+        progressDialog.setMessage("请求发送中");
+    }
+
 
     private void initDialog(){
         dialog=new AlertDialog.Builder(getActivity());
@@ -232,5 +265,16 @@ public class HedgingInfoSetting extends Fragment {
 
     public Handler getmHandler() {
         return mHandler;
+    }
+
+    public void refresh() {
+        if (!isNull) {
+            ll.removeAllViews();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            HedgingInfoSetting hedgingInfoSetting = new HedgingInfoSetting();
+            transaction.add(R.id.build_portfolio_ll, hedgingInfoSetting);
+            transaction.show(hedgingInfoSetting);
+            transaction.commit();
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -69,6 +70,7 @@ public class DIY extends Fragment {
     private final int SEND_DATA=5;
     private Button bt1;
     private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private AlertDialog.Builder dialog;
     private Button bt2;
     private Handler mHandler = new Handler() {
@@ -124,21 +126,7 @@ public class DIY extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            final ProgressDialog progressDialog=new ProgressDialog(getContext());
-                            progressDialog.setTitle("请稍等");
-                            progressDialog.setMessage("Loading...");
-                            progressDialog.show();
-                            final CountDownTimer timer = new CountDownTimer(2000, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                }
 
-                                @Override
-                                public void onFinish() {
-                                    progressDialog.dismiss();
-                                }
-                            };
-                            timer.start();
                         }
                     });
 
@@ -254,8 +242,25 @@ public class DIY extends Fragment {
                             Response response=client.newCall(request).execute();
                             String s=response.body().string();
                             s=s.substring(s.indexOf("expireDay")+12,s.indexOf("expireDay")+22);
+                            Looper.prepare();
+                            progressDialog=new ProgressDialog(getContext());
+                            progressDialog.setTitle("请稍等");
+                            progressDialog.setMessage("Loading...");
+                            progressDialog.show();
+                            progressDialog.setCancelable(true);
+                            final CountDownTimer timer = new CountDownTimer(5000, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    progressDialog.dismiss();
+                                }
+                            };
+                            timer.start();
+                            Looper.loop();
                             mHandler.obtainMessage(GET_EXPIRETIME,s).sendToTarget();
-                            System.out.println("run");
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -403,8 +408,4 @@ public class DIY extends Fragment {
             }
         });
     }
-
-
-
-
 }

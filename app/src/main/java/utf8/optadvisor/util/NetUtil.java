@@ -24,9 +24,9 @@ public enum NetUtil {
     public final static String SERVER_BASE_ADDRESS="http://192.168.1.104:8088";
     public static SharedPreferences sharedPreference;
 
-    public final static int CONNECT_TIMEOUT =10000;
-    public final static int READ_TIMEOUT=10000;
-    public final static int WRITE_TIMEOUT=10000;
+    public final static int CONNECT_TIMEOUT =60;
+    public final static int READ_TIMEOUT=60;
+    public final static int WRITE_TIMEOUT=60;
     /**
      * GET请求
      */
