@@ -243,6 +243,7 @@ public class DIY extends Fragment {
                             Response response=client.newCall(request).execute();
                             String s=response.body().string();
                             s=s.substring(s.indexOf("expireDay")+12,s.indexOf("expireDay")+22);
+                            mHandler.obtainMessage(GET_EXPIRETIME,s).sendToTarget();
                             Looper.prepare();
                             progressDialog=new ProgressDialog(getContext());
                             progressDialog.setTitle("请稍等");
@@ -261,7 +262,6 @@ public class DIY extends Fragment {
                             };
                             timer.start();
                             Looper.loop();
-                            mHandler.obtainMessage(GET_EXPIRETIME,s).sendToTarget();
                         }catch (Exception e){
                             e.printStackTrace();
                         }
