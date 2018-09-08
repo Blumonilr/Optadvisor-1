@@ -121,6 +121,12 @@ public class DIY extends Fragment {
                     NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio",value, getContext(), new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                }
+                            });
                             dialog.setTitle("网络连接错误");
                             dialog.setMessage("请稍后再试");
                             dialogShow();
@@ -128,6 +134,12 @@ public class DIY extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                }
+                            });
                         }
                     });
 
@@ -250,17 +262,6 @@ public class DIY extends Fragment {
                             progressDialog.setMessage("Loading...");
                             progressDialog.show();
                             progressDialog.setCancelable(true);
-                            final CountDownTimer timer = new CountDownTimer(8000, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    progressDialog.dismiss();
-                                }
-                            };
-                            timer.start();
                             Looper.loop();
                         }catch (Exception e){
                             e.printStackTrace();
@@ -295,6 +296,12 @@ public class DIY extends Fragment {
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                });
                 dialog.setTitle("网络连接错误");
                 dialog.setMessage("请稍后再试");
                 dialogShow();
@@ -304,6 +311,12 @@ public class DIY extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                String value=response.body().string();
                if(value.contains("1008")){
+                   getActivity().runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           progressDialog.dismiss();
+                       }
+                   });
                    dialog.setTitle("网络连接错误");
                    dialog.setMessage("请重试");
                    dialogShow();
