@@ -36,6 +36,7 @@ import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.HedgingResponse;
 import utf8.optadvisor.util.AddDialog;
 import utf8.optadvisor.util.AllocationInfoPage;
+import utf8.optadvisor.util.ChartMarkerView;
 import utf8.optadvisor.util.ConfirmDialog;
 import utf8.optadvisor.util.HedgingMenuItem;
 import utf8.optadvisor.util.PortfolioXFormatter;
@@ -164,6 +165,10 @@ public class HedgingInfoDisplay extends ScrollView {
 
         lineChart.setVisibleXRangeMaximum(8f);
 
+        ChartMarkerView markerView = new ChartMarkerView(HedgingInfoDisplay.this.getContext(), R.layout.marker_view);
+        markerView.setChartView(lineChart);
+        lineChart.setMarker(markerView);//设置交互小图标
+
         lineChart.invalidate();
     }
 
@@ -247,10 +252,11 @@ public class HedgingInfoDisplay extends ScrollView {
         lineDataSet.setLineWidth(1f);//设置线宽
         lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
-        lineDataSet.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
+        lineDataSet.setHighlightLineWidth(0);//设置点击交点后显示高亮线宽
         lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
         lineDataSet.setHighLightColor(colors[0]);//设置点击交点后显示交高亮线的颜色
-        lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
+        lineDataSet.setDrawValues(false);
+        //lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
     }
 }

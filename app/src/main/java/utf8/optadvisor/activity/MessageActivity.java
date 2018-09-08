@@ -160,7 +160,7 @@ public class MessageActivity extends AppCompatActivity {
      * 设置标题栏
      */
     private void initToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
