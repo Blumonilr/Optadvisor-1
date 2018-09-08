@@ -173,44 +173,6 @@
             android:layout_height="1dp"
             android:background="#BDBDBD"/>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#ffffff"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/introduction"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/icon_left"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:ellipsize="end"
-                android:ems="5"
-                android:lines="1"
-                android:text="简介"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/user_info_introduction"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@id/introduction"
-                android:ellipsize="end"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textSize="16sp"
-                android:textColor="#000000" />
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#BDBDBD" />
     </LinearLayout>
 
 </LinearLayout>
