@@ -97,6 +97,14 @@ public class UserInfoActivity extends AppCompatActivity {
                                       account.setInfoTextRight(user.getUsername());
                                       gender.setInfoTextRight(user.getGender());
                                       try {
+                                          if (getAge(user.getBirthday())==-1){
+                                              dialog.setTitle("年龄错误");
+                                              dialog.setMessage("生日不能超过当前日期");
+                                              dialogShow();
+                                              Intent intent=new Intent(UserInfoActivity.this,ModifyActivity.class);
+                                              startActivity(intent);
+                                          }
+                                          else
                                           age.setInfoTextRight("" + getAge(user.getBirthday()));
                                       } catch (ParseException e) {
                                           e.printStackTrace();
@@ -121,7 +129,7 @@ public class UserInfoActivity extends AppCompatActivity {
             now.setTime(new Date());
             born.setTime(dateOfBirth);
             if (born.after(now)) {
-                throw new IllegalArgumentException("年龄不能超过当前日期");
+                return -1;
             }
             age = now.get(Calendar.YEAR) - born.get(Calendar.YEAR);
             int nowDayOfYear = now.get(Calendar.DAY_OF_YEAR);
