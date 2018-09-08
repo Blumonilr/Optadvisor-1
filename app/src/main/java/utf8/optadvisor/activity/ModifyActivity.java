@@ -125,18 +125,19 @@ public class ModifyActivity extends AppCompatActivity {
             }
         });
 
-        final Map<String,String> values=new HashMap<>();
-        values.put("username",account.getInfoTextRight().toString());
-        values.put("name",name.getInfoTextRight().toString());
-        values.put("birthday",birth.getInfoTextRight().toString());
-        values.put("telephone",phone.getInfoTextRight().toString());
-        values.put("email",email.getInfoTextRight().toString());
-        values.put("gender",gender.getInfoTextRight().toString());
+
 
         Button modify = (Button) findViewById(R.id.user_modify_bt_confirm);
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String,String> values=new HashMap<>();
+                values.put("username",account.getInfoTextRight().toString());
+                values.put("name",name.getInfoTextRight().toString());
+                values.put("birthday",birth.getInfoTextRight().toString());
+                values.put("telephone",phone.getInfoTextRight().toString());
+                values.put("email",email.getInfoTextRight().toString());
+                values.put("gender",gender.getInfoTextRight().toString());
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values,ModifyActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
