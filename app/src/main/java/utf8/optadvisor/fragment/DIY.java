@@ -316,8 +316,10 @@ public class DIY extends Fragment {
         }
         List<CustomOption> option_list=new ArrayList<>();
         for(int key:amount_map.keySet()){
-            String code=list.get(0)[key];
-            option_list.add(new CustomOption(et,amount_map.get(key),cp,code));
+            if(amount_map.get(key)!=0) {
+                String code = list.get(0)[key];
+                option_list.add(new CustomOption(et, amount_map.get(key), cp, code));
+            }
         }
         if(call_or_put==true){
            for(int j=0;j<temp1.size();j++){
