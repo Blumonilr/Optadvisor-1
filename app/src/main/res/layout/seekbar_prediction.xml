@@ -19,7 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
-        <SeekBar
+
+        <TextView
+            android:id="@+id/allocation_sk_min"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingLeft="12dp"
+            android:text="2.457"
+            android:textSize="18sp" />
+
+        <utf8.optadvisor.widget.DoubleSeekbar
             android:id="@+id/allocation_sk_progress"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -43,12 +53,4 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/allocation_sk_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="价格范围"
-        android:textSize="18sp"
-        android:gravity="center"/>
 </LinearLayout>

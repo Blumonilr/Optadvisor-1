@@ -223,6 +223,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                             Headers headers = response.headers();
                             Log.d("info_headers", "header " + headers);
                             List<String> cookies = headers.values("Set-Cookie");
+                            if(cookies.isEmpty()){
+                                dialog.setTitle("网络错误");
+                                dialog.setMessage("请重试");
+                                dialogShow();
+                                return;
+                            }
                             String session = cookies.get(0);
                             Log.d("info_cookies", "onResponse-size: " + cookies);
                             cookie = session.substring(0, session.indexOf(";"));

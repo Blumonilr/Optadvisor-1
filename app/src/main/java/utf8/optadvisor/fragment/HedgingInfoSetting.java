@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -173,7 +174,7 @@ public class HedgingInfoSetting extends Fragment {
                 progressDialog.show();
 
                 HedgingInfoSetting.this.sExp=et2.getText().toString();
-                if (et1.getText().toString()!=""&&textView.getText().toString()!=""&&et2.getText().toString()!=""&&date.getSelectedItem().toString()!="") {
+                if (!TextUtils.isEmpty(et1.getText())&&!TextUtils.isEmpty(textView.getText())&&!TextUtils.isEmpty(et2.getText())) {
                     Map<String, String> values = new HashMap<>();
                     values.put("n0", et1.getText().toString());
 

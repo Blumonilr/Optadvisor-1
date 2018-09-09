@@ -1,6 +1,7 @@
 package utf8.optadvisor.activity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +48,9 @@ public class ModifyActivity extends AppCompatActivity {
     private ModifyItem name ;
     private UserInfoMenuItem account;
     private ModifyItem gender;
-    private ModifyItem birth;
+    private TextView birthText;
+    private TextView birth;
+    private Button birthSelect;
     private ModifyItem phone;
     private ModifyItem email;
 
@@ -65,7 +69,7 @@ public class ModifyActivity extends AppCompatActivity {
                     name.setInfoTextRight(user.getName());
                     account.setInfoTextRight(user.getUsername());
                     gender.setInfoTextRight(user.getGender());
-                    birth.setInfoTextRight(user.getBirthday());
+                    birth.setText(user.getBirthday());
                     phone.setInfoTextRight(user.getTelephone());
                     email.setInfoTextRight(user.getEmail());
                     break;
@@ -105,7 +109,9 @@ public class ModifyActivity extends AppCompatActivity {
         name =  (ModifyItem)findViewById(R.id.user_info_modify_name);
         account = (UserInfoMenuItem) findViewById(R.id.user_info_modify_account);
         gender = (ModifyItem) findViewById(R.id.user_info_modify_gender);
-        birth = (ModifyItem) findViewById(R.id.user_info_modify_birth);
+        birthText=(TextView)findViewById(R.id.modify_birth_left);
+        birth = (TextView) findViewById(R.id.modify_birth_right);
+        birth.setTextColor(Color.BLACK);
         phone = (ModifyItem) findViewById(R.id.user_info_modify_phone);
         email = (ModifyItem) findViewById(R.id.user_info_modify_email);
 
@@ -125,18 +131,19 @@ public class ModifyActivity extends AppCompatActivity {
             }
         });
 
-        final Map<String,String> values=new HashMap<>();
-        values.put("username",account.getInfoTextRight().toString());
-        values.put("name",name.getInfoTextRight().toString());
-        values.put("birthday",birth.getInfoTextRight().toString());
-        values.put("telephone",phone.getInfoTextRight().toString());
-        values.put("email",email.getInfoTextRight().toString());
-        values.put("gender",gender.getInfoTextRight().toString());
+
 
         Button modify = (Button) findViewById(R.id.user_modify_bt_confirm);
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String,String> values=new HashMap<>();
+                values.put("username",account.getInfoTextRight().toString());
+                values.put("name",name.getInfoTextRight().toString());
+                values.put("birthday",birth.getText().toString());
+                values.put("telephone",phone.getInfoTextRight().toString());
+                values.put("email",email.getInfoTextRight().toString());
+                values.put("gender",gender.getInfoTextRight().toString());
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/modifyInfo", values,ModifyActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -162,6 +169,22 @@ public class ModifyActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        birthSelect=(Button)findViewById(R.id.modify_birth_bt);
+        birthSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // TODO Auto-generated method stub
+                        birth.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+                    }
+                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });
     }
 
     private static int getAge(String date) throws ParseException {
@@ -174,7 +197,7 @@ public class ModifyActivity extends AppCompatActivity {
             now.setTime(new Date());
             born.setTime(dateOfBirth);
             if (born.after(now)) {
-                throw new IllegalArgumentException("年龄不能超过当前日期");
+                return -1;
             }
             age = now.get(Calendar.YEAR) - born.get(Calendar.YEAR);
             int nowDayOfYear = now.get(Calendar.DAY_OF_YEAR);

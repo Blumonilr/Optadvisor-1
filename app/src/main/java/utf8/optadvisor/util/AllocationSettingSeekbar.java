@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,6 +25,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.fragment.AllocationSetting;
+import utf8.optadvisor.widget.DoubleSeekbar;
 
 public class AllocationSettingSeekbar extends LinearLayout {
 
@@ -32,9 +35,9 @@ public class AllocationSettingSeekbar extends LinearLayout {
     private static final int SIGMA_FAILURE = 3;//获取50etf失败的标识
 
     TextView title;
+    TextView min;
     TextView max;
-    TextView field;
-    SeekBar seekBar;
+    DoubleSeekbar seekBar;
     boolean isPrice;
     boolean isUp;
     DecimalFormat df1=new DecimalFormat("#0.000");
@@ -54,6 +57,14 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
                     set50ETF(Double.parseDouble(info.substring(info.indexOf(",") + 1, info.indexOf(",") + 6)));
+                    if (isPrice&&isUp){
+                        min.setText(ETF+"");
+                        max.setText("4.000");
+                    }
+                    else if (isPrice&&!isUp){
+                        min.setText("0.000");
+                        max.setText(ETF+"");
+                    }
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
@@ -69,6 +80,14 @@ public class AllocationSettingSeekbar extends LinearLayout {
                             break;
                     }
                     set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
+                    if (!isPrice&&isUp){
+                        min.setText(sigma+"");
+                        max.setText(50.00+"");
+                    }
+                    else if (!isPrice&&!isUp){
+                        min.setText("0.00");
+                        max.setText(sigma+"");
+                    }
                     break;
                 case SIGMA_FAILURE:
                     System.out.println("2fail");
@@ -88,59 +107,45 @@ public class AllocationSettingSeekbar extends LinearLayout {
         get50Sigma();
 
         title=(TextView)findViewById(R.id.allocation_sk_title);
+        min=(TextView)findViewById(R.id.allocation_sk_min);
         max=(TextView)findViewById(R.id.allocation_sk_max);
-        field=(TextView)findViewById(R.id.allocation_sk_field);
-        seekBar=(SeekBar)findViewById(R.id.allocation_sk_progress);
+        seekBar=(DoubleSeekbar)findViewById(R.id.allocation_sk_progress);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        seekBar.setOnSeekBarChangeListener(new DoubleSeekbar.OnSeekBarChangeListener(){
 
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                if (isPrice&&!isUp) {
-                    max.setText(df1.format(ETF * (progress / 100.0)) + "");
-
-                }
-                if (isPrice&&isUp) {
-                    max.setText((df1.format(ETF + (4.0 - ETF) * (progress / 100.0))) + "");
-
-                }
-                if (!isPrice&&!isUp) {
-                    max.setText(df2.format(sigma * (progress / 100.0)) + "");
-
-                }
-                if (!isPrice&&isUp) {
-                    max.setText((df2.format(sigma + (50.0 - sigma) * (progress / 100.0))) + "");
-
-                }
-            }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onProgressBefore() {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            public void onProgressChanged(DoubleSeekbar seekBar, int progressLow, int progressHigh) {
+                if (isPrice&&isUp){
+                    min.setText(df1.format(ETF+(4.0-ETF)*(progressLow/100.0)));
+                    max.setText(df1.format(ETF+(4.0-ETF)*(progressHigh/100.0)));
+                }
+                else if (isPrice&&!isUp){
+                    min.setText(df1.format(ETF*(progressLow/100.0)));
+                    max.setText(df1.format(ETF*(progressHigh/100.0)));
+                }
+                else if (!isPrice&&isUp){
+                    min.setText(df2.format(sigma + (50.0 - sigma) * (progressLow / 100.0)));
+                    max.setText(df2.format(sigma + (50.0 - sigma) * (progressHigh / 100.0)));
+                }
+                else if (!isPrice&&!isUp){
+                    min.setText(df2.format(sigma * (progressLow / 100.0)));
+                    max.setText(df2.format(sigma * (progressHigh / 100.0)));
+                }
+            }
+
+            @Override
+            public void onProgressAfter() {
 
             }
         });
 
         initDialog();
-    }
-
-    public void setContent(boolean isPrice,boolean isUp){
-        System.out.println(isPrice);
-        title.setText(isPrice?"预测价格范围":"预测波动率范围");
-        max.setText(isPrice?(isUp?ETF+"":"0.000"):isUp?sigma+"":"0.00");
-        if (isPrice&&!isUp)
-            field.setText("价格范围 "+df1.format(0)+"~"+df1.format(ETF));
-        if (isPrice&&isUp)
-            field.setText("价格范围 "+df1.format(ETF)+"~"+df1.format(4.0));
-        if (!isPrice&&!isUp)
-            field.setText("波动率范围 "+df2.format(0)+"~"+df2.format(sigma));
-        if (!isPrice&&isUp)
-            field.setText("波动率范围 "+df2.format(sigma)+"~"+df2.format(50.0));
     }
 
 
@@ -209,5 +214,13 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 dialog.show();
             }
         });
+    }
+
+    public double getMin(){
+        return Double.parseDouble(min.getText().toString());
+    }
+
+    public double getMax(){
+        return Double.parseDouble(max.getText().toString());
     }
 }

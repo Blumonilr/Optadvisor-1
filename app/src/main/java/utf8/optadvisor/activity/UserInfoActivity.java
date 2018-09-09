@@ -61,16 +61,13 @@ public class UserInfoActivity extends AppCompatActivity {
         initDialog();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intiMenuItem();
+    }
+
     private void intiMenuItem() {
-        final UserInfoMenuItem name = (UserInfoMenuItem) findViewById(R.id.user_info_name);
-        final UserInfoMenuItem account = (UserInfoMenuItem) findViewById(R.id.user_info_account);
-        final UserInfoMenuItem gender = (UserInfoMenuItem) findViewById(R.id.user_info_gender);
-        final UserInfoMenuItem age = (UserInfoMenuItem) findViewById(R.id.user_info_age);
-        final UserInfoMenuItem birth = (UserInfoMenuItem) findViewById(R.id.user_info_birth);
-        final UserInfoMenuItem phone = (UserInfoMenuItem) findViewById(R.id.user_info_phone);
-        final UserInfoMenuItem email = (UserInfoMenuItem) findViewById(R.id.user_info_email);
-        final TextView intro = (TextView) findViewById(R.id.introduction);
-        final TextView introduction = (TextView) findViewById(R.id.user_info_introduction);
 
 
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/getInfo", UserInfoActivity.this, new Callback() {
@@ -84,20 +81,39 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
-                name.setInfoTextRight(user.getName());
-                account.setInfoTextRight(user.getUsername());
-                gender.setInfoTextRight(user.getGender());
-                try {
-                    age.setInfoTextRight("" + getAge(user.getBirthday()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                birth.setInfoTextRight(user.getBirthday());
-                phone.setInfoTextRight(user.getTelephone());
-                email.setInfoTextRight(user.getEmail());
-                intro.setTextColor(Color.GRAY);
-                introduction.setText("introduction");
+                final User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
+                runOnUiThread(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      UserInfoMenuItem name = (UserInfoMenuItem) findViewById(R.id.user_info_name);
+                                      UserInfoMenuItem account = (UserInfoMenuItem) findViewById(R.id.user_info_account);
+                                      UserInfoMenuItem gender = (UserInfoMenuItem) findViewById(R.id.user_info_gender);
+                                      UserInfoMenuItem age = (UserInfoMenuItem) findViewById(R.id.user_info_age);
+                                      UserInfoMenuItem birth = (UserInfoMenuItem) findViewById(R.id.user_info_birth);
+                                      UserInfoMenuItem phone = (UserInfoMenuItem) findViewById(R.id.user_info_phone);
+                                      UserInfoMenuItem email = (UserInfoMenuItem) findViewById(R.id.user_info_email);
+
+                                      name.setInfoTextRight(user.getName());
+                                      account.setInfoTextRight(user.getUsername());
+                                      gender.setInfoTextRight(user.getGender());
+                                      try {
+                                          if (getAge(user.getBirthday())==-1){
+                                              dialog.setTitle("年龄错误");
+                                              dialog.setMessage("生日不能超过当前日期");
+                                              dialogShow();
+                                              Intent intent=new Intent(UserInfoActivity.this,ModifyActivity.class);
+                                              startActivity(intent);
+                                          }
+                                          else
+                                          age.setInfoTextRight("" + getAge(user.getBirthday()));
+                                      } catch (ParseException e) {
+                                          e.printStackTrace();
+                                      }
+                                      birth.setInfoTextRight(user.getBirthday());
+                                      phone.setInfoTextRight(user.getTelephone());
+                                      email.setInfoTextRight(user.getEmail());
+                                  }
+                });
             }
         });
 
@@ -113,7 +129,7 @@ public class UserInfoActivity extends AppCompatActivity {
             now.setTime(new Date());
             born.setTime(dateOfBirth);
             if (born.after(now)) {
-                throw new IllegalArgumentException("年龄不能超过当前日期");
+                return -1;
             }
             age = now.get(Calendar.YEAR) - born.get(Calendar.YEAR);
             int nowDayOfYear = now.get(Calendar.DAY_OF_YEAR);
