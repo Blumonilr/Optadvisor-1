@@ -51,6 +51,7 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.activity.LoginActivity;
 import utf8.optadvisor.util.MyXFormatter;
 import utf8.optadvisor.util.NetUtil;
+import utf8.optadvisor.util.OptionXFormatter;
 
 
 public class OptionShow extends Fragment {
@@ -389,6 +390,7 @@ public class OptionShow extends Fragment {
                 ArrayList<ICandleDataSet> dataSets = new ArrayList<>();
                 dataSets.add(set1); // add the datasets
                 XAxis xAxis = candleStickChart.getXAxis();
+                xAxis.setValueFormatter(new OptionXFormatter(true,candleStickChartInfo.getKline()[0][0]));//x轴自定义格式
                 Matrix matrix = new Matrix();
                 matrix.postScale(3.0f, 1f);
 
