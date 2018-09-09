@@ -40,17 +40,17 @@ public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.Vi
         return holder;
     }
     @Override
-    public void onBindViewHolder(ControllerAdapter.ViewHolder holder, final int position){
+    public void onBindViewHolder(final ControllerAdapter.ViewHolder holder, final int position){
         holder.controller.setGoods_storage(99);
         holder.controller.setAmount(controller_data.get(position));
         holder.controller.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
             public void onAmountChange(View view, int amount) {
-                amount_map.put(position, amount);
+                amount_map.put(holder.getAdapterPosition(), amount);
                 if (flag) {
-                    v1[position] = amount;
+                    v1[holder.getAdapterPosition()] = amount;
                 }else {
-                    v2[position] = amount;
+                    v2[holder.getAdapterPosition()] = amount;
                 }
             }
         });

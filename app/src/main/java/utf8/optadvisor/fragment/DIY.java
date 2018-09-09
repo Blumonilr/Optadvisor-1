@@ -105,6 +105,7 @@ public class DIY extends Fragment {
                                 controller_data.add(0);
                             }
                         }
+                        System.out.println("data1 in handler:"+controller_data);
                         if(temp_map1!=null) {
                             System.out.println("temp1 in handler:"+temp_map1);
                         }
@@ -116,6 +117,7 @@ public class DIY extends Fragment {
                                 controller_data.add(0);
                             }
                         }
+                        System.out.print("data2 in handler:"+controller_data);
                         if(temp_map2!=null) {
                             System.out.println("temp1 in handler:"+temp_map1);
                         }
@@ -322,12 +324,16 @@ public class DIY extends Fragment {
             }
         }
         if(call_or_put==true){
-           for(int j=0;j<temp1.size();j++){
-               option_list.add(new CustomOption(et,temp1.get(j).getType(),temp1.get(j).getCp(),temp1.get(j).getOptionCode()));
-           }
+            if(temp1!=null) {
+                for (int j = 0; j < temp1.size(); j++) {
+                    option_list.add(new CustomOption(et, temp1.get(j).getType(), temp1.get(j).getCp(), temp1.get(j).getOptionCode()));
+                }
+            }
         }else{
-            for(int j=0;j<temp2.size();j++){
-                option_list.add(new CustomOption(et,temp2.get(j).getType(),temp2.get(j).getCp(),temp2.get(j).getOptionCode()));
+            if(temp2!=null) {
+                for (int j = 0; j < temp2.size(); j++) {
+                    option_list.add(new CustomOption(et, temp2.get(j).getType(), temp2.get(j).getCp(), temp2.get(j).getOptionCode()));
+                }
             }
         }
         Gson gson=new Gson();
@@ -470,13 +476,14 @@ public class DIY extends Fragment {
             cp=-1;
         }
         temp2=new ArrayList<>();
+        System.out.print("temp2:");
         for(int i=0;i<controllerAdapter.getItemCount();i++){
+            System.out.print(temp_map2[i]);
             if(temp_map2[i]!=0) {
                 String code = list.get(0)[i];
                 temp2.add(new CustomOption(temp_map2[i], cp, code));
             }
         }
-        System.out.println("temp2:"+temp_map2);
     }
     private void saveTemp1(){
         temp_map1=controllerAdapter.getAmount_map();
@@ -485,14 +492,15 @@ public class DIY extends Fragment {
             cp=-1;
         }
         temp1=new ArrayList<>();
+        System.out.print("temp1:");
         for(int i=0;i<controllerAdapter.getItemCount();i++){
+            System.out.print(temp_map1[i]);
             if(temp_map1[i]!=0) {
                 String code = list.get(0)[i];
                 temp1.add(new CustomOption(temp_map1[i], cp, code));
             }
         }
 
-        System.out.println("temp1:"+temp_map1);
     }
     private Map<Integer,Integer> getMap(){
         Map<Integer,Integer> map=new HashMap<>();
