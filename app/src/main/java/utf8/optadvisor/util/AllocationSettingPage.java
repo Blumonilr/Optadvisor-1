@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -324,36 +325,47 @@ public class AllocationSettingPage extends LinearLayout {
 
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                Map<String,String> values=new HashMap<>();
-                values.put("m0",getM0());
-                values.put("k",getK());
-                values.put("t",getDate());
-                values.put("combination",getCombination()+"");
-                values.put("p1",getP1());
-                values.put("p2",getP2());
-                values.put("sigma1",getSigma1());
-                values.put("sigma2",getSigma2());
+                if (combination<='H'&&combination>='A' && !TextUtils.isEmpty(principle.getText()) && !TextUtils.isEmpty(maxLoss.getText())) {
+                    progressDialog.show();
+                    Map<String, String> values = new HashMap<>();
+                    values.put("m0", getM0());
+                    values.put("k", getK());
+                    values.put("t", getDate());
+                    values.put("combination", getCombination() + "");
+                    values.put("p1", getP1());
+                    values.put("p2", getP2());
+                    values.put("sigma1", getSigma1());
+                    values.put("sigma2", getSigma2());
 
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values,getContext(), new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        dialog.setTitle("网络连接错误");
-                        dialog.setMessage("请稍后再试");
-                        dialogShow();
-                        progressDialog.dismiss();
-                    }
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values, getContext(), new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            dialog.setTitle("网络连接错误");
+                            dialog.setMessage("请稍后再试");
+                            dialogShow();
+                            progressDialog.dismiss();
+                        }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        System.out.println(responseMsg.getData().toString());
-                        mHandler.obtainMessage(INFO_SUCCESS,responseMsg.getData().toString()).sendToTarget();
-                        progressDialog.dismiss();
-                    }
-                });
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            progressDialog.dismiss();
+                            ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                            if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
+                                dialog.setTitle("网络连接错误");
+                                dialog.setMessage("请重新点击");
+                                dialogShow();
+                            } else {
+                                mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
+                            }
+                        }
+                    });
+                }
+                else{
+                    dialog.setTitle("信息未填写完善");
+                    dialog.setMessage("请重新填写");
+                    dialogShow();
+                }
             }
-
         });
 
     }
