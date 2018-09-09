@@ -121,6 +121,7 @@ public class HedgingInfoDisplay extends ScrollView {
         description.setText("组合表现");
         description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
         description.setTextSize(18);
+
         lineChart.setDescription(description);//设置图表描述信息
         lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
@@ -268,5 +269,6 @@ public class HedgingInfoDisplay extends ScrollView {
         lineDataSet.setDrawValues(false);
         //lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
+
     }
 }

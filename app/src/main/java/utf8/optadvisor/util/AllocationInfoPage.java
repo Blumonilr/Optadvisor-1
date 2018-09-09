@@ -30,6 +30,7 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.entity.Option;
 import utf8.optadvisor.fragment.AllocationSetting;
+import utf8.optadvisor.fragment.MyCombination;
 import utf8.optadvisor.widget.OptionButton;
 import utf8.optadvisor.widget.UserInfoMenuItem;
 
@@ -222,6 +223,10 @@ public class AllocationInfoPage extends LinearLayout {
         // 添加到图表中
         lineChart.setData(data);
 
+        ChartMarkerView markerView = new ChartMarkerView(getContext(), R.layout.marker_view);
+        markerView.setChartView(lineChart);
+        lineChart.setMarker(markerView);//设置交互小图标
+
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new PortfolioXFormatter());
 
@@ -258,6 +263,9 @@ public class AllocationInfoPage extends LinearLayout {
         lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
         lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
+        lineDataSet.setDrawValues(false);//不显示值
+
+
     }
 
 
