@@ -320,7 +320,7 @@
         android:id="@+id/allocation_setting_next"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginLeft="150dp"
+        android:layout_gravity="center"
         android:textSize="16sp"
         android:text="下一步"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
