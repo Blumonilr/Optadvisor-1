@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -78,7 +79,6 @@ public class AllocationSettingPage extends LinearLayout {
                     System.out.println(info);
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
                     allocationSetting.setView(responseAllocation);
-                    progressDialog.dismiss();
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
@@ -126,10 +126,8 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
-                price.setContent(true,true);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
-                wave.setContent(false,true);
                 linearLayout.addView(wave);
                 combination='A';
             }
@@ -149,7 +147,6 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
-                wave.setContent(false,true);
                 linearLayout.addView(wave);
                 combination='B';
             }
@@ -169,10 +166,8 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
-                price.setContent(true,false);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,true,allocationSetting);
-                wave.setContent(false,true);
                 linearLayout.addView(wave);
                 combination='C';
             }
@@ -192,7 +187,6 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
-                price.setContent(true,true);
                 linearLayout.addView(price);
                 combination='D';
             }
@@ -227,7 +221,6 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
-                price.setContent(true,false);
                 linearLayout.addView(price);
                 combination='E';
             }
@@ -247,10 +240,8 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,true,allocationSetting);
-                price.setContent(true,true);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
-                wave.setContent(false,false);
                 linearLayout.addView(wave);
                 combination='F';
             }
@@ -270,7 +261,6 @@ public class AllocationSettingPage extends LinearLayout {
                 ib33.setActivated(false);
                 linearLayout.removeAllViews();
                 wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
-                wave.setContent(false,false);
                 linearLayout.addView(wave);
                 combination='G';
             }
@@ -290,10 +280,8 @@ public class AllocationSettingPage extends LinearLayout {
                 ib12.setActivated(false);
                 linearLayout.removeAllViews();
                 price=new AllocationSettingSeekbar(context,true,false,allocationSetting);
-                price.setContent(true,false);
                 linearLayout.addView(price);
                 wave=new AllocationSettingSeekbar(context,false,false,allocationSetting);
-                wave.setContent(false,false);
                 linearLayout.addView(wave);
                 combination='H';
             }
@@ -337,35 +325,47 @@ public class AllocationSettingPage extends LinearLayout {
 
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                Map<String,String> values=new HashMap<>();
-                values.put("m0",getM0());
-                values.put("k",getK());
-                values.put("t",getDate());
-                values.put("combination",getCombination()+"");
-                values.put("p1",getP1());
-                values.put("p2",getP2());
-                values.put("sigma1",getSigma1());
-                values.put("sigma2",getSigma2());
+                if (combination<='H'&&combination>='A' && !TextUtils.isEmpty(principle.getText()) && !TextUtils.isEmpty(maxLoss.getText())) {
+                    progressDialog.show();
+                    Map<String, String> values = new HashMap<>();
+                    values.put("m0", getM0());
+                    values.put("k", getK());
+                    values.put("t", getDate());
+                    values.put("combination", getCombination() + "");
+                    values.put("p1", getP1());
+                    values.put("p2", getP2());
+                    values.put("sigma1", getSigma1());
+                    values.put("sigma2", getSigma2());
 
-                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values,getContext(), new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        dialog.setTitle("网络连接错误");
-                        dialog.setMessage("请稍后再试");
-                        dialogShow();
-                        progressDialog.dismiss();
-                    }
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values, getContext(), new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            dialog.setTitle("网络连接错误");
+                            dialog.setMessage("请稍后再试");
+                            dialogShow();
+                            progressDialog.dismiss();
+                        }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        System.out.println(responseMsg.getData().toString());
-                        mHandler.obtainMessage(INFO_SUCCESS,responseMsg.getData().toString()).sendToTarget();
-                    }
-                });
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            progressDialog.dismiss();
+                            ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                            if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
+                                dialog.setTitle("网络连接错误");
+                                dialog.setMessage("请重新点击");
+                                dialogShow();
+                            } else {
+                                mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
+                            }
+                        }
+                    });
+                }
+                else{
+                    dialog.setTitle("信息未填写完善");
+                    dialog.setMessage("请重新填写");
+                    dialogShow();
+                }
             }
-
         });
 
     }
@@ -402,28 +402,28 @@ public class AllocationSettingPage extends LinearLayout {
     public String getP1() {
         switch (combination) {
             case 'A' :
-                p1=price.getETF()+"";
+                p1=price.getMin()+"";
                 break;
             case 'B':
                 p1=wave.getETF()+"";
                 break;
             case 'C':
-                p1="0";
+                p1=price.getMin()+"";
                 break;
             case 'D' :
-                p1=price.getETF()+"";
+                p1=price.getMin()+"";
                 break;
             case 'E':
-                p1="0";
+                p1=price.getMin()+"";
                 break;
             case 'F':
-                p1=price.getETF()+"";
+                p1=price.getMin()+"";
                 break;
             case 'G' :
                 p1=wave.getETF()+"";
                 break;
             case 'H':
-                p1="0";
+                p1=price.getMin()+"";
                 break;
 
         }
@@ -434,28 +434,28 @@ public class AllocationSettingPage extends LinearLayout {
     public String getP2() {
         switch (combination) {
             case 'A' :
-                p2="4";
+                p2=price.getMax()+"";
                 break;
             case 'B':
                 p2=wave.getETF()+"";
                 break;
             case 'C':
-                p2=price.getETF()+"";
+                p2=price.getMax()+"";
                 break;
             case 'D' :
-                p2="4";
+                p2=price.getMax()+"";
                 break;
             case 'E':
-                p2=price.getETF()+"";
+                p2=price.getMax()+"";
                 break;
             case 'F':
-                p2="4";
+                p2=price.getMax()+"";
                 break;
             case 'G' :
                 p2=wave.getETF()+"";
                 break;
             case 'H':
-                p2=price.getETF()+"";
+                p2=price.getMax()+"";
                 break;
 
         }
@@ -465,13 +465,13 @@ public class AllocationSettingPage extends LinearLayout {
     public String getSigma1() {
         switch (combination) {
             case 'A' :
-                sigma1=wave.getSigma()+"";
+                sigma1=wave.getMin()+"";
                 break;
             case 'B':
-                sigma1=wave.getSigma()+"";
+                sigma1=wave.getMin()+"";
                 break;
             case 'C':
-                sigma1=wave.getSigma()+"";
+                sigma1=wave.getMin()+"";
                 break;
             case 'D' :
                 sigma1=price.getSigma()+"";
@@ -480,13 +480,13 @@ public class AllocationSettingPage extends LinearLayout {
                 sigma1=price.getSigma()+"";;
                 break;
             case 'F':
-                sigma1="0";
+                sigma1=wave.getMin()+"";
                 break;
             case 'G' :
-                sigma1="0";
+                sigma1=wave.getMin()+"";
                 break;
             case 'H':
-                sigma1="0";
+                sigma1=wave.getMin()+"";
                 break;
 
         }
@@ -496,13 +496,13 @@ public class AllocationSettingPage extends LinearLayout {
     public String getSigma2() {
         switch (combination) {
             case 'A' :
-                sigma2="50";
+                sigma2=wave.getMax()+"";
                 break;
             case 'B':
-                sigma2="50";
+                sigma2=wave.getMax()+"";
                 break;
             case 'C':
-                sigma2="50";
+                sigma2=wave.getMax()+"";
                 break;
             case 'D' :
                 sigma2=price.getSigma()+"";
@@ -511,13 +511,13 @@ public class AllocationSettingPage extends LinearLayout {
                 sigma2=price.getSigma()+"";;
                 break;
             case 'F':
-                sigma2=wave.getSigma()+"";
+                sigma2=wave.getMax()+"";
                 break;
             case 'G' :
-                sigma2=wave.getSigma()+"";
+                sigma2=wave.getMax()+"";
                 break;
             case 'H':
-                sigma2=wave.getSigma()+"";
+                sigma2=wave.getMax()+"";
                 break;
 
         }

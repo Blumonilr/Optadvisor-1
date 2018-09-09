@@ -768,6 +768,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineDataSet.setDrawValues(false);//不显示值
         //lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
+
     }
 
 

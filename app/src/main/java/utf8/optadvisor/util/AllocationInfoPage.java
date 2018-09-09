@@ -30,6 +30,7 @@ import utf8.optadvisor.R;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.entity.Option;
 import utf8.optadvisor.fragment.AllocationSetting;
+import utf8.optadvisor.fragment.MyCombination;
 import utf8.optadvisor.widget.OptionButton;
 import utf8.optadvisor.widget.UserInfoMenuItem;
 
@@ -76,7 +77,6 @@ public class AllocationInfoPage extends LinearLayout {
 
         ll_buttons=(LinearLayout)findViewById(R.id.allocation_ll_buttons);
 
-        initMenuItem();
 
         for (Option option:allocationResponse.getOptions()){
             OptionButton ob=new OptionButton(context,option);
@@ -85,9 +85,12 @@ public class AllocationInfoPage extends LinearLayout {
             buttons.add(ob);
         }
 
+        initMenuItem();
+
         for (OptionButton bt:buttons){
             bt.setClicked(buttons,id,date,soldPrice,finalPrice,delta,gamma,theta,vega,rho);
         }
+
 
         lineChart = (LineChart)findViewById(R.id.allocation_line_chart);
         initLineChart();//初始化
@@ -115,39 +118,39 @@ public class AllocationInfoPage extends LinearLayout {
     private void initMenuItem() {
         id=(UserInfoMenuItem)findViewById(R.id.allocation_item_id);
         id.setInfoTextLeft("交易代码");
-        id.setInfoTextRight("");
+        id.setInfoTextRight(allocationResponse.getOptions().get(0).getTradeCode());
 
         date=(UserInfoMenuItem)findViewById(R.id.allocation_item_date);
         date.setInfoTextLeft("到期时间");
-        date.setInfoTextRight("");
+        date.setInfoTextRight(allocationResponse.getOptions().get(0).getExpireTime());
 
         soldPrice=(UserInfoMenuItem)findViewById(R.id.allocation_item_soldprice);
         soldPrice.setInfoTextLeft("执行价格");
-        soldPrice.setInfoTextRight("");
+        soldPrice.setInfoTextRight(allocationResponse.getOptions().get(0).getK()+"");
 
         finalPrice=(UserInfoMenuItem)findViewById(R.id.allocation_item_finalprice);
         finalPrice.setInfoTextLeft("成交价格");
-        finalPrice.setInfoTextRight("");
+        finalPrice.setInfoTextRight(allocationResponse.getOptions().get(0).getType()>0?allocationResponse.getOptions().get(0).getPrice1()+"":allocationResponse.getOptions().get(0).getPrice2()+"");
 
         delta=(UserInfoMenuItem)findViewById(R.id.allocation_item_delta);
         delta.setInfoTextLeft("delta");
-        id.setInfoTextRight("");
+        delta.setInfoTextRight(allocationResponse.getOptions().get(0).getDelta()+"");
 
         gamma=(UserInfoMenuItem)findViewById(R.id.allocation_item_gamma);
         gamma.setInfoTextLeft("gamma");
-        gamma.setInfoTextRight("");
+        gamma.setInfoTextRight(allocationResponse.getOptions().get(0).getGamma()+"");
 
         theta=(UserInfoMenuItem)findViewById(R.id.allocation_item_theta);
         theta.setInfoTextLeft("theta");
-        theta.setInfoTextRight("");
+        theta.setInfoTextRight(allocationResponse.getOptions().get(0).getTheta()+"");
 
         vega=(UserInfoMenuItem)findViewById(R.id.allocation_item_vega);
         vega.setInfoTextLeft("vega");
-        vega.setInfoTextRight("");
+        vega.setInfoTextRight(allocationResponse.getOptions().get(0).getVega()+"");
 
         rho=(UserInfoMenuItem)findViewById(R.id.allocation_item_rho);
         rho.setInfoTextLeft("rho");
-        rho.setInfoTextRight("");
+        rho.setInfoTextRight(allocationResponse.getOptions().get(0).getRho()+"");
 
         cost=(UserInfoMenuItem)findViewById(R.id.allocation_item_cost);
         cost.setInfoTextLeft("成本");
@@ -220,6 +223,10 @@ public class AllocationInfoPage extends LinearLayout {
         // 添加到图表中
         lineChart.setData(data);
 
+        ChartMarkerView markerView = new ChartMarkerView(getContext(), R.layout.marker_view);
+        markerView.setChartView(lineChart);
+        lineChart.setMarker(markerView);//设置交互小图标
+
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new PortfolioXFormatter());
 
@@ -256,6 +263,9 @@ public class AllocationInfoPage extends LinearLayout {
         lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
         lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
+        lineDataSet.setDrawValues(false);//不显示值
+
+
     }
 
 
