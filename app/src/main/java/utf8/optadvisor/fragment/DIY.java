@@ -3,6 +3,7 @@ package utf8.optadvisor.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -40,6 +42,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ControllerAdapter;
 import utf8.optadvisor.util.LeftAdapter;
@@ -60,6 +63,8 @@ public class DIY extends Fragment {
     private LeftAdapter leftAdapter=new LeftAdapter(left_data);
     private ControllerAdapter controllerAdapter=new ControllerAdapter(controller_data);
     private Button fb;
+    private LinearLayoutManager optionsLayoutManager;
+    private LinearLayoutManager controllersLayoutManager;
     private RecyclerView options_view;
     private RecyclerView controllers_view;
     private Spinner spinner;
@@ -70,6 +75,10 @@ public class DIY extends Fragment {
     private final int GET_EXPIRETIME=4;
     private final int SEND_DATA=5;
     private Button bt1;
+    private List<CustomOption> temp1;
+    private int[] temp_map1;
+    private int[] temp_map2;
+    private List<CustomOption> temp2;
     private MyCombination myCombination;
     private ProgressBar progressBar;
     private ProgressDialog progressDialog;
@@ -88,8 +97,28 @@ public class DIY extends Fragment {
                     if(controller_data.size()>=1){
                         controller_data.clear();
                     }
-                    for(int i=0;i<((List<String[]>)msg.obj).size();i++){
-                        controller_data.add(i);
+                    if(call_or_put==true) {
+                        for (int i = 0; i < ((List<String[]>) msg.obj).size(); i++) {
+                            if(temp_map1!=null){
+                                controller_data.add(temp_map1[i]);
+                            }else{
+                                controller_data.add(0);
+                            }
+                        }
+                        if(temp_map1!=null) {
+                            System.out.println("temp1 in handler:"+temp_map1);
+                        }
+                    }else{
+                        for (int i = 0; i < ((List<String[]>) msg.obj).size(); i++) {
+                            if(temp_map2!=null){
+                                controller_data.add(temp_map2[i]);
+                            }else{
+                                controller_data.add(0);
+                            }
+                        }
+                        if(temp_map2!=null) {
+                            System.out.println("temp1 in handler:"+temp_map1);
+                        }
                     }
                     leftAdapter.notifyDataSetChanged();
                     controllerAdapter.notifyDataSetChanged();
@@ -109,7 +138,6 @@ public class DIY extends Fragment {
                  break;
                 case GET_EXPIRETIME:
                     String et=(String)msg.obj;
-                    System.out.print("sss");
                     sendDIY(et);
                     break;
                 case SEND_DATA:
@@ -198,6 +226,7 @@ public class DIY extends Fragment {
             @Override
             public void onClick(View v) {
                 if(call_or_put!=true){
+                    saveTemp2();
                     call_or_put=true;
                     initOptionInfo(spinner.getSelectedItem().toString(),call_or_put);
                     if(progressBar.getVisibility()== View.GONE){
@@ -211,6 +240,7 @@ public class DIY extends Fragment {
             @Override
             public void onClick(View v) {
                 if(call_or_put!=false){
+                    saveTemp1();
                     call_or_put=false;
                     initOptionInfo(spinner.getSelectedItem().toString(),call_or_put);
                     if(progressBar.getVisibility()== View.GONE){
@@ -223,8 +253,8 @@ public class DIY extends Fragment {
         //初始化RecyclerView数据
         options_view=view.findViewById(R.id.diy_options);
         controllers_view=view.findViewById(R.id.quantity_controller);
-        LinearLayoutManager optionsLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        LinearLayoutManager controllersLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        optionsLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        controllersLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         options_view.setLayoutManager(optionsLayoutManager);
         controllers_view.setLayoutManager(controllersLayoutManager);
         options_view.setAdapter(leftAdapter);
@@ -279,7 +309,7 @@ public class DIY extends Fragment {
         return view;
     }
     private void sendDIY(String et){
-        Map<Integer,Integer> amount_map=controllerAdapter.getAmount_map();
+        Map<Integer,Integer> amount_map=controllerAdapter.getMap();
         int cp=1;
         if(call_or_put==false){
             cp=-1;
@@ -288,6 +318,15 @@ public class DIY extends Fragment {
         for(int key:amount_map.keySet()){
             String code=list.get(0)[key];
             option_list.add(new CustomOption(et,amount_map.get(key),cp,code));
+        }
+        if(call_or_put==true){
+           for(int j=0;j<temp1.size();j++){
+               option_list.add(new CustomOption(et,temp1.get(j).getType(),temp1.get(j).getCp(),temp1.get(j).getOptionCode()));
+           }
+        }else{
+            for(int j=0;j<temp2.size();j++){
+                option_list.add(new CustomOption(et,temp2.get(j).getType(),temp2.get(j).getCp(),temp2.get(j).getOptionCode()));
+            }
         }
         Gson gson=new Gson();
         String value=gson.toJson(option_list);
@@ -421,5 +460,44 @@ public class DIY extends Fragment {
                 dialog.show();
             }
         });
+    }
+    private void saveTemp2(){
+        temp_map2=controllerAdapter.getAmount_map();
+        int cp=1;
+        if(call_or_put==false){
+            cp=-1;
+        }
+        temp2=new ArrayList<>();
+        for(int i=0;i<controllerAdapter.getItemCount();i++){
+            if(temp_map2[i]!=0) {
+                String code = list.get(0)[i];
+                temp2.add(new CustomOption(temp_map2[i], cp, code));
+            }
+        }
+        System.out.println("temp2:"+temp_map2);
+    }
+    private void saveTemp1(){
+        temp_map1=controllerAdapter.getAmount_map();
+        int cp=1;
+        if(call_or_put==false){
+            cp=-1;
+        }
+        temp1=new ArrayList<>();
+        for(int i=0;i<controllerAdapter.getItemCount();i++){
+            if(temp_map1[i]!=0) {
+                String code = list.get(0)[i];
+                temp1.add(new CustomOption(temp_map1[i], cp, code));
+            }
+        }
+
+        System.out.println("temp1:"+temp_map1);
+    }
+    private Map<Integer,Integer> getMap(){
+        Map<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<=controllerAdapter.getItemCount();i++) {
+            EditText ed = controllersLayoutManager.findViewByPosition(1).findViewById(R.id.etAmount);
+            map.put(i,Integer.valueOf(ed.getText().toString()));
+        }
+        return map;
     }
 }

@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -196,6 +197,9 @@ public class OptionShow extends Fragment {
             lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
             lineChart.setDrawBorders(false);//禁止绘制图表边框的线
             lineChart.setScaleEnabled(true);
+            Description description = new Description();
+            description.setEnabled(false);
+            lineChart.setDescription(description);
             ArrayList<Entry> entries = new ArrayList<>();
             for (int i = 0; i < lineChartInfo.getLine().length; i++) {
                 int x = Integer.valueOf(lineChartInfo.getLine()[i][0]) / 10000 * 60 + Integer.valueOf(lineChartInfo.getLine()[i][0]) % 10000 / 100;
@@ -214,6 +218,7 @@ public class OptionShow extends Fragment {
                 set1.setLineWidth(1f);//设置线宽
                 set1.setColor(Color.parseColor("#D15FEE"));
                 set1.setDrawCircles(false);
+                set1.setDrawValues(false);
                 set1.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
                 set1.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
                 set1.setHighlightEnabled(true);//是否禁用点击高亮线
@@ -338,6 +343,9 @@ public class OptionShow extends Fragment {
             candleStickChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
             candleStickChart.setDrawBorders(false);//禁止绘制图表边框的线
             candleStickChart.setScaleXEnabled(true);
+            Description description = new Description();
+            description.setEnabled(false);
+            candleStickChart.setDescription(description);
             candleStickChart.setScaleYEnabled(false);
             candleStickChart.setMaxVisibleValueCount(8);
             ArrayList<CandleEntry> candleEntries = new ArrayList<>();
@@ -360,6 +368,7 @@ public class OptionShow extends Fragment {
             } else {
                 set1 = new CandleDataSet(candleEntries, "日k线");
                 set1.setColor(Color.parseColor("#D15FEE"));
+                set1.setDrawValues(false);
                 set1.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
                 set1.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
                 set1.setHighlightEnabled(true);//是否禁用点击高亮线

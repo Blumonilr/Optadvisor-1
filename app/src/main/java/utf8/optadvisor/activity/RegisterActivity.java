@@ -141,7 +141,9 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        System.out.println("重名了");
+                        dialog.setTitle("注册失败");
+                        dialog.setMessage("用户名重复");
+                        dialogShow();
                     }
 
                 }
@@ -149,6 +151,14 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         }
+    }
+    private void dialogShow(){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 
 
