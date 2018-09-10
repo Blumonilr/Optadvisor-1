@@ -3,6 +3,7 @@ package utf8.optadvisor.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -89,11 +91,21 @@ public class MyCombination extends Fragment implements View.OnClickListener {
 
     private Spinner spinner;
 
+    private TextView cost;
+    private TextView bond;
+    private TextView timeLine;
+    private TextView em;
+    private TextView beta;
+    private TextView returnAsset;
+
+    private static final int DISTANCE=35;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_combination, container, false);
 
+        initAllText();
         initProgressBar();
         initButtons();
         initSpinner();
@@ -104,6 +116,15 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         initDialog();
 
         return view;
+    }
+
+    private void initAllText(){
+        cost=view.findViewById(R.id.cost);
+        bond=view.findViewById(R.id.bond);
+        timeLine=view.findViewById(R.id.time_line);
+        em=view.findViewById(R.id.em);
+        beta=view.findViewById(R.id.beta);
+        returnAsset=view.findViewById(R.id.return_asset);
     }
 
     @Override
@@ -404,6 +425,23 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     for (Option option : currentPortfolio.getOptions()) {
                         tempArray.add(option.getName());
                     }
+                    cost.setText(String.valueOf(currentPortfolio.getCost()));
+                    if(currentPortfolio.getOptions()!=null&&currentPortfolio.getOptions().length>0){
+                        timeLine.setText(String.valueOf(currentPortfolio.getOptions()[0].getExpireTime()));
+                    }else {
+                        timeLine.setText("");
+                    }
+                    beta.setText(String.valueOf(currentPortfolio.getBeta()));
+                    bond.setText(String.valueOf(currentPortfolio.getBond()));
+                    em.setText(String.valueOf(currentPortfolio.getEM()));
+                    returnAsset.setText(String.valueOf(currentPortfolio.getReturnOnAssets()));
+                }else {
+                    cost.setText("");
+                    timeLine.setText("");
+                    beta.setText("");
+                    bond.setText("");
+                    em.setText("");
+                    returnAsset.setText("");
                 }
                 childArray.clear();
                 childArray.add(tempArray);
@@ -527,7 +565,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight
+        params.height = totalHeight+DISTANCE
                 + (listView.getDividerHeight() * (count - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
@@ -570,11 +608,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
      */
     private void initLineChart() {
         lineChart = view.findViewById(R.id.linechart);
-        Description description = new Description();
+        /*Description description = new Description();
         description.setText("组合表现");
         description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
         description.setTextSize(18);
-        lineChart.setDescription(description);//设置图表描述信息
+        description.setPosition(;
+        lineChart.setDescription(description);//设置图表描述信息*/
         lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
@@ -608,7 +647,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         final Portfolio toDraw=currentPortfolio;
 
         if(toDraw==null){
-            lineChart.clear();
+            clearChart();
         }
         else  {
             NetUtil.INSTANCE.sendGetRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio/" + toDraw.getId(), this.getContext(), new Callback() {
@@ -635,6 +674,19 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 }
             });
         }
+
+    }
+
+    private void clearChart(){
+        Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                lineChart.clear();
+                lineChart.setData(null);
+                lineChart.invalidate();
+            }
+        });
+
 
     }
 

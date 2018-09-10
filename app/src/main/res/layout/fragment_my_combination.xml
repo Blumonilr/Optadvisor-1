@@ -62,13 +62,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:text="当前组合:"
+                        android:text="@string/current_portfolio"
                         android:textAlignment="viewEnd"/>
                     <Spinner
                         android:id="@+id/content_spinner"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_weight="7"
                         android:layout_height="wrap_content"
+                        android:dropDownWidth="match_parent"
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"/>
 
@@ -83,6 +84,108 @@
                 android:layout_width ="match_parent"
                 android:layout_height ="wrap_content"
                 android:background="@color/colorLightWhite" />
+
+
+            <LinearLayout
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id ="@+id/option_information"
+                android:layout_width ="match_parent"
+                android:layout_height ="wrap_content"
+                android:background="@color/colorLightWhite">
+                
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/time_line"/>
+
+                <TextView
+                    android:id="@+id/time_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/cost"/>
+
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/bond"/>
+
+                <TextView
+                    android:id="@+id/bond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/beta"/>
+
+                <TextView
+                    android:id="@+id/beta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/em"/>
+
+                <TextView
+                    android:id="@+id/em"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/return_asset"/>
+
+                <TextView
+                    android:id="@+id/return_asset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/linechart"
                 android:alpha="0.9"

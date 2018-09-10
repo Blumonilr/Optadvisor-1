@@ -101,7 +101,7 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
         text.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
         //设置文本位置
         text.setPadding(80 , 0 , 0 , 0 );
-        text.setTextSize(30);
+        text.setTextSize(20);
         text.setText(string);
         return  text;
     }
