@@ -105,10 +105,6 @@ public class DIY extends Fragment {
                                 controller_data.add(0);
                             }
                         }
-                        System.out.println("data1 in handler:"+controller_data);
-                        if(temp_map1!=null) {
-                            System.out.println("temp1 in handler:"+temp_map1);
-                        }
                     }else{
                         for (int i = 0; i < ((List<String[]>) msg.obj).size(); i++) {
                             if(temp_map2!=null){
@@ -116,10 +112,6 @@ public class DIY extends Fragment {
                             }else{
                                 controller_data.add(0);
                             }
-                        }
-                        System.out.print("data2 in handler:"+controller_data);
-                        if(temp_map2!=null) {
-                            System.out.println("temp1 in handler:"+temp_map1);
                         }
                     }
                     leftAdapter.notifyDataSetChanged();
@@ -339,7 +331,7 @@ public class DIY extends Fragment {
         Gson gson=new Gson();
         String value=gson.toJson(option_list);
         value="{\"options\": "+value+"}";
-        System.out.println("json"+value);
+        System.out.println("DIY json"+value);
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -476,9 +468,7 @@ public class DIY extends Fragment {
             cp=-1;
         }
         temp2=new ArrayList<>();
-        System.out.print("temp2:");
         for(int i=0;i<controllerAdapter.getItemCount();i++){
-            System.out.print(temp_map2[i]);
             if(temp_map2[i]!=0) {
                 String code = list.get(0)[i];
                 temp2.add(new CustomOption(temp_map2[i], cp, code));
@@ -492,9 +482,7 @@ public class DIY extends Fragment {
             cp=-1;
         }
         temp1=new ArrayList<>();
-        System.out.print("temp1:");
         for(int i=0;i<controllerAdapter.getItemCount();i++){
-            System.out.print(temp_map1[i]);
             if(temp_map1[i]!=0) {
                 String code = list.get(0)[i];
                 temp1.add(new CustomOption(temp_map1[i], cp, code));
