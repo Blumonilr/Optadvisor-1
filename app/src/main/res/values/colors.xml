@@ -10,7 +10,7 @@
     <color name="background_color">#f6f6f6</color>
     <color name="splitline_color">#dddddd</color>
     <color name="colorGreen">#66FF66</color>
-    <color name="colorLightWhite">#FEFEE0</color>
+    <color name="colorLightWhite">#ffffff</color>
     <color name="transParent">#01000000</color>
     <color name="colorLightBlue">#19b7a8</color>
     <color name="colorGraySolid">#80858175</color>

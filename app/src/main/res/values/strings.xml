@@ -155,6 +155,13 @@
     <string name="hedge_text">套期保值</string>
     <string name="diy_text">DIY</string>
     <string name="welcome">欢迎您！</string>
+    <string name="current_portfolio">当前组合:</string>
+    <string name="cost">成本</string>
+    <string name="time_line">到期时间</string>
+    <string name="bond">保证金</string>
+    <string name="beta">组合风险值</string>
+    <string name="em">期望收益</string>
+    <string name="return_asset">资产收益率</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
