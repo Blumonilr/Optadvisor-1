@@ -159,7 +159,16 @@ public class DIY extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    progressDialog.dismiss();
+                                    if(temp1!=null) {
+                                        temp1.clear();
+                                    }
+                                    if(temp2!=null) {
+                                        temp2.clear();
+                                    }
+                                   temp_map1=null;
+                                   temp_map2=null;
+                                   initMonths();
+                                   progressDialog.dismiss();
                                 }
                             });
                         }
@@ -303,21 +312,27 @@ public class DIY extends Fragment {
         return view;
     }
     private void sendDIY(String et){
-        Map<Integer,Integer> amount_map=controllerAdapter.getMap();
         int cp=1;
         if(call_or_put==false){
             cp=-1;
         }
+        int[] temp;
+        if(call_or_put==false) {
+            temp = controllerAdapter.getV2();
+        }
+        else {
+            temp=controllerAdapter.getV1();
+        }
         List<CustomOption> option_list=new ArrayList<>();
-        for(int key:amount_map.keySet()){
-            if(amount_map.get(key)!=0) {
-                String code = list.get(0)[key];
-                option_list.add(new CustomOption(et, amount_map.get(key), cp, code));
+        for(int k=0;k<temp.length;k++){
+            if(temp[k]!=0) {
+                String code = list.get(0)[k];
+                option_list.add(new CustomOption(et, temp[k], cp, code));
             }
         }
         if(call_or_put==true){
             if(temp2!=null) {
-                for (int j = 0; j < temp1.size(); j++) {
+                for (int j = 0; j < temp2.size(); j++) {
                     option_list.add(new CustomOption(et, temp2.get(j).getType(), temp2.get(j).getCp(), temp2.get(j).getOptionCode()));
                 }
             }
@@ -489,13 +504,5 @@ public class DIY extends Fragment {
             }
         }
 
-    }
-    private Map<Integer,Integer> getMap(){
-        Map<Integer,Integer> map=new HashMap<>();
-        for(int i=0;i<=controllerAdapter.getItemCount();i++) {
-            EditText ed = controllersLayoutManager.findViewByPosition(1).findViewById(R.id.etAmount);
-            map.put(i,Integer.valueOf(ed.getText().toString()));
-        }
-        return map;
     }
 }

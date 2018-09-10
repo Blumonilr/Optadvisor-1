@@ -66,6 +66,12 @@ public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.Vi
         if(!flag){return v1;}
         else return v2;
     }
+    public int[] getV1() {
+       return v1;
+    }
+    public int[] getV2() {
+        return v2;
+    }
 
     public Map<Integer, Integer> getMap() {
         return amount_map;
