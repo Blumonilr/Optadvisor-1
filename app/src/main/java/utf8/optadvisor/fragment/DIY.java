@@ -156,21 +156,24 @@ public class DIY extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            if(temp1!=null) {
+                                temp1.clear();
+                            }
+                            if(temp2!=null) {
+                                temp2.clear();
+                            }
+                            temp_map1=null;
+                            temp_map2=null;
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(temp1!=null) {
-                                        temp1.clear();
-                                    }
-                                    if(temp2!=null) {
-                                        temp2.clear();
-                                    }
-                                   temp_map1=null;
-                                   temp_map2=null;
-                                   initMonths();
                                    progressDialog.dismiss();
+                                    initMonths();
                                 }
                             });
+                            dialog.setTitle("添加成功");
+                            dialog.setMessage("请前往我的组合查看");
+                            dialogShow();
                         }
                     });
 
