@@ -4,10 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -98,7 +101,24 @@ public class MyCombination extends Fragment implements View.OnClickListener {
     private TextView beta;
     private TextView returnAsset;
 
+    private LinearLayout optionInformation;
+    private TextView optionName;
+    private TextView optionCode;
+    private TextView theoriticValue;
+    private TextView valueState;
+    private TextView innerValue;
+    private TextView timeValue;
+    private TextView dealAmount;
+    private TextView optionDelta;
+    private TextView optionGamma;
+    private TextView optionTheta;
+    private TextView optionVega;
+    private TextView optionVolatility;
+    private TextView optionMaxPrice;
+    private TextView optionMinPrice;
+
     private static final int DISTANCE=35;
+    private static final int STANDARD_OPTION_RESULT_LENGTH=14;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,6 +145,24 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         em=view.findViewById(R.id.em);
         beta=view.findViewById(R.id.beta);
         returnAsset=view.findViewById(R.id.return_asset);
+
+        optionInformation=view.findViewById(R.id.option_information);
+        optionInformation.setVisibility(View.GONE);
+
+        optionName=view.findViewById(R.id.option_name);
+        optionCode=view.findViewById(R.id.option_code);
+        theoriticValue=view.findViewById(R.id.theoritic_value);
+        valueState=view.findViewById(R.id.value_state);
+        innerValue=view.findViewById(R.id.inner_value);
+        timeValue=view.findViewById(R.id.time_value);
+        dealAmount=view.findViewById(R.id.deal_amount);
+        optionDelta=view.findViewById(R.id.option_delta);
+        optionGamma=view.findViewById(R.id.option_gamma);
+        optionTheta=view.findViewById(R.id.option_theta);
+        optionVega=view.findViewById(R.id.option_vega);
+        optionVolatility=view.findViewById(R.id.option_volatility);
+        optionMaxPrice=view.findViewById(R.id.option_max_price);
+        optionMinPrice=view.findViewById(R.id.option_min_price);
     }
 
     @Override
@@ -505,33 +543,24 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 intent.putExtra("fromMyCombination",true);
                 StringBuilder optionDetail=new StringBuilder("");
                 Option option=currentPortfolio.getOptions()[i1];
-                if(option.getType()>0){
-                    optionDetail.append("状态:买入\n");
-                }else {
-                    optionDetail.append("状态:卖出\n");
-                }
 
-                if(option.getCp()>0){
-                    optionDetail.append("判断:看涨\n");
-                }else {
-                    optionDetail.append("判断:看跌\n");
-                }
-                optionDetail.append("到期时间:").append(option.getExpireTime()).append("\n");
-                optionDetail.append("执行价格:").append(option.getK()).append("\n");
-                if(option.getType()>0){
-                    optionDetail.append("买入价格:").append(option.getPrice1()).append("\n");
-                }else {
-                    optionDetail.append("卖出价格:").append(option.getPrice2()).append("\n");
-                }
-                optionDetail.append("比例:").append(Math.abs(option.getType())).append("\n");
-                optionDetail.append("delta:").append(option.getDelta()).append("\n");
-                optionDetail.append("gamma:").append(option.getGamma()).append("\n");
-                optionDetail.append("theta:").append(option.getTheta()).append("\n");
-                optionDetail.append("vega:").append(option.getVega()).append("\n");
-                optionDetail.append("rho:").append(option.getRho()).append("\n");
-                intent.putExtra("optionDetail",optionDetail.toString());
-                intent.putExtra("optionName",option.getName());
-                ActivityJumper.rightEnterLeftExit(intent, Objects.requireNonNull(getContext()), Objects.requireNonNull(getActivity()));
+                String optionCodePart=option.getOptionCode().replace("OP","SO");
+
+                NetUtil.INSTANCE.sendGetRequest("http://hq.sinajs.cn/list="+optionCodePart, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        dialog.setTitle("网络连接错误");
+                        dialog.setMessage("期权网页出错");
+                        dialogShow();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String optionDetail=response.body().string();
+                        currentOptionChange(optionDetail);
+                    }
+                });
+
                 return false;
             }
         });
@@ -545,9 +574,49 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             @Override
             public void onGroupCollapse(int i) {
                 setListViewHeight(expandableListView,1);
+                optionInformation.setVisibility(View.GONE);
             }
         });
 
+    }
+
+    private void currentOptionChange(final String optionDetail){
+        Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(optionDetail!=null&&optionDetail.contains("\"")) {
+                    optionInformation.setVisibility(View.VISIBLE);
+                    int index = optionDetail.indexOf("\"");
+                    String str1 = optionDetail.substring(index + 1).replace(",,,,", ",");
+                    String[] result = str1.split(",");
+                    if(result.length==14) {
+                        optionName.setText(String.format("合约简称 %s", result[0]));
+                        optionCode.setText(String.format("交易代码 %s", result[9]));
+                        dealAmount.setText(String.format("成交量 %s", result[1]));
+                        optionDelta.setText(String.format("Delta %s", result[2]));
+                        optionGamma.setText(String.format("Gamma %s", result[3]));
+                        optionTheta.setText(String.format("Theta %s", result[4]));
+                        optionVega.setText(String.format("Vega %s", result[5]));
+                        optionVolatility.setText(String.format("隐含波动率 %s", result[6]));
+                        optionMaxPrice.setText(String.format("最高价 %s", result[7]));
+                        optionMinPrice.setText(String.format("最低价 %s", result[8]));
+                        theoriticValue.setText(String.format("理论价值 %s", result[12]));
+                    }
+                }else {
+                    optionName.setText("合约简称");
+                    optionCode.setText("交易代码");
+                    dealAmount.setText("成交量");
+                    optionDelta.setText("Delta");
+                    optionGamma.setText("Gamma");
+                    optionTheta.setText("Theta");
+                    optionVega.setText("Vega");
+                    optionVolatility.setText("隐含波动率");
+                    optionMaxPrice.setText("最高价");
+                    optionMinPrice.setText("最低价");
+                    theoriticValue.setText("理论价值");
+                }
+            }
+        });
     }
 
     /**
@@ -608,12 +677,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
      */
     private void initLineChart() {
         lineChart = view.findViewById(R.id.linechart);
-        /*Description description = new Description();
-        description.setText("组合表现");
-        description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
-        description.setTextSize(18);
-        description.setPosition(;
-        lineChart.setDescription(description);//设置图表描述信息*/
         lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
