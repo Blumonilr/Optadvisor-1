@@ -324,15 +324,15 @@ public class DIY extends Fragment {
             }
         }
         if(call_or_put==true){
-            if(temp1!=null) {
+            if(temp2!=null) {
                 for (int j = 0; j < temp1.size(); j++) {
-                    option_list.add(new CustomOption(et, temp1.get(j).getType(), temp1.get(j).getCp(), temp1.get(j).getOptionCode()));
+                    option_list.add(new CustomOption(et, temp2.get(j).getType(), temp2.get(j).getCp(), temp2.get(j).getOptionCode()));
                 }
             }
         }else{
-            if(temp2!=null) {
-                for (int j = 0; j < temp2.size(); j++) {
-                    option_list.add(new CustomOption(et, temp2.get(j).getType(), temp2.get(j).getCp(), temp2.get(j).getOptionCode()));
+            if(temp1!=null) {
+                for (int j = 0; j < temp1.size(); j++) {
+                    option_list.add(new CustomOption(et, temp1.get(j).getType(), temp1.get(j).getCp(), temp1.get(j).getOptionCode()));
                 }
             }
         }
