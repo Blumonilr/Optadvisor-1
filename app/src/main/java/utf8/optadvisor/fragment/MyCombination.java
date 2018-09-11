@@ -463,16 +463,16 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     for (Option option : currentPortfolio.getOptions()) {
                         tempArray.add(option.getName());
                     }
-                    cost.setText(String.valueOf(currentPortfolio.getCost()));
+                    cost.setText(String.format("%.4f",currentPortfolio.getCost()));
                     if(currentPortfolio.getOptions()!=null&&currentPortfolio.getOptions().length>0){
-                        timeLine.setText(String.valueOf(currentPortfolio.getOptions()[0].getExpireTime()));
+                        timeLine.setText(currentPortfolio.getOptions()[0].getExpireTime());
                     }else {
                         timeLine.setText("");
                     }
-                    beta.setText(String.valueOf(currentPortfolio.getBeta()));
-                    bond.setText(String.valueOf(currentPortfolio.getBond()));
-                    em.setText(String.valueOf(currentPortfolio.getEM()));
-                    returnAsset.setText(String.valueOf(currentPortfolio.getReturnOnAssets()));
+                    beta.setText(String.format("%.4f",currentPortfolio.getBeta()));
+                    bond.setText(String.format("%.4f",currentPortfolio.getBond()));
+                    em.setText(String.format("%.4f",currentPortfolio.getEM()));
+                    returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()));
                 }else {
                     cost.setText("");
                     timeLine.setText("");
@@ -542,7 +542,8 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 Intent intent=new Intent(getContext(), DetailActivity.class);
                 intent.putExtra("fromMyCombination",true);
                 StringBuilder optionDetail=new StringBuilder("");
-                Option option=currentPortfolio.getOptions()[i1];
+                final Option option=currentPortfolio.getOptions()[i1];
+                final int type=option.getCp();
 
                 String optionCodePart=option.getOptionCode().replace("OP","SO");
 
@@ -557,7 +558,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String optionDetail=response.body().string();
-                        currentOptionChange(optionDetail);
+                        currentOptionChange(optionDetail,type);
                     }
                 });
 
@@ -580,7 +581,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
 
     }
 
-    private void currentOptionChange(final String optionDetail){
+    private void currentOptionChange(final String optionDetail, final int type){
         Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -600,7 +601,30 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                         optionVolatility.setText(String.format("隐含波动率 %s", result[6]));
                         optionMaxPrice.setText(String.format("最高价 %s", result[7]));
                         optionMinPrice.setText(String.format("最低价 %s", result[8]));
+
+                        final double latestPrice=Double.parseDouble(result[11]);
+                        final double usePrice=Double.parseDouble(result[10]);
+
                         theoriticValue.setText(String.format("理论价值 %s", result[12]));
+                        NetUtil.INSTANCE.sendGetRequest("http://hq.sinajs.cn/list=s_sh510050,sh510050", new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String etfValue = response.body().string();
+                                Log.d("新浪期权", etfValue);
+                                try {
+                                    setOtherOptionValue(latestPrice, usePrice, etfValue, type);
+                                }catch (NumberFormatException e){
+                                    dialog.setTitle("网络错误");
+                                    dialog.setMessage("期权数据计算可能存在误差");
+                                    dialogShow();
+                                }
+                            }
+                        });
                     }
                 }else {
                     optionName.setText("合约简称");
@@ -614,10 +638,61 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     optionMaxPrice.setText("最高价");
                     optionMinPrice.setText("最低价");
                     theoriticValue.setText("理论价值");
+                    timeValue.setText("时间价值");
+                    innerValue.setText("内在价值");
+                    valueState.setText("价值状态");
                 }
             }
         });
     }
+
+    private void setOtherOptionValue(final double latestPrice, final double usePrice, final String etfValue, final int type)throws NumberFormatException{
+        Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int index=etfValue.indexOf("50ETF,");
+                String temp1=etfValue.substring(index+"50ETF,".length());
+                index=temp1.indexOf(",");
+                double priceMark=Double.parseDouble(temp1.substring(0,index))-usePrice;
+                double innerPrice;
+                if(type==1){
+                    if(priceMark>0){
+                        valueState.setText("价值状态 实值");
+                        innerPrice=priceMark;
+                    }
+                    else{
+                        if(priceMark==0){
+                            valueState.setText("价值状态 平值");
+                        }else {
+                            valueState.setText("价值状态 虚值");
+                        }
+                        innerPrice=0;
+                    }
+                    double timeValueText=((latestPrice-innerPrice)<=0)?0:latestPrice-innerPrice;
+                    innerValue.setText(String.format("内在价值 %.4f", innerPrice));
+                    timeValue.setText(String.format("时间价值 %.4f", timeValueText));
+                }else if(type==-1){
+                    if(priceMark<0){
+                        valueState.setText("价值状态 实值");
+                        innerPrice=-priceMark;
+                    }
+                    else{
+                        if(priceMark==0){
+                            valueState.setText("价值状态 平值");
+                        }else {
+                            valueState.setText("价值状态 虚值");
+                        }
+                        innerPrice=0;
+                    }
+                    double timeValueText=latestPrice-innerPrice;
+                    innerValue.setText(String.format("内在价值 %.4f", innerPrice));
+                    timeValue.setText(String.format("时间价值 %.4f", timeValueText));
+                }
+            }
+
+        });
+    }
+
 
     /**
      * 动态设置expandableList高度

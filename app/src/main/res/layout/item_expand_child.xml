@@ -28,7 +28,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="20dp"
-            android:background="@mipmap/ic_expand"/>
+            android:background="@mipmap/ic_expand_down"/>
 
     </RelativeLayout>
 
