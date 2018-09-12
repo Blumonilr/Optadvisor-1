@@ -104,7 +104,6 @@ public class ConfirmDialog extends Dialog {
                     values.put("z_rho", "\"" +  allocationResponse.getZ_rho()+"\"");
                     values.put("em", "\"" +  allocationResponse.getEm()+"\"");
                     values.put("beta", "\"" + allocationResponse.getBeta()+"\"");
-                    values.put("graph",new Gson().toJson(allocationResponse.getGraph(), new TypeToken<List<List<String>>>() {}.getType()).replaceAll(" ",""));
 
                     NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override

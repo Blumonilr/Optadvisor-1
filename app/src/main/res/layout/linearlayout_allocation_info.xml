@@ -300,7 +300,21 @@
                 />
 
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/allocation_line_chart"
+                android:id="@+id/allocation_line_chart1"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#ffffff"
+                android:layout_marginBottom="10dp"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/allocation_line_chart2"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#ffffff"
+                android:layout_marginBottom="10dp"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/allocation_line_chart3"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:background="#ffffff"
