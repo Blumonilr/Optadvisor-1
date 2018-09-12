@@ -3,8 +3,11 @@ package utf8.optadvisor.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +40,14 @@ public class ForgetResetPwdActivity extends AppCompatActivity {
         final EditText input1=findViewById(R.id.reset_first_textview);
         final EditText input2=findViewById(R.id.reset_again_textview);
         final Button confirm=findViewById(R.id.reset_button);
+
+        Toolbar toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +61,7 @@ public class ForgetResetPwdActivity extends AppCompatActivity {
                     Map<String,String> value=new HashMap<String,String>();
                     value.put("oldPassword",oldPassword.getText().toString());
                     value.put("newPassword",pwd1);
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/resetPassword", value, new Callback() {
+                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/user/resetPassword", value,ForgetResetPwdActivity.this, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             dialog.setTitle("网络连接错误");
@@ -81,6 +92,8 @@ public class ForgetResetPwdActivity extends AppCompatActivity {
                                     content="未知的错误，请重试";
                             }
                             if(content.length()>0){
+                                dialog.setTitle(title);
+                                dialog.setMessage(content);
                                 dialogShow();
                             }
                         }
@@ -103,4 +116,30 @@ public class ForgetResetPwdActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 重写Home键实现滑动切换界面
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                exit();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+    /**
+     * 滑动退出
+     */
+    private void exit(){
+        finish();
+        overridePendingTransition(R.anim.activity_left_enter,R.anim.activity_right_exit);
+    }
 }

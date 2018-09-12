@@ -3,6 +3,7 @@ package utf8.optadvisor.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,6 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -39,6 +42,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.MainActivity;
 import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.util.ControllerAdapter;
 import utf8.optadvisor.util.LeftAdapter;
@@ -59,6 +63,8 @@ public class DIY extends Fragment {
     private LeftAdapter leftAdapter=new LeftAdapter(left_data);
     private ControllerAdapter controllerAdapter=new ControllerAdapter(controller_data);
     private Button fb;
+    private LinearLayoutManager optionsLayoutManager;
+    private LinearLayoutManager controllersLayoutManager;
     private RecyclerView options_view;
     private RecyclerView controllers_view;
     private Spinner spinner;
@@ -69,6 +75,11 @@ public class DIY extends Fragment {
     private final int GET_EXPIRETIME=4;
     private final int SEND_DATA=5;
     private Button bt1;
+    private List<CustomOption> temp1;
+    private int[] temp_map1;
+    private int[] temp_map2;
+    private List<CustomOption> temp2;
+    private MyCombination myCombination;
     private ProgressBar progressBar;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder dialog;
@@ -86,8 +97,22 @@ public class DIY extends Fragment {
                     if(controller_data.size()>=1){
                         controller_data.clear();
                     }
-                    for(int i=0;i<((List<String[]>)msg.obj).size();i++){
-                        controller_data.add(i);
+                    if(call_or_put==true) {
+                        for (int i = 0; i < ((List<String[]>) msg.obj).size(); i++) {
+                            if(temp_map1!=null){
+                                controller_data.add(temp_map1[i]);
+                            }else{
+                                controller_data.add(0);
+                            }
+                        }
+                    }else{
+                        for (int i = 0; i < ((List<String[]>) msg.obj).size(); i++) {
+                            if(temp_map2!=null){
+                                controller_data.add(temp_map2[i]);
+                            }else{
+                                controller_data.add(0);
+                            }
+                        }
                     }
                     leftAdapter.notifyDataSetChanged();
                     controllerAdapter.notifyDataSetChanged();
@@ -107,7 +132,6 @@ public class DIY extends Fragment {
                  break;
                 case GET_EXPIRETIME:
                     String et=(String)msg.obj;
-                    System.out.print("sss");
                     sendDIY(et);
                     break;
                 case SEND_DATA:
@@ -119,6 +143,12 @@ public class DIY extends Fragment {
                     NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/portfolio",value, getContext(), new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.dismiss();
+                                }
+                            });
                             dialog.setTitle("网络连接错误");
                             dialog.setMessage("请稍后再试");
                             dialogShow();
@@ -126,7 +156,24 @@ public class DIY extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-
+                            if(temp1!=null) {
+                                temp1.clear();
+                            }
+                            if(temp2!=null) {
+                                temp2.clear();
+                            }
+                            temp_map1=null;
+                            temp_map2=null;
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                   progressDialog.dismiss();
+                                    initMonths();
+                                }
+                            });
+                            dialog.setTitle("添加成功");
+                            dialog.setMessage("请前往我的组合查看");
+                            dialogShow();
                         }
                     });
 
@@ -185,6 +232,7 @@ public class DIY extends Fragment {
             @Override
             public void onClick(View v) {
                 if(call_or_put!=true){
+                    saveTemp2();
                     call_or_put=true;
                     initOptionInfo(spinner.getSelectedItem().toString(),call_or_put);
                     if(progressBar.getVisibility()== View.GONE){
@@ -198,6 +246,7 @@ public class DIY extends Fragment {
             @Override
             public void onClick(View v) {
                 if(call_or_put!=false){
+                    saveTemp1();
                     call_or_put=false;
                     initOptionInfo(spinner.getSelectedItem().toString(),call_or_put);
                     if(progressBar.getVisibility()== View.GONE){
@@ -210,8 +259,8 @@ public class DIY extends Fragment {
         //初始化RecyclerView数据
         options_view=view.findViewById(R.id.diy_options);
         controllers_view=view.findViewById(R.id.quantity_controller);
-        LinearLayoutManager optionsLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        LinearLayoutManager controllersLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        optionsLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        controllersLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         options_view.setLayoutManager(optionsLayoutManager);
         controllers_view.setLayoutManager(controllersLayoutManager);
         options_view.setAdapter(leftAdapter);
@@ -242,25 +291,14 @@ public class DIY extends Fragment {
                             Response response=client.newCall(request).execute();
                             String s=response.body().string();
                             s=s.substring(s.indexOf("expireDay")+12,s.indexOf("expireDay")+22);
+                            mHandler.obtainMessage(GET_EXPIRETIME,s).sendToTarget();
                             Looper.prepare();
                             progressDialog=new ProgressDialog(getContext());
                             progressDialog.setTitle("请稍等");
                             progressDialog.setMessage("Loading...");
                             progressDialog.show();
                             progressDialog.setCancelable(true);
-                            final CountDownTimer timer = new CountDownTimer(5000, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    progressDialog.dismiss();
-                                }
-                            };
-                            timer.start();
                             Looper.loop();
-                            mHandler.obtainMessage(GET_EXPIRETIME,s).sendToTarget();
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -277,23 +315,50 @@ public class DIY extends Fragment {
         return view;
     }
     private void sendDIY(String et){
-        Map<Integer,Integer> amount_map=controllerAdapter.getAmount_map();
         int cp=1;
         if(call_or_put==false){
             cp=-1;
         }
+        int[] temp;
+        if(call_or_put==false) {
+            temp = controllerAdapter.getV2();
+        }
+        else {
+            temp=controllerAdapter.getV1();
+        }
         List<CustomOption> option_list=new ArrayList<>();
-        for(int key:amount_map.keySet()){
-            String code=list.get(0)[key];
-            option_list.add(new CustomOption(et,amount_map.get(key),cp,code));
+        for(int k=0;k<temp.length;k++){
+            if(temp[k]!=0) {
+                String code = list.get(0)[k];
+                option_list.add(new CustomOption(et, temp[k], cp, code));
+            }
+        }
+        if(call_or_put==true){
+            if(temp2!=null) {
+                for (int j = 0; j < temp2.size(); j++) {
+                    option_list.add(new CustomOption(et, temp2.get(j).getType(), temp2.get(j).getCp(), temp2.get(j).getOptionCode()));
+                }
+            }
+        }else{
+            if(temp1!=null) {
+                for (int j = 0; j < temp1.size(); j++) {
+                    option_list.add(new CustomOption(et, temp1.get(j).getType(), temp1.get(j).getCp(), temp1.get(j).getOptionCode()));
+                }
+            }
         }
         Gson gson=new Gson();
         String value=gson.toJson(option_list);
         value="{\"options\": "+value+"}";
-        System.out.println("json"+value);
+        System.out.println("DIY json"+value);
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                });
                 dialog.setTitle("网络连接错误");
                 dialog.setMessage("请稍后再试");
                 dialogShow();
@@ -303,6 +368,12 @@ public class DIY extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                String value=response.body().string();
                if(value.contains("1008")){
+                   getActivity().runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           progressDialog.dismiss();
+                       }
+                   });
                    dialog.setTitle("网络连接错误");
                    dialog.setMessage("请重试");
                    dialogShow();
@@ -407,5 +478,34 @@ public class DIY extends Fragment {
                 dialog.show();
             }
         });
+    }
+    private void saveTemp2(){
+        temp_map2=controllerAdapter.getAmount_map();
+        int cp=1;
+        if(call_or_put==false){
+            cp=-1;
+        }
+        temp2=new ArrayList<>();
+        for(int i=0;i<controllerAdapter.getItemCount();i++){
+            if(temp_map2[i]!=0) {
+                String code = list.get(0)[i];
+                temp2.add(new CustomOption(temp_map2[i], cp, code));
+            }
+        }
+    }
+    private void saveTemp1(){
+        temp_map1=controllerAdapter.getAmount_map();
+        int cp=1;
+        if(call_or_put==false){
+            cp=-1;
+        }
+        temp1=new ArrayList<>();
+        for(int i=0;i<controllerAdapter.getItemCount();i++){
+            if(temp_map1[i]!=0) {
+                String code = list.get(0)[i];
+                temp1.add(new CustomOption(temp_map1[i], cp, code));
+            }
+        }
+
     }
 }

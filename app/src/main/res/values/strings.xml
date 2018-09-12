@@ -154,6 +154,28 @@
     <string name="recommend_text">资产配置</string>
     <string name="hedge_text">套期保值</string>
     <string name="diy_text">DIY</string>
+    <string name="welcome">欢迎您！</string>
+    <string name="current_portfolio">当前组合:</string>
+    <string name="cost">成本</string>
+    <string name="time_line">到期时间</string>
+    <string name="bond">保证金</string>
+    <string name="beta">组合风险值</string>
+    <string name="em">期望收益</string>
+    <string name="return_asset">资产收益率</string>
+    <string name="option_name">合约简称</string>
+    <string name="option_code">交易代码</string>
+    <string name="theoritic_value">理论价值</string>
+    <string name="value_state">价值状态</string>
+    <string name="inner_value">内在价值</string>
+    <string name="time_value">时间价值</string>
+    <string name="deal_amount">成交量</string>
+    <string name="option_delta">Delta</string>
+    <string name="option_gamma">Gamma</string>
+    <string name="option_theta">Theta</string>
+    <string name="option_vega">Vega</string>
+    <string name="option_volatility">隐含波动率</string>
+    <string name="option_max_price">最高价</string>
+    <string name="option_min_price">最低价</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

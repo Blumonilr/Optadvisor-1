@@ -135,6 +135,7 @@
                 tools:layout_editor_absoluteY="0dp">
 
               <DatePicker
+                  android:padding="20dp"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/date_picker"

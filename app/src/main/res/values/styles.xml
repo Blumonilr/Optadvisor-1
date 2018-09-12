@@ -110,4 +110,31 @@
         <item name="android:popupBackground">@color/colorButton</item> <!--更改背景颜色-->
         <item name="android:background">@color/colorButton</item>
     </style>
+
+    <style name="CombinationValue">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorLightWhite</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="OptionValue">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="CombinationChart">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">300dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:alpha">0.9</item>
+        <item name="android:background">@color/colorLightWhite</item>
+        <item name="android:padding">10dp</item>
+    </style>
 </resources>

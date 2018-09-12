@@ -11,6 +11,11 @@ public class CustomOption {
         this.cp=cp;
         this.optionCode=optionCode;
     }
+    public CustomOption(int type,int cp,String optionCode){
+        this.type=type;
+        this.cp=cp;
+        this.optionCode=optionCode;
+    }
 
 
     public int getCp() {

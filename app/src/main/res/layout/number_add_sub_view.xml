@@ -22,8 +22,7 @@
         android:layout_height="match_parent"
         android:background="@null"
         android:inputType="number"
-        android:gravity="center"
-        android:text="0"/>
+        android:gravity="center" />
 
     <Button
         android:id="@+id/btnIncrease"
