@@ -6,29 +6,6 @@
     android:orientation="vertical"
     android:background="@color/colorButton"
     tools:context=".fragment.MyCombination">
-    <LinearLayout
-        android:id="@+id/sub_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorLightWhite"
-        tools:ignore="UselessParent">
-
-
-        <Button
-            android:id="@+id/allocation_button"
-            style="@style/MainTopButton"
-            android:text="@string/my_allocation" />
-
-        <Button
-            android:id="@+id/hedge_button"
-            style="@style/MainTopButton"
-            android:text="@string/my_hedge" />
-
-        <Button
-            android:id="@+id/diy_button"
-            style="@style/MainTopButton"
-            android:text="@string/my_diy" />
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -260,16 +237,41 @@
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/linechart"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:alpha="0.9"
-                android:background="@color/colorLightWhite"
-                android:padding="10dp" />
+                android:id="@+id/linechart1"
+                style="@style/CombinationChart" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart2"
+                style="@style/CombinationChart" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart3"
+                style="@style/CombinationChart" />
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/sub_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLightWhite"
+        tools:ignore="UselessParent">
+
+
+        <Button
+            android:id="@+id/allocation_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_allocation" />
+
+        <Button
+            android:id="@+id/hedge_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_hedge" />
+
+        <Button
+            android:id="@+id/diy_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_diy" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -77,7 +77,9 @@ public class MyCombination extends Fragment implements View.OnClickListener {
 
     private ProgressBar progressBar;
 
-    private LineChart lineChart;
+    private LineChart lineChart1;
+    private LineChart lineChart2;
+    private LineChart lineChart3;
 
     private Button[] buttons;
     private int[] buttonChosen;
@@ -751,7 +753,16 @@ public class MyCombination extends Fragment implements View.OnClickListener {
      * 画回测图
      */
     private void initLineChart() {
-        lineChart = view.findViewById(R.id.linechart);
+        lineChart1 = view.findViewById(R.id.linechart1);
+        lineChart2=view.findViewById(R.id.linechart2);
+        lineChart3=view.findViewById(R.id.linechart3);
+        setLineChart(lineChart1);
+        setLineChart(lineChart2);
+        setLineChart(lineChart3);
+        refreshChartData();
+    }
+
+    private void setLineChart(LineChart lineChart){
         lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
@@ -760,6 +771,8 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineChart.setDragEnabled(true);
         lineChart.setScaleXEnabled(true);// 缩放
         lineChart.setScaleYEnabled(false);
+
+        lineChart.setVisibility(View.GONE);
 
         XAxis xAxis=lineChart.getXAxis();
         xAxis.setValueFormatter(new PortfolioXFormatter());
@@ -775,7 +788,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         markerView.setChartView(lineChart);
         lineChart.setMarker(markerView);//设置交互小图标
 
-        refreshChartData();
     }
 
     /**
@@ -798,14 +810,29 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                     if (responseMsg.getData() != null) {
                         MyCombinationResponse myCombinationResponse = new Gson().fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), MyCombinationResponse.class);
-                        String[][] graph = myCombinationResponse.getGraph();
-                        if (graph != null) {
-                            if (toDraw.getType() == 0) {//资产配置
-                                drawRecommend(graph);
-                            } else if (toDraw.getType() == 1) {
+                        if (toDraw.getType() == 0) {//资产配置
+                            String[][] assertPrice2Profit=myCombinationResponse.getAssertPrice2Profit();
+                            String[][] profit2Probability=myCombinationResponse.getProfit2Probability();
+                            String[][] historyProfit2Probability=myCombinationResponse.getHistoryProfit2Probability();
+                            if(assertPrice2Profit!=null&&profit2Probability!=null&&historyProfit2Probability!=null) {
+                                drawRecommend(assertPrice2Profit,profit2Probability,historyProfit2Probability);
+                            }else {
+                                clearChart();
+                            }
+                        } else if (toDraw.getType() == 1) {
+                            String[][] graph=myCombinationResponse.getGraph();
+                            if(graph!=null) {
                                 drawHedge(graph);
-                            } else if (toDraw.getType() == 2) {
-                                drawDiy(graph);
+                            }else {
+                                clearChart();
+                            }
+                        } else if (toDraw.getType() == 2) {
+                            String[][] assertPrice2Profit=myCombinationResponse.getAssertPrice2Profit();
+                            String[][] historyProfit2Probability=myCombinationResponse.getHistoryProfit2Probability();
+                            if(assertPrice2Profit!=null&&historyProfit2Probability!=null) {
+                                drawDiy(assertPrice2Profit, historyProfit2Probability);
+                            }else {
+                                clearChart();
                             }
                         }
                     }
@@ -819,46 +846,74 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                lineChart.clear();
-                lineChart.setData(null);
-                lineChart.invalidate();
+                lineChart1.clear();
+                lineChart1.setData(null);
+                lineChart1.invalidate();
+                lineChart1.setVisibility(View.GONE);
+                lineChart2.clear();
+                lineChart2.setData(null);
+                lineChart2.invalidate();
+                lineChart2.setVisibility(View.GONE);
+                lineChart3.clear();
+                lineChart3.setData(null);
+                lineChart3.invalidate();
+                lineChart3.setVisibility(View.GONE);
             }
         });
 
 
     }
 
-    private void drawRecommend(final String[][] graph){
+    private void drawRecommend(final String[][] assertPrice2Profit, final String[][] profit2Probability, final String[][] historyProfit2Probability){
         Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Entry> backTestData = new ArrayList<>();
-                ArrayList<Entry> profitData=new ArrayList<>();
-                for (int i = 0; i < graph[0].length; i++) {
-                    backTestData.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
-                    profitData.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[2][i])));
+                ArrayList<Entry> data1 = new ArrayList<>();
+                ArrayList<Entry> data2=new ArrayList<>();
+                ArrayList<Entry> data3=new ArrayList<>();
+                for (int i = 0; i < assertPrice2Profit[0].length; i++) {
+                    data1.add(new Entry(Float.parseFloat(assertPrice2Profit[0][i]), Float.parseFloat(assertPrice2Profit[1][i])));
                 }
-                LineDataSet set1= new LineDataSet(backTestData, "回测收益曲线");
-                LineDataSet set2= new LineDataSet(profitData,"资产收益曲线");
+                for (int i = 0; i <profit2Probability[0].length; i++) {
+                    data2.add(new Entry(Float.parseFloat(profit2Probability[0][i]), Float.parseFloat(profit2Probability[1][i])));
+                }
+                for (int i = 0; i <historyProfit2Probability[0].length; i++) {
+                    data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
+                }
+                LineDataSet set1= new LineDataSet(data1, "组合收益");
+                LineDataSet set2= new LineDataSet(data2,"概率分布");
+                LineDataSet set3=new LineDataSet(data3,"概率分布");
 
                 setChartDataSet(set1,0);
                 setChartDataSet(set2,1);
+                setChartDataSet(set3,2);
 
                 //保存LineDataSet集合
-                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                dataSets.add(set1);
-                dataSets.add(set2);
+                ArrayList<ILineDataSet> dataSets1= new ArrayList<>();
+                dataSets1.add(set1);
+                ArrayList<ILineDataSet> dataSets2= new ArrayList<>();
+                dataSets2.add(set2);
+                ArrayList<ILineDataSet> dataSets3= new ArrayList<>();
+                dataSets3.add(set3);
                 //创建LineData对象 属于LineChart折线图的数据集合
-                LineData data = new LineData(dataSets);
+                LineData lineData1 = new LineData(dataSets1);
+                LineData lineData2 = new LineData(dataSets2);
+                LineData lineData3 = new LineData(dataSets3);
                 // 添加到图表中
-                lineChart.setData(data);
+                lineChart1.setData(lineData1);
+                lineChart2.setData(lineData2);
+                lineChart3.setData(lineData3);
 
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setValueFormatter(new PortfolioXFormatter());
-
-                lineChart.setVisibleXRangeMaximum(8f);
+                lineChart1.setVisibleXRangeMaximum(8f);
+                lineChart2.setVisibleXRangeMaximum(8f);
+                lineChart3.setVisibleXRangeMaximum(8f);
                 //绘制图表
-                lineChart.invalidate();
+                lineChart1.invalidate();
+                lineChart2.invalidate();
+                lineChart3.invalidate();
+                lineChart1.setVisibility(View.VISIBLE);
+                lineChart2.setVisibility(View.VISIBLE);
+                lineChart3.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -869,64 +924,73 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             public void run() {
                 ArrayList<Entry> data1 = new ArrayList<>();
                 ArrayList<Entry> data2=new ArrayList<>();
-                ArrayList<Entry> data3=new ArrayList<>();
                 for (int i = 0; i < graph[0].length; i++) {
-                    String date=graph[0][i].replace("-",".");
-                    data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
-                    data2.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[2][i])));
-                    data3.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[3][i])));
+                    data1.add(new Entry(Float.parseFloat(graph[0][i]), Float.parseFloat(graph[1][i])));
+                    data2.add(new Entry(Float.parseFloat(graph[0][i]), Float.parseFloat(graph[2][i])));
                 }
-                LineDataSet set1= new LineDataSet(data1, "持有收益");
-                LineDataSet set2= new LineDataSet(data2,"未持有收益");
-                LineDataSet set3= new LineDataSet(data3,"收益差");
+                LineDataSet set1= new LineDataSet(data1, "不持有时损失");
+                LineDataSet set2= new LineDataSet(data2,"持有时损失");
+
                 setChartDataSet(set1,0);
                 setChartDataSet(set2,1);
-                setChartDataSet(set3,2);
 
                 ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                 dataSets.add(set1);
                 dataSets.add(set2);
-                dataSets.add(set3);
 
                 LineData data = new LineData(dataSets);
 
-                lineChart.setData(data);
+                lineChart1.setData(data);
 
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setValueFormatter(new PortfolioXFormatter());
+                lineChart1.setVisibleXRangeMaximum(8f);
 
-                lineChart.setVisibleXRangeMaximum(8f);
-
-                lineChart.invalidate();
+                lineChart1.invalidate();
+                lineChart1.setVisibility(View.VISIBLE);
+                lineChart2.setVisibility(View.GONE);
+                lineChart3.setVisibility(View.GONE);
             }
         });
     }
 
-    private void drawDiy(final String[][] graph){
+    private void drawDiy(final String[][] assertPrice2Profit, final String[][] historyProfit2Probability){
         Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ArrayList<Entry> data1 = new ArrayList<>();
-                for (int i = 0; i < graph[0].length; i++) {
-                    data1.add(new Entry(handleDate(graph[0][i]), Float.parseFloat(graph[1][i])));
+                ArrayList<Entry> data3=new ArrayList<>();
+                for (int i = 0; i < assertPrice2Profit[0].length; i++) {
+                    data1.add(new Entry(Float.parseFloat(assertPrice2Profit[0][i]), Float.parseFloat(assertPrice2Profit[1][i])));
                 }
 
-                LineDataSet set1= new LineDataSet(data1, "回测收益曲线");
+                for (int i = 0; i < historyProfit2Probability[0].length; i++) {
+                    data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
+                }
+                LineDataSet set1= new LineDataSet(data1, "组合收益");
+                LineDataSet set3=new LineDataSet(data3,"概率分布");
+
                 setChartDataSet(set1,0);
+                setChartDataSet(set3,2);
 
-                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                dataSets.add(set1);
+                //保存LineDataSet集合
+                ArrayList<ILineDataSet> dataSets1= new ArrayList<>();
+                dataSets1.add(set1);
+                ArrayList<ILineDataSet> dataSets3= new ArrayList<>();
+                dataSets3.add(set3);
+                //创建LineData对象 属于LineChart折线图的数据集合
+                LineData lineData1 = new LineData(dataSets1);
+                LineData lineData3 = new LineData(dataSets3);
+                // 添加到图表中
+                lineChart1.setData(lineData1);
+                lineChart3.setData(lineData3);
 
-
-                LineData data = new LineData(dataSets);
-
-                lineChart.setData(data);
-
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setValueFormatter(new PortfolioXFormatter());
-
-                lineChart.setVisibleXRangeMaximum(8f);//只有在设置了数据源以后才能设置，x轴最大显示数
-                lineChart.invalidate();
+                lineChart1.setVisibleXRangeMaximum(8f);
+                lineChart3.setVisibleXRangeMaximum(8f);
+                //绘制图表
+                lineChart1.invalidate();
+                lineChart3.invalidate();
+                lineChart1.setVisibility(View.VISIBLE);
+                lineChart2.setVisibility(View.GONE);
+                lineChart3.setVisibility(View.VISIBLE);
             }
         });
     }
