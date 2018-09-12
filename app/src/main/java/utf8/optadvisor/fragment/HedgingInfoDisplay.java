@@ -133,7 +133,7 @@ public class HedgingInfoDisplay extends ScrollView {
         lineChart.setScaleYEnabled(false);
 
         XAxis xAxis=lineChart.getXAxis();
-        xAxis.setValueFormatter(new PortfolioXFormatter());
+//        xAxis.setValueFormatter(new PortfolioXFormatter());
         xAxis.setLabelCount(6,false);
         xAxis.setGranularity(1f);
         xAxis.setAxisLineWidth(1f);
@@ -167,8 +167,6 @@ public class HedgingInfoDisplay extends ScrollView {
 
         lineChart.setData(data);
 
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setValueFormatter(new PortfolioXFormatter());
 
         lineChart.setVisibleXRangeMaximum(8f);
 
