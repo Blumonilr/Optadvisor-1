@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -245,6 +247,68 @@ public class AllocationInfoPage extends LinearLayout {
         lineChart1.setVisibleXRangeMaximum(8f);
         lineChart2.setVisibleXRangeMaximum(8f);
         lineChart3.setVisibleXRangeMaximum(8f);
+
+        lineChart1.setNoDataText("暂无数据显示");//没有数据时显示的文字
+        lineChart1.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
+        lineChart1.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
+        lineChart1.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart1.setTouchEnabled(true);
+        lineChart1.setDragEnabled(true);
+        lineChart1.setScaleXEnabled(true);// 缩放
+        lineChart1.setScaleYEnabled(false);
+
+        lineChart2.setNoDataText("暂无数据显示");//没有数据时显示的文字
+        lineChart2.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
+        lineChart2.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
+        lineChart2.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart2.setTouchEnabled(true);
+        lineChart2.setDragEnabled(true);
+        lineChart2.setScaleXEnabled(true);// 缩放
+        lineChart2.setScaleYEnabled(false);
+
+        lineChart3.setNoDataText("暂无数据显示");//没有数据时显示的文字
+        lineChart3.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
+        lineChart3.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
+        lineChart3.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart3.setTouchEnabled(true);
+        lineChart3.setDragEnabled(true);
+        lineChart3.setScaleXEnabled(true);// 缩放
+        lineChart3.setScaleYEnabled(false);
+
+        ChartMarkerView markerView = new ChartMarkerView(this.getContext(), R.layout.marker_view);
+        markerView.setChartView(lineChart1);
+        lineChart1.setMarker(markerView);
+        markerView.setChartView(lineChart2);
+        lineChart2.setMarker(markerView);
+        markerView.setChartView(lineChart3);
+        lineChart3.setMarker(markerView);
+
+        YAxis yAxis1=lineChart1.getAxisRight();
+        yAxis1.setEnabled(false);
+        YAxis yAxis2=lineChart2.getAxisRight();
+        yAxis2.setEnabled(false);
+        YAxis yAxis3=lineChart3.getAxisRight();
+        yAxis3.setEnabled(false);
+
+        XAxis xAxis1=lineChart1.getXAxis();
+        xAxis1.setLabelCount(6,false);
+        xAxis1.setGranularity(1f);
+        xAxis1.setAxisLineWidth(1f);
+        xAxis1.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        XAxis xAxis2=lineChart2.getXAxis();
+        xAxis2.setLabelCount(6,false);
+        xAxis2.setGranularity(1f);
+        xAxis2.setAxisLineWidth(1f);
+        xAxis2.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        XAxis xAxis3=lineChart3.getXAxis();
+        xAxis3.setLabelCount(6,false);
+        xAxis3.setGranularity(1f);
+        xAxis3.setAxisLineWidth(1f);
+        xAxis3.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
         //绘制图表
         lineChart1.invalidate();
         lineChart2.invalidate();
