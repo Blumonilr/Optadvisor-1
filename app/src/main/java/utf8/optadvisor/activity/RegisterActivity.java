@@ -103,51 +103,65 @@ public class RegisterActivity extends AppCompatActivity {
         }
         String email = edit_email.getText().toString();
         if (username == null || password == null ||name == null || birthday ==null || telephone == null || gender == null) {
-            System.out.println("注册信息有空缺");
+            dialog.setTitle("注册失败");
+            dialog.setMessage("注册信息有空缺");
+            dialogShow();
         }
-        else{
-            Info.setUsername(username);
-            Info.setBirthday(birthday);
-            Info.setPassword(password);
-            Info.setName(name);
-            Info.setGender(gender);
-            Info.setTelephone(telephone);
-            Info.setEmail(email);
-
-
-            final Map<String, String> value = new HashMap<String, String>();
-            value.put("username", username);
-            value.put("password", password);
-            value.put("name", name);
-            value.put("birthday", birthday);
-            value.put("telephone", telephone);
-            value.put("email", email);
-            value.put("gender", gender);
-            value.put("avatarPath", "");
-            value.put("w1", "");
-            value.put("w2", "");
-            NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS+"/isUsernameUsed", value, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    System.out.println("注册界面网络错误");
+        else {
+            boolean testPhone = true;
+            for (int i = 0; i < telephone.length(); i++) {
+                if (!Character.isDigit(telephone.charAt(i))) {
+                    testPhone = false;
                 }
+            }
+            if (testPhone){
+                Info.setUsername(username);
+                Info.setBirthday(birthday);
+                Info.setPassword(password);
+                Info.setName(name);
+                Info.setGender(gender);
+                Info.setTelephone(telephone);
+                Info.setEmail(email);
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                    if (responseMsg.getCode() == 0) {
-                        Intent intent = new Intent(RegisterActivity.this, QuestionnaireActivity.class);
-                        intent.putExtra("Info", Info);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        dialog.setTitle("注册失败");
-                        dialog.setMessage("用户名重复");
-                        dialogShow();
+
+                final Map<String, String> value = new HashMap<String, String>();
+                value.put("username", username);
+                value.put("password", password);
+                value.put("name", name);
+                value.put("birthday", birthday);
+                value.put("telephone", telephone);
+                value.put("email", email);
+                value.put("gender", gender);
+                value.put("avatarPath", "");
+                value.put("w1", "");
+                value.put("w2", "");
+                NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/isUsernameUsed", value, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        System.out.println("注册界面网络错误");
                     }
 
-                }
-            });
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                        if (responseMsg.getCode() == 0) {
+                            Intent intent = new Intent(RegisterActivity.this, QuestionnaireActivity.class);
+                            intent.putExtra("Info", Info);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            dialog.setTitle("注册失败");
+                            dialog.setMessage("用户名重复");
+                            dialogShow();
+                        }
+
+                    }
+                });
+            }else{
+                dialog.setTitle("注册失败");
+                dialog.setMessage("手机号码格式错误");
+                dialogShow();
+            }
 
 
         }
