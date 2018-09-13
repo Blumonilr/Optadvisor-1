@@ -367,7 +367,7 @@ public class DIY extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                String value=response.body().string();
-               if(value.contains("1008")){
+               if(value.contains("\"code\": \"1008\",")){
                    getActivity().runOnUiThread(new Runnable() {
                        @Override
                        public void run() {
