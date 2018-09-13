@@ -93,6 +93,7 @@ public class AddDialog extends Dialog {
                     values.put("graph",new Gson().toJson(hedgingResponse.getGraph(), new TypeToken<String[][]>() {}.getType()).replaceAll(" ",""));
                     values.put("iK","\""+hedgingResponse.getIk()+"\"");
                     values.put("sExp","\""+hedgingInfoSetting.getsExp()+"\"");
+                    values.put("pAsset","\""+hedgingResponse.getpAsset()+"\"");
 
                     NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override

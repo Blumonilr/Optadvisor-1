@@ -8,6 +8,7 @@ public class HedgingResponse implements Serializable{
     private Option option=null;
     private double ik;
     private String[][] graph;
+    private double pAsset;
 
     public HedgingResponse() {
     }
@@ -34,5 +35,9 @@ public class HedgingResponse implements Serializable{
 
     public void setGraph(String[][] graph) {
         this.graph = graph;
+    }
+
+    public double getpAsset() {
+        return pAsset;
     }
 }
