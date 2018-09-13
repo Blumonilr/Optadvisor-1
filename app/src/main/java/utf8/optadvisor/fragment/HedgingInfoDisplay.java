@@ -152,8 +152,8 @@ public class HedgingInfoDisplay extends ScrollView {
         ArrayList<Entry> data3=new ArrayList<>();
         for (int i = 0; i < response.getGraph()[0].length; i++) {
 //            String date=response.getGraph()[0][i].replace("-",".");
-            data1.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[1][i])));
-            data2.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[2][i])));
+            data1.add(new Entry(Float.parseFloat(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[1][i])));
+            data2.add(new Entry(Float.parseFloat(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[2][i])));
         }
         LineDataSet set1= new LineDataSet(data1, "不持有时损失");
         LineDataSet set2= new LineDataSet(data2,"持有时损失");
@@ -231,16 +231,16 @@ public class HedgingInfoDisplay extends ScrollView {
         maxLoss.setIconLeft(R.mipmap.ic_loss);
     }
 
-    private float handleDate(String str){
-        if(TextUtils.isEmpty(str)) return 0;
-        int index=str.indexOf("-");
-        String year=str.substring(0,index);
-        String month=str.substring(index+1);
 
-        return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
-    }
 
-    /**
+    /**   private float handleDate(String str){
+     if(TextUtils.isEmpty(str)) return 0;
+     int index=str.indexOf("-");
+     String year=str.substring(0,index);
+     String month=str.substring(index+1);
+
+     return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
+     }
      * 设置dataSet
      */
     private void setChartDataSet(LineDataSet lineDataSet,int type){
