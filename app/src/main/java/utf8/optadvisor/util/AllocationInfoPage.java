@@ -62,7 +62,9 @@ public class AllocationInfoPage extends LinearLayout {
     private AllocationResponse allocationResponse;
     private AllocationSetting allocationSetting;
 
-    private LineChart lineChart;
+    private LineChart lineChart1;
+    private LineChart lineChart2;
+    private LineChart lineChart3;
     int[] colors=new int[]{Color.parseColor("#BF0815"),Color.parseColor("#088B05")};
 
     public AllocationSetting getAllocationSetting() {
@@ -92,7 +94,9 @@ public class AllocationInfoPage extends LinearLayout {
         }
 
 
-        lineChart = (LineChart)findViewById(R.id.allocation_line_chart);
+        lineChart1 = (LineChart)findViewById(R.id.allocation_line_chart1);
+        lineChart2 = (LineChart)findViewById(R.id.allocation_line_chart2);
+        lineChart3 = (LineChart)findViewById(R.id.allocation_line_chart3);
         initLineChart();//初始化
 
         Button add=(Button)findViewById(R.id.allocation_info_bt_add);
@@ -202,37 +206,52 @@ public class AllocationInfoPage extends LinearLayout {
      */
     private void initLineChart(){
 
-        ArrayList<Entry> backTestData = new ArrayList<>();
-        ArrayList<Entry> profitData=new ArrayList<>();
-        for (int i = 0; i <allocationResponse.getGraph().get(0).size(); i++) {
-            backTestData.add(new Entry(handleDate(allocationResponse.getGraph().get(0).get(i)), Float.parseFloat(allocationResponse.getGraph().get(1).get(i))));
-            profitData.add(new Entry(handleDate(allocationResponse.getGraph().get(0).get(i)), Float.parseFloat(allocationResponse.getGraph().get(2).get(i))));
+        ArrayList<Entry> data1 = new ArrayList<>();
+        ArrayList<Entry> data2=new ArrayList<>();
+        ArrayList<Entry> data3=new ArrayList<>();
+        for (int i = 0; i < allocationResponse.getAssertPrice2Profit()[0].length; i++) {
+            data1.add(new Entry(Float.parseFloat(allocationResponse.getAssertPrice2Profit()[0][i]), Float.parseFloat(allocationResponse.getAssertPrice2Profit()[1][i])));
         }
-        LineDataSet set1= new LineDataSet(backTestData, "回测收益曲线");
-        LineDataSet set2= new LineDataSet(profitData,"资产收益曲线");
+        for (int i = 0; i <allocationResponse.getProfit2Probability()[0].length; i++) {
+            data2.add(new Entry(Float.parseFloat(allocationResponse.getProfit2Probability()[0][i]), Float.parseFloat(allocationResponse.getProfit2Probability()[1][i])));
+        }
+        for (int i = 0; i <allocationResponse.getHistoryProfit2Probability()[0].length; i++) {
+            data3.add(new Entry(Float.parseFloat(allocationResponse.getHistoryProfit2Probability()[0][i]), Float.parseFloat(allocationResponse.getHistoryProfit2Probability()[1][i])));
+        }
+        LineDataSet set1= new LineDataSet(data1, "组合收益");
+        LineDataSet set2= new LineDataSet(data2,"概率分布");
+        LineDataSet set3=new LineDataSet(data3,"概率分布");
 
         setChartDataSet(set1,0);
         setChartDataSet(set2,1);
+        setChartDataSet(set3,2);
 
         //保存LineDataSet集合
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-        dataSets.add(set2);
+        ArrayList<ILineDataSet> dataSets1= new ArrayList<>();
+        dataSets1.add(set1);
+        ArrayList<ILineDataSet> dataSets2= new ArrayList<>();
+        dataSets2.add(set2);
+        ArrayList<ILineDataSet> dataSets3= new ArrayList<>();
+        dataSets3.add(set3);
         //创建LineData对象 属于LineChart折线图的数据集合
-        LineData data = new LineData(dataSets);
+        LineData lineData1 = new LineData(dataSets1);
+        LineData lineData2 = new LineData(dataSets2);
+        LineData lineData3 = new LineData(dataSets3);
         // 添加到图表中
-        lineChart.setData(data);
+        lineChart1.setData(lineData1);
+        lineChart2.setData(lineData2);
+        lineChart3.setData(lineData3);
 
-        ChartMarkerView markerView = new ChartMarkerView(getContext(), R.layout.marker_view);
-        markerView.setChartView(lineChart);
-        lineChart.setMarker(markerView);//设置交互小图标
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setValueFormatter(new PortfolioXFormatter());
-
-        lineChart.setVisibleXRangeMaximum(8f);
+        lineChart1.setVisibleXRangeMaximum(8f);
+        lineChart2.setVisibleXRangeMaximum(8f);
+        lineChart3.setVisibleXRangeMaximum(8f);
         //绘制图表
-        lineChart.invalidate();
+        lineChart1.invalidate();
+        lineChart2.invalidate();
+        lineChart3.invalidate();
+        lineChart1.setVisibility(View.VISIBLE);
+        lineChart2.setVisibility(View.VISIBLE);
+        lineChart3.setVisibility(View.VISIBLE);
     }
 
 

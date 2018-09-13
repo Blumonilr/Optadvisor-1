@@ -19,7 +19,9 @@ public class AllocationResponse implements Serializable {
     private double z_rho;
     private double em;
     private double beta;
-    private List<List<String>> graph;
+    private String[][] assertPrice2Profit;
+    private String[][] profit2Probability;
+    private String[][] historyProfit2Probability;
     private double m0;
     private double k;
     private double p1;
@@ -102,11 +104,21 @@ public class AllocationResponse implements Serializable {
         return returnOnAssets;
     }
 
-    public List<List<String>> getGraph() {
-        return graph;
-    }
 
     public List<Option> getOptions() {
         return optionList;
+    }
+
+
+    public String[][] getAssertPrice2Profit() {
+        return assertPrice2Profit;
+    }
+
+    public String[][] getProfit2Probability() {
+        return profit2Probability;
+    }
+
+    public String[][] getHistoryProfit2Probability() {
+        return historyProfit2Probability;
     }
 }

@@ -153,19 +153,15 @@ public class HedgingInfoDisplay extends ScrollView {
 //            String date=response.getGraph()[0][i].replace("-",".");
             data1.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[1][i])));
             data2.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[2][i])));
-            data3.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[3][i])));
         }
-        LineDataSet set1= new LineDataSet(data1, "持有收益");
-        LineDataSet set2= new LineDataSet(data2,"未持有收益");
-        LineDataSet set3= new LineDataSet(data3,"收益差");
+        LineDataSet set1= new LineDataSet(data1, "不持有时损失");
+        LineDataSet set2= new LineDataSet(data2,"持有时损失");
         setChartDataSet(set1,0);
         setChartDataSet(set2,1);
-        setChartDataSet(set3,2);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
         dataSets.add(set2);
-        dataSets.add(set3);
 
         LineData data = new LineData(dataSets);
 
