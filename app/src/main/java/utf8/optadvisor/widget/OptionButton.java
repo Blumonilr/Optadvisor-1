@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import utf8.optadvisor.R;
@@ -33,6 +34,10 @@ public class OptionButton extends LinearLayout {
     }
 
     public void setClicked(final ArrayList<OptionButton> buttons, final UserInfoMenuItem id, final UserInfoMenuItem date, final UserInfoMenuItem soldPrice, final UserInfoMenuItem finalPrice, final UserInfoMenuItem delta, final UserInfoMenuItem gamma, final UserInfoMenuItem theta, final UserInfoMenuItem vega, final UserInfoMenuItem rho){
+
+        final DecimalFormat df1=new DecimalFormat("#0.0000");
+        DecimalFormat df2=new DecimalFormat("#0.01");
+
         bt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,13 +49,13 @@ public class OptionButton extends LinearLayout {
 
                 id.setInfoTextRight(option.getTradeCode());
                 date.setInfoTextRight(option.getExpireTime());
-                soldPrice.setInfoTextRight(option.getK()+"");
-                finalPrice.setInfoTextRight(option.getType()>0?option.getPrice1()+"":option.getPrice2()+"");
-                delta.setInfoTextRight(option.getDelta()+"");
-                gamma.setInfoTextRight(option.getGamma()+"");
-                theta.setInfoTextRight(option.getTheta()+"");
-                vega.setInfoTextRight(option.getVega()+"");
-                rho.setInfoTextRight(option.getRho()+"");
+                soldPrice.setInfoTextRight(df1.format(option.getK())+"");
+                finalPrice.setInfoTextRight(option.getType()>0?df1.format(option.getPrice1())+"":df1.format(option.getPrice2())+"");
+                delta.setInfoTextRight(df1.format(option.getDelta())+"");
+                gamma.setInfoTextRight(df1.format(option.getGamma())+"");
+                theta.setInfoTextRight(df1.format(option.getTheta())+"");
+                vega.setInfoTextRight(df1.format(option.getVega())+"");
+                rho.setInfoTextRight(df1.format(option.getRho())+"");
             }
         });
     }
