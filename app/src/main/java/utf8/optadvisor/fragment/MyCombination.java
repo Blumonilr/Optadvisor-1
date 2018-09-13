@@ -775,7 +775,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineChart.setVisibility(View.GONE);
 
         XAxis xAxis=lineChart.getXAxis();
-        xAxis.setValueFormatter(new PortfolioXFormatter());
+       // xAxis.setValueFormatter(new PortfolioXFormatter());
         xAxis.setLabelCount(6,false);
         xAxis.setGranularity(1f);
         xAxis.setAxisLineWidth(1f);
@@ -880,9 +880,9 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 for (int i = 0; i <historyProfit2Probability[0].length; i++) {
                     data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
                 }
-                LineDataSet set1= new LineDataSet(data1, "组合收益");
-                LineDataSet set2= new LineDataSet(data2,"概率分布");
-                LineDataSet set3=new LineDataSet(data3,"概率分布");
+                LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
+                LineDataSet set2= new LineDataSet(data2,"组合收益在预期市场内的概率分布");
+                LineDataSet set3=new LineDataSet(data3,"组合收益在历史市场内的概率分布");
 
                 setChartDataSet(set1,0);
                 setChartDataSet(set2,1);
@@ -965,8 +965,8 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 for (int i = 0; i < historyProfit2Probability[0].length; i++) {
                     data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
                 }
-                LineDataSet set1= new LineDataSet(data1, "组合收益");
-                LineDataSet set3=new LineDataSet(data3,"概率分布");
+                LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
+                LineDataSet set3=new LineDataSet(data3,"组合收益在历史市场内的概率分布");
 
                 setChartDataSet(set1,0);
                 setChartDataSet(set3,2);
