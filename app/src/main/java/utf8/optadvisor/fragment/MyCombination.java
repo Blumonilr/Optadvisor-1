@@ -617,7 +617,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
                                 String etfValue = response.body().string();
-                                Log.d("新浪期权", etfValue);
                                 try {
                                     setOtherOptionValue(latestPrice, usePrice, etfValue, type);
                                 }catch (NumberFormatException e){
@@ -759,6 +758,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         setLineChart(lineChart1);
         setLineChart(lineChart2);
         setLineChart(lineChart3);
+
         refreshChartData();
     }
 
@@ -810,6 +810,7 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                     if (responseMsg.getData() != null) {
                         MyCombinationResponse myCombinationResponse = new Gson().fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), MyCombinationResponse.class);
+                        Log.d("画图信息",responseMsg.getData().toString());
                         if (toDraw.getType() == 0) {//资产配置
                             String[][] assertPrice2Profit=myCombinationResponse.getAssertPrice2Profit();
                             String[][] profit2Probability=myCombinationResponse.getProfit2Probability();
@@ -822,8 +823,11 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                         } else if (toDraw.getType() == 1) {
                             String[][] graph=myCombinationResponse.getGraph();
                             if(graph!=null) {
+                                Log.d("graph","不空");
+                                Log.d("graph", String.valueOf(graph.length));
                                 drawHedge(graph);
                             }else {
+                                Log.d("graph","空");
                                 clearChart();
                             }
                         } else if (toDraw.getType() == 2) {
@@ -872,12 +876,15 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 ArrayList<Entry> data2=new ArrayList<>();
                 ArrayList<Entry> data3=new ArrayList<>();
                 for (int i = 0; i < assertPrice2Profit[0].length; i++) {
+                    Log.d("line1",Float.parseFloat(assertPrice2Profit[0][i])+","+Float.parseFloat(assertPrice2Profit[1][i]));
                     data1.add(new Entry(Float.parseFloat(assertPrice2Profit[0][i]), Float.parseFloat(assertPrice2Profit[1][i])));
                 }
                 for (int i = 0; i <profit2Probability[0].length; i++) {
+                    Log.d("line2",Float.parseFloat(profit2Probability[0][i])+","+Float.parseFloat(profit2Probability[1][i]));
                     data2.add(new Entry(Float.parseFloat(profit2Probability[0][i]), Float.parseFloat(profit2Probability[1][i])));
                 }
                 for (int i = 0; i <historyProfit2Probability[0].length; i++) {
+                    Log.d("line3",Float.parseFloat(historyProfit2Probability[0][i])+","+Float.parseFloat(historyProfit2Probability[1][i]));
                     data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
                 }
                 LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
@@ -924,9 +931,18 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             public void run() {
                 ArrayList<Entry> data1 = new ArrayList<>();
                 ArrayList<Entry> data2=new ArrayList<>();
-                for (int i = 0; i < graph[0].length; i++) {
-                    data1.add(new Entry(Float.parseFloat(graph[0][i]), Float.parseFloat(graph[1][i])));
-                    data2.add(new Entry(Float.parseFloat(graph[0][i]), Float.parseFloat(graph[2][i])));
+                Log.d("graph","不空");
+                Log.d("graph", String.valueOf(graph.length));
+                Log.d("graph", String.valueOf(graph[0].length));
+                Log.d("graph", String.valueOf(graph[1].length));
+                Log.d("graph", String.valueOf(graph[2].length));
+                float baseX=0;
+                for (int i = 0; i < graph[1].length; i++) {
+                    //Log.d("套期保值展示图：",Float.parseFloat(graph[0][i])+","+ Float.parseFloat(graph[1][i]));
+                    //Log.d("套期保值展示图：",Float.parseFloat(graph[0][i])+","+ Float.parseFloat(graph[2][i]));
+                    data1.add(new Entry(baseX, Float.parseFloat(graph[1][i])));
+                    data2.add(new Entry(baseX, Float.parseFloat(graph[2][i])));
+                    baseX+=0.01;
                 }
                 LineDataSet set1= new LineDataSet(data1, "不持有时损失");
                 LineDataSet set2= new LineDataSet(data2,"持有时损失");
@@ -1014,7 +1030,8 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             lineDataSet.setValueTextColor(Color.BLACK);
         }
         lineDataSet.setLineWidth(1f);//设置线宽
-        lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
+        lineDataSet.setDrawCircles(false);
+        //lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
         lineDataSet.setHighlightLineWidth(0);//设置点击交点后显示高亮线宽
         lineDataSet.setHighlightEnabled(true);//是否使用点击高亮线

@@ -81,39 +81,40 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                final User user = new Gson().fromJson(responseMsg.getData().toString(),User.class);
-                runOnUiThread(new Runnable() {
-                                  @Override
-                                  public void run() {
-                                      UserInfoMenuItem name = (UserInfoMenuItem) findViewById(R.id.user_info_name);
-                                      UserInfoMenuItem account = (UserInfoMenuItem) findViewById(R.id.user_info_account);
-                                      UserInfoMenuItem gender = (UserInfoMenuItem) findViewById(R.id.user_info_gender);
-                                      UserInfoMenuItem age = (UserInfoMenuItem) findViewById(R.id.user_info_age);
-                                      UserInfoMenuItem birth = (UserInfoMenuItem) findViewById(R.id.user_info_birth);
-                                      UserInfoMenuItem phone = (UserInfoMenuItem) findViewById(R.id.user_info_phone);
-                                      UserInfoMenuItem email = (UserInfoMenuItem) findViewById(R.id.user_info_email);
+                if (responseMsg.getData() != null) {
+                    final User user = new Gson().fromJson(responseMsg.getData().toString(), User.class);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            UserInfoMenuItem name = (UserInfoMenuItem) findViewById(R.id.user_info_name);
+                            UserInfoMenuItem account = (UserInfoMenuItem) findViewById(R.id.user_info_account);
+                            UserInfoMenuItem gender = (UserInfoMenuItem) findViewById(R.id.user_info_gender);
+                            UserInfoMenuItem age = (UserInfoMenuItem) findViewById(R.id.user_info_age);
+                            UserInfoMenuItem birth = (UserInfoMenuItem) findViewById(R.id.user_info_birth);
+                            UserInfoMenuItem phone = (UserInfoMenuItem) findViewById(R.id.user_info_phone);
+                            UserInfoMenuItem email = (UserInfoMenuItem) findViewById(R.id.user_info_email);
 
-                                      name.setInfoTextRight(user.getName());
-                                      account.setInfoTextRight(user.getUsername());
-                                      gender.setInfoTextRight(user.getGender());
-                                      try {
-                                          if (getAge(user.getBirthday())==-1){
-                                              dialog.setTitle("年龄错误");
-                                              dialog.setMessage("生日不能超过当前日期");
-                                              dialogShow();
-                                              Intent intent=new Intent(UserInfoActivity.this,ModifyActivity.class);
-                                              startActivity(intent);
-                                          }
-                                          else
-                                          age.setInfoTextRight("" + getAge(user.getBirthday()));
-                                      } catch (ParseException e) {
-                                          e.printStackTrace();
-                                      }
-                                      birth.setInfoTextRight(user.getBirthday());
-                                      phone.setInfoTextRight(user.getTelephone());
-                                      email.setInfoTextRight(user.getEmail());
-                                  }
-                });
+                            name.setInfoTextRight(user.getName());
+                            account.setInfoTextRight(user.getUsername());
+                            gender.setInfoTextRight(user.getGender());
+                            try {
+                                if (getAge(user.getBirthday()) == -1) {
+                                    dialog.setTitle("年龄错误");
+                                    dialog.setMessage("生日不能超过当前日期");
+                                    dialogShow();
+                                    Intent intent = new Intent(UserInfoActivity.this, ModifyActivity.class);
+                                    startActivity(intent);
+                                } else
+                                    age.setInfoTextRight("" + getAge(user.getBirthday()));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            birth.setInfoTextRight(user.getBirthday());
+                            phone.setInfoTextRight(user.getTelephone());
+                            email.setInfoTextRight(user.getEmail());
+                        }
+                    });
+                }
             }
         });
 

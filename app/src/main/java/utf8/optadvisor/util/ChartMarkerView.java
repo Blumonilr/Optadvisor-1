@@ -28,10 +28,17 @@ public class ChartMarkerView extends MarkerView {
 
             CandleEntry ce = (CandleEntry) e;
 
-            tvContent.setText("" + Utils.formatNumber(ce.getHigh(), 0, true));
+            if(Math.abs(ce.getHigh())<1) {
+                tvContent.setText("" + Utils.formatNumber(ce.getHigh(), 4, true));
+            }else {
+                tvContent.setText("" + Utils.formatNumber(ce.getHigh(), 0, true));
+            }
         } else {
-
-            tvContent.setText("" + Utils.formatNumber(e.getY(), 0, true));
+            if(Math.abs(e.getY())<1) {
+                tvContent.setText("" + Utils.formatNumber(e.getY(), 4, true));
+            }else {
+                tvContent.setText("" + Utils.formatNumber(e.getY(), 0, true));
+            }
         }
 
         super.refreshContent(e, highlight);
