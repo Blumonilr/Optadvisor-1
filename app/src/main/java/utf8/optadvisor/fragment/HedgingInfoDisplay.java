@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,6 +181,9 @@ public class HedgingInfoDisplay extends ScrollView {
 
     private void initMenu(){
 
+        DecimalFormat df1=new DecimalFormat("#0.0000");
+        DecimalFormat df2=new DecimalFormat("#0.01");
+
         id.setMenuTextRight(response.getOption().getOptionCode());
         id.setIconLeft(R.mipmap.ic_id);
         id.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
@@ -201,28 +205,28 @@ public class HedgingInfoDisplay extends ScrollView {
         date.setMenuTextRight(response.getOption().getExpireTime());
         date.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         date.setIconLeft(R.mipmap.ic_date);
-        soldPrice.setMenuTextRight(response.getOption().getK()+"");
+        soldPrice.setMenuTextRight(df1.format(response.getOption().getK())+"");
         soldPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         soldPrice.setIconLeft(R.mipmap.ic_sold_price);
-        finalPrice.setMenuTextRight(response.getOption().getType()>0?response.getOption().getPrice1()+"":response.getOption().getPrice2()+"");
+        finalPrice.setMenuTextRight(response.getOption().getType()>0?df1.format(response.getOption().getPrice1())+"":df1.format(response.getOption().getPrice2())+"");
         finalPrice.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         finalPrice.setIconLeft(R.mipmap.ic_final_price);
-        delta.setMenuTextRight(response.getOption().getDelta()+"");
+        delta.setMenuTextRight(df1.format(response.getOption().getDelta())+"");
         delta.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         delta.setIconLeft(R.mipmap.ic_param);
-        gamma.setMenuTextRight(response.getOption().getGamma()+"");
+        gamma.setMenuTextRight(df1.format(response.getOption().getGamma())+"");
         gamma.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         gamma.setIconLeft(R.mipmap.ic_param);
-        theta.setMenuTextRight(response.getOption().getTheta()+"");
+        theta.setMenuTextRight(df1.format(response.getOption().getTheta())+"");
         theta.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         theta.setIconLeft(R.mipmap.ic_param);
-        vega.setMenuTextRight(response.getOption().getVega()+"");
+        vega.setMenuTextRight(df1.format(response.getOption().getVega())+"");
         vega.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         vega.setIconLeft(R.mipmap.ic_param);
-        rho.setMenuTextRight(response.getOption().getRho()+"");
+        rho.setMenuTextRight(df1.format(response.getOption().getRho())+"");
         rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         rho.setIconLeft(R.mipmap.ic_param);
-        maxLoss.setMenuTextRight(response.getIk()+"");
+        maxLoss.setMenuTextRight(df1.format(response.getIk())+"");
         maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         maxLoss.setIconLeft(R.mipmap.ic_loss);
     }

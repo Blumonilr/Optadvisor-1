@@ -21,7 +21,7 @@ import utf8.optadvisor.domain.response.ResponseMsg;
 public enum NetUtil {
     INSTANCE;
     private Gson gson=new Gson();
-    public final static String SERVER_BASE_ADDRESS="http://39.108.12.251:8088";
+    public final static String SERVER_BASE_ADDRESS="http://192.168.70.1:8088";
     public static SharedPreferences sharedPreference;
 
     public final static int CONNECT_TIMEOUT =60;
