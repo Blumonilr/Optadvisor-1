@@ -74,7 +74,7 @@ public class HedgingInfoDisplay extends ScrollView {
         inflate(context,R.layout.fragment_hedging_info_display,  this);
         this.mainActivity=mainActivity;
         this.response=hedging;
-        TextView title=(TextView)findViewById(R.id.tv_table_title_left);
+        TextView title=findViewById(R.id.tv_table_title_left);
         title.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyh.ttc"));
 
         id = findViewById(R.id.hedging_id);
@@ -118,12 +118,8 @@ public class HedgingInfoDisplay extends ScrollView {
     private void initLineChart(){
 
         lineChart = findViewById(R.id.line_chart);
-        Description description = new Description();
-        description.setText("组合表现");
-        description.setTextColor(getResources().getColor(R.color.colorButtnDark, null));
-        description.setTextSize(18);
 
-        lineChart.setDescription(description);//设置图表描述信息
+        lineChart.setDescription(null);//设置图表描述信息
         lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
@@ -134,9 +130,7 @@ public class HedgingInfoDisplay extends ScrollView {
         lineChart.setScaleYEnabled(false);
 
         XAxis xAxis=lineChart.getXAxis();
-//        xAxis.setValueFormatter(new PortfolioXFormatter());
         xAxis.setLabelCount(6,false);
-        xAxis.setGranularity(1f);
         xAxis.setAxisLineWidth(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
@@ -149,11 +143,9 @@ public class HedgingInfoDisplay extends ScrollView {
     private void refreshChartData() {
         ArrayList<Entry> data1 = new ArrayList<>();
         ArrayList<Entry> data2=new ArrayList<>();
-        ArrayList<Entry> data3=new ArrayList<>();
         for (int i = 0; i < response.getGraph()[0].length; i++) {
-//            String date=response.getGraph()[0][i].replace("-",".");
-            data1.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[1][i])));
-            data2.add(new Entry(handleDate(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[2][i])));
+            data1.add(new Entry(Float.parseFloat(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[1][i])));
+            data2.add(new Entry(Float.parseFloat(response.getGraph()[0][i]), Float.parseFloat(response.getGraph()[2][i])));
         }
         LineDataSet set1= new LineDataSet(data1, "不持有时损失");
         LineDataSet set2= new LineDataSet(data2,"持有时损失");
@@ -167,9 +159,6 @@ public class HedgingInfoDisplay extends ScrollView {
         LineData data = new LineData(dataSets);
 
         lineChart.setData(data);
-
-
-        lineChart.setVisibleXRangeMaximum(8f);
 
         ChartMarkerView markerView = new ChartMarkerView(HedgingInfoDisplay.this.getContext(), R.layout.marker_view);
         markerView.setChartView(lineChart);
@@ -231,16 +220,16 @@ public class HedgingInfoDisplay extends ScrollView {
         maxLoss.setIconLeft(R.mipmap.ic_loss);
     }
 
-    private float handleDate(String str){
-        if(TextUtils.isEmpty(str)) return 0;
-        int index=str.indexOf("-");
-        String year=str.substring(0,index);
-        String month=str.substring(index+1);
 
-        return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
-    }
 
-    /**
+    /**   private float handleDate(String str){
+     if(TextUtils.isEmpty(str)) return 0;
+     int index=str.indexOf("-");
+     String year=str.substring(0,index);
+     String month=str.substring(index+1);
+
+     return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
+     }
      * 设置dataSet
      */
     private void setChartDataSet(LineDataSet lineDataSet,int type){
@@ -259,13 +248,13 @@ public class HedgingInfoDisplay extends ScrollView {
             lineDataSet.setValueTextColor(colors[2]);
         }
         lineDataSet.setLineWidth(1f);//设置线宽
-        lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
+        lineDataSet.setDrawCircles(false);
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
         lineDataSet.setHighlightLineWidth(0);//设置点击交点后显示高亮线宽
         lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
         lineDataSet.setHighLightColor(colors[0]);//设置点击交点后显示交高亮线的颜色
         lineDataSet.setDrawValues(false);
-        //lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
+
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
 
     }
