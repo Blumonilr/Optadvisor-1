@@ -121,6 +121,13 @@ public class AllocationSettingSeekbar extends LinearLayout {
 
             @Override
             public void onProgressChanged(DoubleSeekbar seekBar, int progressLow, int progressHigh) {
+
+                if (progressHigh<progressLow){
+                    int temp=progressHigh;
+                    progressHigh=progressLow;
+                    progressLow=temp;
+                }
+
                 if (isPrice&&isUp){
                     min.setText(df1.format(ETF+(4.0-ETF)*(progressLow/100.0)));
                     max.setText(df1.format(ETF+(4.0-ETF)*(progressHigh/100.0)));

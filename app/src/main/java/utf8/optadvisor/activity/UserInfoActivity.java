@@ -47,7 +47,7 @@ public class UserInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ImageView userHead = (ImageView) findViewById(R.id.user_head);
-        Glide.with(this).load(R.drawable.default_user_head).bitmapTransform(new CropCircleTransformation(this)).into(userHead);
+        Glide.with(this).load(R.mipmap.home).bitmapTransform(new CropCircleTransformation(this)).into(userHead);
         intiMenuItem();
 
         Button modify = (Button) findViewById(R.id.user_info_bt_modify);
