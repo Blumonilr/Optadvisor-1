@@ -100,7 +100,7 @@ public class DoubleSeekbar extends View {
                 if(preX>mScollBarWidth/2){
                     if(x>mScollBarWidth){
                         currentX2=mScollBarWidth;
-                    }else{
+                    } else {
                         currentX2=x;
                     }
                     //右滑块进度
@@ -123,9 +123,12 @@ public class DoubleSeekbar extends View {
 //                   Log.e("tag","progressLow"+progressLow);
                 }
 
+
+
                 if(mBarChangeListener!=null){
                     mBarChangeListener.onProgressChanged(this,progressLow,progressHigh);
                 }
+                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 invalidate();

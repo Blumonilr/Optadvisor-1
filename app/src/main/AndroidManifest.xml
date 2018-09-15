@@ -37,7 +37,6 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.InfoActivity" />
-        <activity android:name=".activity.ShopActivity" />
         <activity android:name=".activity.UserInfoActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
