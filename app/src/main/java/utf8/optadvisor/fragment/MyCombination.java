@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -61,13 +61,14 @@ import utf8.optadvisor.util.ActivityJumper;
 import utf8.optadvisor.util.ChartMarkerView;
 import utf8.optadvisor.util.CommaHandler;
 import utf8.optadvisor.util.ExpandableAdapter;
+import utf8.optadvisor.util.MyXFormatter;
 import utf8.optadvisor.util.NetUtil;
 import utf8.optadvisor.util.PortfolioXFormatter;
 
 /**
  * 对我的组合的管理
  */
-public class MyCombination extends Fragment implements View.OnClickListener {
+public class MyCombination extends Fragment implements View.OnClickListener{
 
     private List<String> groupArray;//expandList的标题
     private List<List<String>> childArray;//expandList的扩展
@@ -759,6 +760,8 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         setLineChart(lineChart2);
         setLineChart(lineChart3);
 
+        XAxis xAxis=lineChart2.getXAxis();
+        xAxis.setDrawLabels(false);
         refreshChartData();
     }
 
@@ -771,13 +774,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         lineChart.setDragEnabled(true);
         lineChart.setScaleXEnabled(true);// 缩放
         lineChart.setScaleYEnabled(false);
+        lineChart.setDescription(null);
 
         lineChart.setVisibility(View.GONE);
 
         XAxis xAxis=lineChart.getXAxis();
-       // xAxis.setValueFormatter(new PortfolioXFormatter());
         xAxis.setLabelCount(6,false);
-        xAxis.setGranularity(1f);
         xAxis.setAxisLineWidth(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
@@ -787,13 +789,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         ChartMarkerView markerView = new ChartMarkerView(MyCombination.this.getContext(), R.layout.marker_view);
         markerView.setChartView(lineChart);
         lineChart.setMarker(markerView);//设置交互小图标
-
     }
 
     /**
      * 刷新数据
      */
-    private void refreshChartData() {
+    private void refreshChartData(){
         final Portfolio toDraw=currentPortfolio;
 
         if(toDraw==null){
@@ -810,33 +811,24 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                     ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                     if (responseMsg.getData() != null) {
                         MyCombinationResponse myCombinationResponse = new Gson().fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), MyCombinationResponse.class);
-                        Log.d("画图信息",responseMsg.getData().toString());
+                        clearChart();
                         if (toDraw.getType() == 0) {//资产配置
                             String[][] assertPrice2Profit=myCombinationResponse.getAssertPrice2Profit();
                             String[][] profit2Probability=myCombinationResponse.getProfit2Probability();
                             String[][] historyProfit2Probability=myCombinationResponse.getHistoryProfit2Probability();
                             if(assertPrice2Profit!=null&&profit2Probability!=null&&historyProfit2Probability!=null) {
                                 drawRecommend(assertPrice2Profit,profit2Probability,historyProfit2Probability);
-                            }else {
-                                clearChart();
                             }
                         } else if (toDraw.getType() == 1) {
                             String[][] graph=myCombinationResponse.getGraph();
                             if(graph!=null) {
-                                Log.d("graph","不空");
-                                Log.d("graph", String.valueOf(graph.length));
                                 drawHedge(graph);
-                            }else {
-                                Log.d("graph","空");
-                                clearChart();
                             }
                         } else if (toDraw.getType() == 2) {
                             String[][] assertPrice2Profit=myCombinationResponse.getAssertPrice2Profit();
                             String[][] historyProfit2Probability=myCombinationResponse.getHistoryProfit2Probability();
                             if(assertPrice2Profit!=null&&historyProfit2Probability!=null) {
                                 drawDiy(assertPrice2Profit, historyProfit2Probability);
-                            }else {
-                                clearChart();
                             }
                         }
                     }
@@ -876,15 +868,27 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 ArrayList<Entry> data2=new ArrayList<>();
                 ArrayList<Entry> data3=new ArrayList<>();
                 for (int i = 0; i < assertPrice2Profit[0].length; i++) {
-                    Log.d("line1",Float.parseFloat(assertPrice2Profit[0][i])+","+Float.parseFloat(assertPrice2Profit[1][i]));
                     data1.add(new Entry(Float.parseFloat(assertPrice2Profit[0][i]), Float.parseFloat(assertPrice2Profit[1][i])));
                 }
+                boolean cancel=true;
+                double base=0;
                 for (int i = 0; i <profit2Probability[0].length; i++) {
-                    Log.d("line2",Float.parseFloat(profit2Probability[0][i])+","+Float.parseFloat(profit2Probability[1][i]));
-                    data2.add(new Entry(Float.parseFloat(profit2Probability[0][i]), Float.parseFloat(profit2Probability[1][i])));
+                    float y=Float.parseFloat(profit2Probability[1][i]);
+                    if(cancel){
+                        if(y>0.1){
+                            cancel=false;
+                            base=Double.parseDouble(profit2Probability[0][i]);
+                            ChartMarkerView markerView= (ChartMarkerView) lineChart2.getMarkerView();
+                            markerView.setMode(1,base);
+                            double dis=(Double.parseDouble(profit2Probability[0][i])-base)*1000000;
+                            data2.add(new Entry((float) dis, y));
+                        }
+                    }else {
+                        double dis=(Double.parseDouble(profit2Probability[0][i])-base)*1000000;
+                        data2.add(new Entry((float) dis, y));
+                    }
                 }
                 for (int i = 0; i <historyProfit2Probability[0].length; i++) {
-                    Log.d("line3",Float.parseFloat(historyProfit2Probability[0][i])+","+Float.parseFloat(historyProfit2Probability[1][i]));
                     data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
                 }
                 LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
@@ -911,9 +915,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 lineChart2.setData(lineData2);
                 lineChart3.setData(lineData3);
 
-                lineChart1.setVisibleXRangeMaximum(8f);
-                lineChart2.setVisibleXRangeMaximum(8f);
-                lineChart3.setVisibleXRangeMaximum(8f);
                 //绘制图表
                 lineChart1.invalidate();
                 lineChart2.invalidate();
@@ -931,15 +932,8 @@ public class MyCombination extends Fragment implements View.OnClickListener {
             public void run() {
                 ArrayList<Entry> data1 = new ArrayList<>();
                 ArrayList<Entry> data2=new ArrayList<>();
-                Log.d("graph","不空");
-                Log.d("graph", String.valueOf(graph.length));
-                Log.d("graph", String.valueOf(graph[0].length));
-                Log.d("graph", String.valueOf(graph[1].length));
-                Log.d("graph", String.valueOf(graph[2].length));
                 float baseX=0;
                 for (int i = 0; i < graph[1].length; i++) {
-                    //Log.d("套期保值展示图：",Float.parseFloat(graph[0][i])+","+ Float.parseFloat(graph[1][i]));
-                    //Log.d("套期保值展示图：",Float.parseFloat(graph[0][i])+","+ Float.parseFloat(graph[2][i]));
                     data1.add(new Entry(baseX, Float.parseFloat(graph[1][i])));
                     data2.add(new Entry(baseX, Float.parseFloat(graph[2][i])));
                     baseX+=0.01;
@@ -957,8 +951,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 LineData data = new LineData(dataSets);
 
                 lineChart1.setData(data);
-
-                lineChart1.setVisibleXRangeMaximum(8f);
 
                 lineChart1.invalidate();
                 lineChart1.setVisibility(View.VISIBLE);
@@ -999,8 +991,6 @@ public class MyCombination extends Fragment implements View.OnClickListener {
                 lineChart1.setData(lineData1);
                 lineChart3.setData(lineData3);
 
-                lineChart1.setVisibleXRangeMaximum(8f);
-                lineChart3.setVisibleXRangeMaximum(8f);
                 //绘制图表
                 lineChart1.invalidate();
                 lineChart3.invalidate();
@@ -1031,13 +1021,12 @@ public class MyCombination extends Fragment implements View.OnClickListener {
         }
         lineDataSet.setLineWidth(1f);//设置线宽
         lineDataSet.setDrawCircles(false);
-        //lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
+
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
         lineDataSet.setHighlightLineWidth(0);//设置点击交点后显示高亮线宽
         lineDataSet.setHighlightEnabled(true);//是否使用点击高亮线
         lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
         lineDataSet.setDrawValues(false);//不显示值
-        //lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
 
     }
