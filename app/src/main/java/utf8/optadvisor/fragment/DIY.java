@@ -488,8 +488,10 @@ public class DIY extends Fragment {
         temp2=new ArrayList<>();
         for(int i=0;i<controllerAdapter.getItemCount();i++){
             if(temp_map2[i]!=0) {
-                String code = list.get(0)[i];
-                temp2.add(new CustomOption(temp_map2[i], cp, code));
+                if(list.get(0)[i]!=null) {
+                    String code = list.get(0)[i];
+                    temp2.add(new CustomOption(temp_map2[i], cp, code));
+                }
             }
         }
     }
