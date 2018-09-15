@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,6 +123,9 @@ public class AllocationInfoPage extends LinearLayout {
     }
 
     private void initMenuItem() {
+        DecimalFormat df1=new DecimalFormat("#0.0000");
+        DecimalFormat df2=new DecimalFormat("#0.01");
+
         id=(UserInfoMenuItem)findViewById(R.id.allocation_item_id);
         id.setInfoTextLeft("交易代码");
         id.setInfoTextRight(allocationResponse.getOptions().get(0).getTradeCode());
@@ -132,75 +136,75 @@ public class AllocationInfoPage extends LinearLayout {
 
         soldPrice=(UserInfoMenuItem)findViewById(R.id.allocation_item_soldprice);
         soldPrice.setInfoTextLeft("执行价格");
-        soldPrice.setInfoTextRight(allocationResponse.getOptions().get(0).getK()+"");
+        soldPrice.setInfoTextRight(df1.format(allocationResponse.getOptions().get(0).getK()));
 
         finalPrice=(UserInfoMenuItem)findViewById(R.id.allocation_item_finalprice);
         finalPrice.setInfoTextLeft("成交价格");
-        finalPrice.setInfoTextRight(allocationResponse.getOptions().get(0).getType()>0?allocationResponse.getOptions().get(0).getPrice1()+"":allocationResponse.getOptions().get(0).getPrice2()+"");
+        finalPrice.setInfoTextRight(allocationResponse.getOptions().get(0).getType()>0?df1.format(allocationResponse.getOptions().get(0).getPrice1())+"":df1.format(allocationResponse.getOptions().get(0).getPrice2())+"");
 
         delta=(UserInfoMenuItem)findViewById(R.id.allocation_item_delta);
         delta.setInfoTextLeft("delta");
-        delta.setInfoTextRight(allocationResponse.getOptions().get(0).getDelta()+"");
+        delta.setInfoTextRight(df1.format(allocationResponse.getOptions().get(0).getDelta())+"");
 
         gamma=(UserInfoMenuItem)findViewById(R.id.allocation_item_gamma);
         gamma.setInfoTextLeft("gamma");
-        gamma.setInfoTextRight(allocationResponse.getOptions().get(0).getGamma()+"");
+        gamma.setInfoTextRight(df1.format(allocationResponse.getOptions().get(0).getGamma())+"");
 
         theta=(UserInfoMenuItem)findViewById(R.id.allocation_item_theta);
         theta.setInfoTextLeft("theta");
-        theta.setInfoTextRight(allocationResponse.getOptions().get(0).getTheta()+"");
+        theta.setInfoTextRight(df1.format(allocationResponse.getOptions().get(0).getTheta())+"");
 
         vega=(UserInfoMenuItem)findViewById(R.id.allocation_item_vega);
         vega.setInfoTextLeft("vega");
-        vega.setInfoTextRight(allocationResponse.getOptions().get(0).getVega()+"");
+        vega.setInfoTextRight(df1.format(allocationResponse.getOptions().get(0).getVega())+"");
 
         rho=(UserInfoMenuItem)findViewById(R.id.allocation_item_rho);
         rho.setInfoTextLeft("rho");
-        rho.setInfoTextRight(allocationResponse.getOptions().get(0).getRho()+"");
+        rho.setInfoTextRight(df1.format(allocationResponse.getOptions().get(0).getRho())+"");
 
         cost=(UserInfoMenuItem)findViewById(R.id.allocation_item_cost);
         cost.setInfoTextLeft("成本");
-        cost.setInfoTextRight(allocationResponse.getCost()+"");
+        cost.setInfoTextRight(df2.format(allocationResponse.getCost())+"");
 
         guarantee=(UserInfoMenuItem)findViewById(R.id.allocation_item_guarantee);
         guarantee.setInfoTextLeft("保证金");
-        guarantee.setInfoTextRight(allocationResponse.getBond()+"");
+        guarantee.setInfoTextRight(df2.format(allocationResponse.getBond())+"");
 
         group_delta=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_delta);
         group_delta.setInfoTextLeft("delta");
-        group_delta.setInfoTextRight(allocationResponse.getZ_delta()+"");
+        group_delta.setInfoTextRight(df1.format(allocationResponse.getZ_delta())+"");
 
         group_gamma=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_gamma);
         group_gamma.setInfoTextLeft("gamma");
-        group_gamma.setInfoTextRight(allocationResponse.getZ_gamma()+"");
+        group_gamma.setInfoTextRight(df1.format(allocationResponse.getZ_gamma())+"");
 
         group_theta=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_theta);
         group_theta.setInfoTextLeft("theta");
-        group_theta.setInfoTextRight(allocationResponse.getZ_theta()+"");
+        group_theta.setInfoTextRight(df1.format(allocationResponse.getZ_theta())+"");
 
         group_vega=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_vega);
         group_vega.setInfoTextLeft("vega");
-        group_vega.setInfoTextRight(allocationResponse.getZ_vega()+"");
+        group_vega.setInfoTextRight(df1.format(allocationResponse.getZ_vega())+"");
 
         group_rho=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_rho);
         group_rho.setInfoTextLeft("rho");
-        group_rho.setInfoTextRight(allocationResponse.getZ_rho()+"");
+        group_rho.setInfoTextRight(df1.format(allocationResponse.getZ_rho())+"");
 
         group_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_expectation);
         group_expectation.setInfoTextLeft("组合期望收益率");
-        group_expectation.setInfoTextRight(allocationResponse.getEm()+"");
+        group_expectation.setInfoTextRight(df1.format(allocationResponse.getEm())+"");
 
         group_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_risk);
         group_risk.setInfoTextLeft("组合风险率");
-        group_risk.setInfoTextRight(allocationResponse.getBeta()+"");
+        group_risk.setInfoTextRight(df1.format(allocationResponse.getBeta())+"");
 
         property_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_expectation);
         property_expectation.setInfoTextLeft("资产期望收益率");
-        property_expectation.setInfoTextRight(allocationResponse.getReturnOnAssets()+"");
+        property_expectation.setInfoTextRight(df1.format(allocationResponse.getReturnOnAssets())+"");
 
         property_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_risk);
         property_risk.setInfoTextLeft("资产风险率");
-        property_risk.setInfoTextRight(allocationResponse.getBeta()+"");
+        property_risk.setInfoTextRight(df1.format(allocationResponse.getBeta())+"");
     }
 
     /**

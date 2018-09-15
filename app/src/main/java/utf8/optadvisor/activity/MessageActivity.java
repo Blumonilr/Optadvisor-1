@@ -51,14 +51,12 @@ public class MessageActivity extends AppCompatActivity {
 
         //初始化消息列表
         swipeRefreshLayout.setRefreshing(true);
-        Log.d("On create size", String.valueOf(messageList.size()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         refreshMessage();
-        Log.d("On resume size", String.valueOf(messageList.size()));
     }
 
     /**
@@ -94,7 +92,6 @@ public class MessageActivity extends AppCompatActivity {
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/message/getMessage",MessageActivity.this, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("MessageAct on fail","not  wrong yet");
                         dialog.setTitle("网络连接错误");
                         dialog.setMessage("请稍后再试");
                         dialogShow();
@@ -104,11 +101,9 @@ public class MessageActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg=NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        System.out.println(responseMsg.getData());
                         messageList.clear();
-                        Log.d("On refresh size", String.valueOf(messageList.size()));
                         if(responseMsg.getData()!=null) {
-                            MessageList messages = new Gson().fromJson(responseMsg.getData().toString(), MessageList.class);
+                            MessageList messages = new Gson().fromJson(responseMsg.getData().toString().replace("/","-"), MessageList.class);
                             List<Message> read = messages.getRead();
                             List<Message> unread = messages.getUnread();
                             messageList.addAll(unread);
