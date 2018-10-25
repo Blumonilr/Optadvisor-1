@@ -70,6 +70,9 @@ public class AllocationSettingPage extends LinearLayout {
 
     private static final int INFO_SUCCESS = 0;
     private static final int INFO_FAILURE = 1;
+    private static final int MONTH_SUCCESS =2;
+    private static final int MONTH_FAILURE=3;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage (Message msg) {//此方法在ui线程运行
@@ -82,6 +85,27 @@ public class AllocationSettingPage extends LinearLayout {
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
+                    break;
+                case MONTH_SUCCESS:
+                    String str = ((String) msg.obj).replace("\"","");
+                    String month=str.substring(str.indexOf("contractMonth")+15,str.lastIndexOf("]"));
+                    System.out.println(month);
+                    List<String> array=new ArrayList<>();
+                    String[] monthlist=month.split(",");
+                    for (String s:monthlist){
+                        if (array.isEmpty()||!array.contains(s))
+                            array.add(s);
+                    }
+                    if (isInFive()){
+                        array.remove(0);
+                    }
+                    System.out.println(array);
+                    time=(Spinner)findViewById(R.id.allocation_spr_validtime);
+                    SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
+                    time.setAdapter(adapter);
+                    break;
+                case MONTH_FAILURE:
+                    System.out.println("2fail");
                     break;
             }
         }
@@ -287,38 +311,8 @@ public class AllocationSettingPage extends LinearLayout {
             }
         });
 
-        time=(Spinner)findViewById(R.id.allocation_spr_validtime);
-        time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        List<String> array=new ArrayList<>();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
-        Calendar now=Calendar.getInstance();
-        array.add(sdf.format(now.getTime()));
-        now.add(Calendar.MONTH,1);
-        array.add(sdf.format(now.getTime()));
-        int i=0;
-        while (i<2){
-            now.add(Calendar.MONTH,1);
-            if ((now.get(Calendar.MONTH)+1)%3==0) {
-                array.add(sdf.format(now.getTime()));
-                i++;
-            }
-        }
-        if (isInFive()){
-            array.remove(0);
-        }
-        SpinnerAdapter adapter=new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,array);
-        time.setAdapter(adapter);
+        getMonth();
 
         Button bt=(Button)findViewById(R.id.allocation_setting_next);
         bt.setOnClickListener(new View.OnClickListener() {
@@ -386,7 +380,24 @@ public class AllocationSettingPage extends LinearLayout {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return (day<=theFourthWeek-4)&&(day<=theFourthWeek+1);
+    }
+
+    private void getMonth(){
+        NetUtil.INSTANCE.sendGetRequest("http://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getStockName", new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(MONTH_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(MONTH_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
     }
 
     public char getCombination() {
