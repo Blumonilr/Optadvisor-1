@@ -164,6 +164,9 @@ public class HedgingInfoSetting extends Fragment {
                 i++;
             }
         }
+        if (isInFive()){
+            array.remove(0);
+        }
         SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
         date.setAdapter(adapter);
 
@@ -218,6 +221,19 @@ public class HedgingInfoSetting extends Fragment {
         });
 
         return view;
+    }
+
+    private boolean isInFive() {
+        Calendar now=Calendar.getInstance();
+        int year=now.get(Calendar.YEAR);
+        int month=now.get(Calendar.MONTH)+1;
+        int day=now.get(Calendar.DAY_OF_MONTH);
+        int weekDay=0;
+        Calendar week=Calendar.getInstance();
+        week.set(year,month-1,1);
+        weekDay=week.get(Calendar.DAY_OF_WEEK);
+        int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
+        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
     }
 
 
