@@ -17,8 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.QuestionnaireActivity" />
-        <activity android:name=".activity.ResetByPhoneActivity" />
-        <activity android:name=".activity.ResetByEmailActivity" />
         <activity android:name=".activity.ForgetResetPwdActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
         <activity

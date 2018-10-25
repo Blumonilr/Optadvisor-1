@@ -3,12 +3,11 @@ package utf8.optadvisor.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,15 +26,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,11 +52,9 @@ import utf8.optadvisor.domain.entity.Option;
 import utf8.optadvisor.domain.entity.Portfolio;
 import utf8.optadvisor.domain.response.MyCombinationResponse;
 import utf8.optadvisor.domain.response.ResponseMsg;
-import utf8.optadvisor.util.ActivityJumper;
 import utf8.optadvisor.util.ChartMarkerView;
 import utf8.optadvisor.util.CommaHandler;
 import utf8.optadvisor.util.ExpandableAdapter;
-import utf8.optadvisor.util.MyXFormatter;
 import utf8.optadvisor.util.NetUtil;
 import utf8.optadvisor.util.PortfolioXFormatter;
 
@@ -198,7 +191,8 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                             .setPrettyPrinting()
                             .disableHtmlEscaping()
                             .create();
-                    List<Portfolio> portfolios= gs.fromJson(CommaHandler.INSTANCE.commaChange(responseMsg.getData().toString()), listType);
+                    String str=responseMsg.getData().toString();
+                    List<Portfolio> portfolios= gs.fromJson(CommaHandler.INSTANCE.commaChange(str), listType);
                     for (Portfolio portfolio : portfolios) {
                         if (buttonChosen[0] == 1) {
                             if (portfolio.getType() == 0) {
@@ -466,6 +460,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     for (Option option : currentPortfolio.getOptions()) {
                         tempArray.add(option.getName());
                     }
+
                     cost.setText(String.format("%.4f",currentPortfolio.getCost()));
                     if(currentPortfolio.getOptions()!=null&&currentPortfolio.getOptions().length>0){
                         timeLine.setText(currentPortfolio.getOptions()[0].getExpireTime());
@@ -474,7 +469,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     }
                     beta.setText(String.format("%.4f",currentPortfolio.getBeta()));
                     bond.setText(String.format("%.4f",currentPortfolio.getBond()));
-                    em.setText(String.format("%.4f",currentPortfolio.getEM()));
+                    em.setText(String.format("%.4f",currentPortfolio.getEm())+"%");
                     returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()));
                 }else {
                     cost.setText("");
@@ -746,7 +741,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
     }
 
     /**********************************************************************************************************************
-     ***************************                   所有和制图直接相关的方法               **********************************
+     *                                              所有和制图直接相关的方法                                               *
      **********************************************************************************************************************/
 
     /**
@@ -875,7 +870,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                 for (int i = 0; i <profit2Probability[0].length; i++) {
                     float y=Float.parseFloat(profit2Probability[1][i]);
                     if(cancel){
-                        if(y>0.1){
+                        if(y>0){
                             cancel=false;
                             base=Double.parseDouble(profit2Probability[0][i]);
                             ChartMarkerView markerView= (ChartMarkerView) lineChart2.getMarkerView();
