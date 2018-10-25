@@ -68,11 +68,14 @@ public class HedgingInfoSetting extends Fragment {
 
     private static final int INFO_SUCCESS = 0;
     private static final int INFO_FAILURE = 1;
+    private static final int MONTH_SUCCESS =2;
+    private static final int MONTH_FAILURE=3;
 
     private String n;
     private String iK;
     private String pAsset;
     private String sExp;
+    private String monthList;
 
     private ProgressDialog progressDialog;
 
@@ -93,6 +96,28 @@ public class HedgingInfoSetting extends Fragment {
                     break;
                 case INFO_FAILURE:
                     System.out.println("1fail");
+                    break;
+                case MONTH_SUCCESS:
+                    String str = ((String) msg.obj).replace("\"","");
+                    String month=str.substring(str.indexOf("contractMonth")+15,str.lastIndexOf("]"));
+                    System.out.println(month);
+                    monthList=month;
+                    List<String> array=new ArrayList<>();
+                    String[] monthlist=monthList.split(",");
+                    for (String s:monthlist){
+                        if (array.isEmpty()||!array.contains(s))
+                            array.add(s);
+                    }
+                    if (isInFive()){
+                        array.remove(0);
+                    }
+                    System.out.println(array);
+                    date=(Spinner)getView().findViewById(R.id.hedging_spr_validtime);
+                    SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
+                    date.setAdapter(adapter);
+                    break;
+                case MONTH_FAILURE:
+                    System.out.println("2fail");
                     break;
             }
         }
@@ -115,7 +140,6 @@ public class HedgingInfoSetting extends Fragment {
         calendar = Calendar.getInstance();
         seekBar = (SeekBar) view.findViewById(R.id.progress);
         textView = (EditText) view.findViewById(R.id.hedging_et_sb);
-        date=(Spinner)view.findViewById(R.id.hedging_spr_validtime);
         ll=(LinearLayout)view.findViewById(R.id.hedging_ll);
         et1=(EditText)view.findViewById(R.id.hedging_et_1);
         et2=(EditText)view.findViewById(R.id.hedging_et_2);
@@ -150,28 +174,7 @@ public class HedgingInfoSetting extends Fragment {
             }
         });
 
-        List<String> array=new ArrayList<>();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
-        Calendar now=Calendar.getInstance();
-        array.add(sdf.format(now.getTime()));
-        now.add(Calendar.MONTH,1);
-        array.add(sdf.format(now.getTime()));
-        int i=0;
-        while (i<3){
-            now.add(Calendar.MONTH,1);
-            if ((now.get(Calendar.MONTH)+1)%3==0) {
-                array.add(sdf.format(now.getTime()));
-                i++;
-            }
-        }
-        if (isInFive()){
-            array.remove(0);
-        }
-        else
-            array.remove(4);
-        System.out.println(array);
-        SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
-        date.setAdapter(adapter);
+        getMonth();
 
         next=view.findViewById(R.id.hedging_bt_next);
         next.setOnClickListener(new View.OnClickListener() {
@@ -236,7 +239,24 @@ public class HedgingInfoSetting extends Fragment {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return day>theFourthWeek+2;
+        return (day<=theFourthWeek-4)&&(day<=theFourthWeek+1);
+    }
+
+    private void getMonth(){
+        NetUtil.INSTANCE.sendGetRequest("http://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getStockName", new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(MONTH_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(MONTH_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
     }
 
 
