@@ -157,7 +157,7 @@ public class HedgingInfoSetting extends Fragment {
         now.add(Calendar.MONTH,1);
         array.add(sdf.format(now.getTime()));
         int i=0;
-        while (i<2){
+        while (i<3){
             now.add(Calendar.MONTH,1);
             if ((now.get(Calendar.MONTH)+1)%3==0) {
                 array.add(sdf.format(now.getTime()));
@@ -167,6 +167,9 @@ public class HedgingInfoSetting extends Fragment {
         if (isInFive()){
             array.remove(0);
         }
+        else
+            array.remove(4);
+        System.out.println(array);
         SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
         date.setAdapter(adapter);
 
@@ -233,7 +236,7 @@ public class HedgingInfoSetting extends Fragment {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return day>theFourthWeek+2;
     }
 
 

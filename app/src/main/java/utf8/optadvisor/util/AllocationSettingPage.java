@@ -307,7 +307,7 @@ public class AllocationSettingPage extends LinearLayout {
         now.add(Calendar.MONTH,1);
         array.add(sdf.format(now.getTime()));
         int i=0;
-        while (i<2){
+        while (i<3){
             now.add(Calendar.MONTH,1);
             if ((now.get(Calendar.MONTH)+1)%3==0) {
                 array.add(sdf.format(now.getTime()));
@@ -317,6 +317,8 @@ public class AllocationSettingPage extends LinearLayout {
         if (isInFive()){
             array.remove(0);
         }
+        else
+            array.remove(4);
         SpinnerAdapter adapter=new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,array);
         time.setAdapter(adapter);
 
@@ -386,7 +388,7 @@ public class AllocationSettingPage extends LinearLayout {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return day>theFourthWeek+2;
     }
 
     public char getCombination() {
