@@ -42,6 +42,7 @@ public class ControllerAdapter extends RecyclerView.Adapter<ControllerAdapter.Vi
     @Override
     public void onBindViewHolder(final ControllerAdapter.ViewHolder holder, final int position){
         holder.controller.setGoods_storage(99);
+
         holder.controller.setAmount(controller_data.get(position));
         holder.controller.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override

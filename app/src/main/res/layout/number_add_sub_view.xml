@@ -19,6 +19,7 @@
     <EditText
         android:id="@+id/etAmount"
         android:layout_width="5dp"
+        android:hint="0"
         android:layout_height="match_parent"
         android:background="@null"
         android:inputType="number"

@@ -211,6 +211,15 @@ public class AllocationInfoPage extends LinearLayout {
      * 初始化LineChart的一些设置
      */
     private void initLineChart(){
+        ChartMarkerView markerView1 = new ChartMarkerView(this.getContext(), R.layout.marker_view);
+        markerView1.setChartView(lineChart1);
+        lineChart1.setMarker(markerView1);
+        ChartMarkerView markerView2 = new ChartMarkerView(this.getContext(), R.layout.marker_view);
+        markerView2.setChartView(lineChart2);
+        lineChart2.setMarker(markerView2);
+        ChartMarkerView markerView3 = new ChartMarkerView(this.getContext(), R.layout.marker_view);
+        markerView3.setChartView(lineChart3);
+        lineChart3.setMarker(markerView3);
 
         ArrayList<Entry> data1 = new ArrayList<>();
         ArrayList<Entry> data2=new ArrayList<>();
@@ -218,15 +227,30 @@ public class AllocationInfoPage extends LinearLayout {
         for (int i = 0; i < allocationResponse.getAssertPrice2Profit()[0].length; i++) {
             data1.add(new Entry(Float.parseFloat(allocationResponse.getAssertPrice2Profit()[0][i]), Float.parseFloat(allocationResponse.getAssertPrice2Profit()[1][i])));
         }
+        boolean cancel=true;
+        double base=0;
         for (int i = 0; i <allocationResponse.getProfit2Probability()[0].length; i++) {
-            data2.add(new Entry(Float.parseFloat(allocationResponse.getProfit2Probability()[0][i]), Float.parseFloat(allocationResponse.getProfit2Probability()[1][i])));
+            float y=Float.parseFloat(allocationResponse.getProfit2Probability()[1][i]);
+            if(cancel){
+                if(y>0.1){
+                    cancel=false;
+                    base=Double.parseDouble(allocationResponse.getProfit2Probability()[0][i]);
+                    ChartMarkerView marker= (ChartMarkerView) lineChart2.getMarkerView();
+                    marker.setMode(1,base);
+                    double dis=(Double.parseDouble(allocationResponse.getProfit2Probability()[0][i])-base)*1000000;
+                    data2.add(new Entry((float) dis, y));
+                }
+            }else {
+                double dis=(Double.parseDouble(allocationResponse.getProfit2Probability()[0][i])-base)*1000000;
+                data2.add(new Entry((float) dis, y));
+            }
         }
         for (int i = 0; i <allocationResponse.getHistoryProfit2Probability()[0].length; i++) {
             data3.add(new Entry(Float.parseFloat(allocationResponse.getHistoryProfit2Probability()[0][i]), Float.parseFloat(allocationResponse.getHistoryProfit2Probability()[1][i])));
         }
-        LineDataSet set1= new LineDataSet(data1, "组合收益");
-        LineDataSet set2= new LineDataSet(data2,"概率分布");
-        LineDataSet set3=new LineDataSet(data3,"概率分布");
+        LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
+        LineDataSet set2= new LineDataSet(data2,"组合收益在预期市场内的概率分布");
+        LineDataSet set3=new LineDataSet(data3,"组合收益在历史市场内的概率分布");
 
         setChartDataSet(set1,0);
         setChartDataSet(set2,1);
@@ -247,10 +271,6 @@ public class AllocationInfoPage extends LinearLayout {
         lineChart1.setData(lineData1);
         lineChart2.setData(lineData2);
         lineChart3.setData(lineData3);
-
-        lineChart1.setVisibleXRangeMaximum(8f);
-        lineChart2.setVisibleXRangeMaximum(8f);
-        lineChart3.setVisibleXRangeMaximum(8f);
 
         lineChart1.setNoDataText("暂无数据显示");//没有数据时显示的文字
         lineChart1.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
@@ -279,14 +299,6 @@ public class AllocationInfoPage extends LinearLayout {
         lineChart3.setScaleXEnabled(true);// 缩放
         lineChart3.setScaleYEnabled(false);
 
-        ChartMarkerView markerView = new ChartMarkerView(this.getContext(), R.layout.marker_view);
-        markerView.setChartView(lineChart1);
-        lineChart1.setMarker(markerView);
-        markerView.setChartView(lineChart2);
-        lineChart2.setMarker(markerView);
-        markerView.setChartView(lineChart3);
-        lineChart3.setMarker(markerView);
-
         YAxis yAxis1=lineChart1.getAxisRight();
         yAxis1.setEnabled(false);
         YAxis yAxis2=lineChart2.getAxisRight();
@@ -296,19 +308,16 @@ public class AllocationInfoPage extends LinearLayout {
 
         XAxis xAxis1=lineChart1.getXAxis();
         xAxis1.setLabelCount(6,false);
-        xAxis1.setGranularity(1f);
+
         xAxis1.setAxisLineWidth(1f);
         xAxis1.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         XAxis xAxis2=lineChart2.getXAxis();
-        xAxis2.setLabelCount(6,false);
-        xAxis2.setGranularity(1f);
-        xAxis2.setAxisLineWidth(1f);
-        xAxis2.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis2.setEnabled(false);
 
         XAxis xAxis3=lineChart3.getXAxis();
         xAxis3.setLabelCount(6,false);
-        xAxis3.setGranularity(1f);
+
         xAxis3.setAxisLineWidth(1f);
         xAxis3.setPosition(XAxis.XAxisPosition.BOTTOM);
 
@@ -343,29 +352,14 @@ public class AllocationInfoPage extends LinearLayout {
             lineDataSet.setValueTextColor(Color.BLACK);
         }
         lineDataSet.setLineWidth(1f);//设置线宽
-        lineDataSet.setCircleRadius(3f);//设置焦点圆心的大小
+        lineDataSet.setDrawCircles(false);
         lineDataSet.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
-        lineDataSet.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
+        lineDataSet.setHighlightLineWidth(0);//设置点击交点后显示高亮线宽
         lineDataSet.setHighlightEnabled(true);//是否禁用点击高亮线
         lineDataSet.setHighLightColor(Color.RED);//设置点击交点后显示交高亮线的颜色
-        lineDataSet.setValueTextSize(11f);//设置显示值的文字大小
         lineDataSet.setDrawFilled(false);//设置禁用范围背景填充
         lineDataSet.setDrawValues(false);//不显示值
-
-
     }
 
-
-    /**
-     * 把graph的日期转换成相对序号
-     */
-    private float handleDate(String str){
-        if(TextUtils.isEmpty(str)) return 0;
-        int index=str.indexOf("-");
-        String year=str.substring(0,index);
-        String month=str.substring(index+1);
-
-        return (Float.parseFloat(year)-PortfolioXFormatter.baseYear)*12+Float.parseFloat(month)-PortfolioXFormatter.baseMonth;
-    }
 
 }

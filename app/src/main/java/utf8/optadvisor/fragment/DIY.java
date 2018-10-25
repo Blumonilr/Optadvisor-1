@@ -314,42 +314,42 @@ public class DIY extends Fragment {
 
         return view;
     }
-    private void sendDIY(String et){
-        int cp=1;
-        if(call_or_put==false){
-            cp=-1;
+    private void sendDIY(String et) {
+        int cp = 1;
+        if (call_or_put == false) {
+            cp = -1;
         }
         int[] temp;
-        if(call_or_put==false) {
+        if (call_or_put == false) {
             temp = controllerAdapter.getV2();
+        } else {
+            temp = controllerAdapter.getV1();
         }
-        else {
-            temp=controllerAdapter.getV1();
-        }
-        List<CustomOption> option_list=new ArrayList<>();
-        for(int k=0;k<temp.length;k++){
-            if(temp[k]!=0) {
+        List<CustomOption> option_list = new ArrayList<>();
+        for (int k = 0; k < temp.length; k++) {
+            if (temp[k] != 0) {
                 String code = list.get(0)[k];
                 option_list.add(new CustomOption(et, temp[k], cp, code));
             }
         }
-        if(call_or_put==true){
-            if(temp2!=null) {
+        if (call_or_put == true) {
+            if (temp2 != null) {
                 for (int j = 0; j < temp2.size(); j++) {
                     option_list.add(new CustomOption(et, temp2.get(j).getType(), temp2.get(j).getCp(), temp2.get(j).getOptionCode()));
                 }
             }
-        }else{
-            if(temp1!=null) {
+        } else {
+            if (temp1 != null) {
                 for (int j = 0; j < temp1.size(); j++) {
                     option_list.add(new CustomOption(et, temp1.get(j).getType(), temp1.get(j).getCp(), temp1.get(j).getOptionCode()));
                 }
             }
         }
-        Gson gson=new Gson();
-        String value=gson.toJson(option_list);
-        value="{\"options\": "+value+"}";
-        System.out.println("DIY json"+value);
+        if(option_list.size()>=1){
+        Gson gson = new Gson();
+        String value = gson.toJson(option_list);
+        value = "{\"options\": " + value + "}";
+        System.out.println("DIY json" + value);
         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/customPortfolio", value, getContext(), new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -366,22 +366,28 @@ public class DIY extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-               String value=response.body().string();
-               if(value.contains("\"code\": \"1008\",")){
-                   getActivity().runOnUiThread(new Runnable() {
-                       @Override
-                       public void run() {
-                           progressDialog.dismiss();
-                       }
-                   });
-                   dialog.setTitle("网络连接错误");
-                   dialog.setMessage("请重试");
-                   dialogShow();
-               }else {
-                   mHandler.obtainMessage(SEND_DATA, value).sendToTarget();
-               }
+                String value = response.body().string();
+                if (value.contains("\"code\": \"1008\",")) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                        }
+                    });
+                    dialog.setTitle("网络连接错误");
+                    dialog.setMessage("请重试");
+                    dialogShow();
+                } else {
+                    mHandler.obtainMessage(SEND_DATA, value).sendToTarget();
+                }
             }
         });
+    }else{
+            dialog.setTitle("空输入");
+            dialog.setMessage("请输入数量");
+            dialogShow();
+            progressDialog.dismiss();
+        }
     }
 
 
@@ -488,8 +494,10 @@ public class DIY extends Fragment {
         temp2=new ArrayList<>();
         for(int i=0;i<controllerAdapter.getItemCount();i++){
             if(temp_map2[i]!=0) {
-                String code = list.get(0)[i];
-                temp2.add(new CustomOption(temp_map2[i], cp, code));
+                if(list.get(0)[i]!=null) {
+                    String code = list.get(0)[i];
+                    temp2.add(new CustomOption(temp_map2[i], cp, code));
+                }
             }
         }
     }
