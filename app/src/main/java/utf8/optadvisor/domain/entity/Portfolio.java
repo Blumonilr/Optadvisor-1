@@ -28,7 +28,7 @@ public class Portfolio {
     private double z_rho;
     private double returnOnAssets; //资产收益率
     private double em;//组合的期望收益率
-    private double beta;//组合风险值
+    private double beta;//组合杠杆值
 
     //套期保值需要的量
     private int N;//套期保值中的N
@@ -37,8 +37,6 @@ public class Portfolio {
     private double sExp;
     private boolean flag;
 
-/*    private String backTestData;
-    private String backTestData1;*/
     public Long getId() {
         return id;
     }
@@ -246,22 +244,6 @@ public class Portfolio {
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
-
-/*    public String getBackTestData() {
-        return backTestData;
-    }
-
-    public void setBackTestData(String backTestData) {
-        this.backTestData = backTestData;
-    }
-
-    public String getBackTestData1() {
-        return backTestData1;
-    }
-
-    public void setBackTestData1(String backTestData1) {
-        this.backTestData1 = backTestData1;
-    }*/
 
     public double getReturnOnAssets() {
         return returnOnAssets;

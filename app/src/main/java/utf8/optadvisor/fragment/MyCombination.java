@@ -48,6 +48,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.activity.DetailActivity;
+import utf8.optadvisor.domain.Constant;
 import utf8.optadvisor.domain.entity.Option;
 import utf8.optadvisor.domain.entity.Portfolio;
 import utf8.optadvisor.domain.response.MyCombinationResponse;
@@ -113,6 +114,9 @@ public class MyCombination extends Fragment implements View.OnClickListener{
     private TextView optionMaxPrice;
     private TextView optionMinPrice;
 
+    private TextView betaTitle;
+    private TextView returnAssetTitle;
+
     private static final int DISTANCE=35;
     private static final int STANDARD_OPTION_RESULT_LENGTH=14;
 
@@ -159,6 +163,9 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         optionVolatility=view.findViewById(R.id.option_volatility);
         optionMaxPrice=view.findViewById(R.id.option_max_price);
         optionMinPrice=view.findViewById(R.id.option_min_price);
+
+        betaTitle=view.findViewById(R.id.beta_title);
+        returnAssetTitle=view.findViewById(R.id.return_asset_title);
     }
 
     @Override
@@ -471,6 +478,26 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     bond.setText(String.format("%.4f",currentPortfolio.getBond()));
                     em.setText(String.format("%.4f",currentPortfolio.getEm())+"%");
                     returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()));
+                    switch (currentPortfolio.getType()){
+                        case Constant.RECOMMEND_PORTFOLIO:
+                            returnAsset.setVisibility(View.VISIBLE);
+                            returnAssetTitle.setVisibility(View.VISIBLE);
+                            beta.setVisibility(View.VISIBLE);
+                            betaTitle.setVisibility(View.VISIBLE);
+                            break;
+                        case Constant.HEDGE:
+                            returnAsset.setVisibility(View.GONE);
+                            returnAssetTitle.setVisibility(View.GONE);
+                            beta.setVisibility(View.GONE);
+                            betaTitle.setVisibility(View.GONE);
+                            break;
+                        case Constant.DIY:
+                            returnAsset.setVisibility(View.GONE);
+                            returnAssetTitle.setVisibility(View.GONE);
+                            beta.setVisibility(View.VISIBLE);
+                            betaTitle.setVisibility(View.VISIBLE);
+                            break;
+                    }
                 }else {
                     cost.setText("");
                     timeLine.setText("");
