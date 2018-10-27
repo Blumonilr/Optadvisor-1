@@ -311,7 +311,6 @@ public class AllocationSettingPage extends LinearLayout {
             }
         });
 
-
         getMonth();
 
         Button bt=(Button)findViewById(R.id.allocation_setting_next);
