@@ -279,9 +279,9 @@
 
         <TextView
             android:id="@+id/validtime"
-            android:layout_width="100dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:text="价格有效时间"
+            android:text="价格预期有效时间"
             android:textSize="16sp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="10dp"

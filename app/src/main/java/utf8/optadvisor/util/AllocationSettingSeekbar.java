@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
                     set50ETF(Double.parseDouble(info.substring(info.indexOf(",") + 1, info.indexOf(",") + 6)));
+                    max=(TextView)findViewById(R.id.allocation_sk_max);
                     min=(TextView)findViewById(R.id.allocation_sk_min);
                     if (isPrice&&isUp){
                         min.setText(ETF+"");
@@ -82,6 +84,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     }
                     set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
                     max=(TextView)findViewById(R.id.allocation_sk_max);
+                    min=(TextView)findViewById(R.id.allocation_sk_min);
                     if (!isPrice&&isUp){
                         min.setText(sigma+"");
                         max.setText(50.00+"");

@@ -159,7 +159,7 @@
     <string name="cost">成本</string>
     <string name="time_line">到期时间</string>
     <string name="bond">保证金</string>
-    <string name="beta">组合风险值</string>
+    <string name="beta">组合杠杆</string>
     <string name="em">期望收益</string>
     <string name="return_asset">资产收益率</string>
     <string name="option_name">合约简称</string>
