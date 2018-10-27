@@ -129,18 +129,22 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 }
 
                 if (isPrice&&isUp){
+                    title.setText("预测价格范围");
                     min.setText(df1.format(ETF+(4.0-ETF)*(progressLow/100.0)));
                     max.setText(df1.format(ETF+(4.0-ETF)*(progressHigh/100.0)));
                 }
                 else if (isPrice&&!isUp){
+                    title.setText("预测价格范围");
                     min.setText(df1.format(ETF*(progressLow/100.0)));
                     max.setText(df1.format(ETF*(progressHigh/100.0)));
                 }
                 else if (!isPrice&&isUp){
+                    title.setText("预测波动率范围");
                     min.setText(df2.format(sigma + (50.0 - sigma) * (progressLow / 100.0)));
                     max.setText(df2.format(sigma + (50.0 - sigma) * (progressHigh / 100.0)));
                 }
                 else if (!isPrice&&!isUp){
+                    title.setText("预测波动率范围");
                     min.setText(df2.format(sigma * (progressLow / 100.0)));
                     max.setText(df2.format(sigma * (progressHigh / 100.0)));
                 }

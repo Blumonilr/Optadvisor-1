@@ -149,7 +149,7 @@ public class HedgingInfoSetting extends Fragment {
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i== EditorInfo.IME_ACTION_DONE){
                     double n=Double.parseDouble(textView.getText().toString());
-                    seekBar.setProgress((int)n*100);
+                    seekBar.setProgress((int)n);
                 }
                 return true;
             }
@@ -159,7 +159,7 @@ public class HedgingInfoSetting extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textView.setText(Double.toString(progress/100.0));
+                textView.setText(Double.toString(progress));
 
             }
 
@@ -187,7 +187,7 @@ public class HedgingInfoSetting extends Fragment {
                     Map<String, String> values = new HashMap<>();
                     values.put("n0", et1.getText().toString());
 
-                    values.put("a", "" + (Double.parseDouble(textView.getText().toString())));
+                    values.put("a", "" + (Double.parseDouble(textView.getText().toString()))/100.0);
 
                     values.put("s_exp", et2.getText().toString());
 
