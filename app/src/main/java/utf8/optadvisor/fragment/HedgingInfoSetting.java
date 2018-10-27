@@ -78,10 +78,7 @@ public class HedgingInfoSetting extends Fragment {
     private String monthList;
 
     private ProgressDialog progressDialog;
-
-    private LayoutInflater inflater;
-    private ViewGroup viewGroup;
-    private Bundle savedInstanceState;
+    
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -128,10 +125,6 @@ public class HedgingInfoSetting extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
-        this.inflater=inflater;
-        this.viewGroup=container;
-        this.savedInstanceState=savedInstanceState;
-
 
         initDialog();
 
