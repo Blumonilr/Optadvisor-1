@@ -170,6 +170,10 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         betaTitle=view.findViewById(R.id.beta_title);
         returnAssetTitle=view.findViewById(R.id.return_asset_title);
         emTitle=view.findViewById(R.id.em_title);
+
+
+        betaTitle=view.findViewById(R.id.beta_title);
+        returnAssetTitle=view.findViewById(R.id.return_asset_title);
     }
 
     @Override
@@ -504,6 +508,8 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                             returnAssetTitle.setVisibility(View.GONE);
                             em.setVisibility(View.GONE);
                             emTitle.setVisibility(View.GONE);
+                            beta.setVisibility(View.VISIBLE);
+                            betaTitle.setVisibility(View.VISIBLE);
                             break;
                     }
                 }else {
@@ -635,7 +641,6 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                         optionMaxPrice.setText(String.format("最高价 %s", result[7]));
                         optionMinPrice.setText(String.format("最低价 %s", result[8]));
                         optionCp.setText("看涨看跌："+type);
-
 
                         final double latestPrice=Double.parseDouble(result[11]);
                         final double usePrice=Double.parseDouble(result[10]);

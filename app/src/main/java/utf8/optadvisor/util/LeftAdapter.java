@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,7 +26,6 @@ public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.ViewHolder> {
     }
     private List<String[]> call_option_info;
     private OnItemClickListener mItemClickListener;
-
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView left1;
         TextView left2;

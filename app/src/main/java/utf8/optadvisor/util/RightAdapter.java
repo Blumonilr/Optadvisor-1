@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
         public ViewHolder(View view){
             super(view);
             click_item=(LinearLayout) view.findViewById(R.id.click_area2);
+
             right1=(TextView) view.findViewById(R.id.right1);
             right2=(TextView) view.findViewById(R.id.right2);
             right3=(TextView) view.findViewById(R.id.right3);
@@ -50,17 +52,20 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
         View view= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.put_option_layout,parent,false);
         RightAdapter.ViewHolder holder=new RightAdapter.ViewHolder(view);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mItemClickListener.onItemClick(v);
             }
         });
+
         return holder;
     }
     @Override
     public void onBindViewHolder(RightAdapter.ViewHolder holder, int position){
         holder.itemView.setTag(position);
+
         String[] info=put_option_info.get(position);
         holder.right1.setText(info[0]);
         holder.right2.setText(info[1]);

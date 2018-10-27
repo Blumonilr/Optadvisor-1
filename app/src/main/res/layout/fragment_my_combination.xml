@@ -236,7 +236,9 @@
                 <TextView
                     android:id="@+id/beta"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+
             </LinearLayout>
 
             <LinearLayout style="@style/CombinationValue">
@@ -251,7 +253,9 @@
                 <TextView
                     android:id="@+id/return_asset"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+
             </LinearLayout>
 
             <LinearLayout style="@style/CombinationValue">
@@ -266,7 +270,8 @@
                 <TextView
                     android:id="@+id/em"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart

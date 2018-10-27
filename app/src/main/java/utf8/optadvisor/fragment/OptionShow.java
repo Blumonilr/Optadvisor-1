@@ -528,18 +528,21 @@ public class OptionShow extends Fragment {
     }
     private void draw50ETF(String information){
         if(information!=null) {
+            int next = information.indexOf("var hq_str_sh510050");
+
             int comma1 = information.indexOf(",");
             int comma2 = information.indexOf(",", comma1 + 1);
             int comma3 = information.indexOf(",", comma2 + 1);
             int comma4 = information.indexOf(",", comma3 + 1);
             int comma5 = information.indexOf(",", comma4 + 1);
-            int next = information.indexOf("var hq_str_sh510050");
+
             int comma1_2 = information.indexOf(",", next);
             int comma2_2 = information.indexOf(",", comma1_2 + 1);
             int comma3_2 = information.indexOf(",", comma2_2 + 1);
             int comma4_2 = information.indexOf(",", comma3_2 + 1);
             int comma5_2 = information.indexOf(",", comma4_2 + 1);
             int comma6_2 = information.indexOf(",", comma5_2 + 1);
+
             int comma7_2 = information.indexOf(",", comma6_2 + 1);
             int comma8_2 = information.indexOf(",", comma7_2 + 1);
             int comma9_2 = information.indexOf(",", comma8_2 + 1);
@@ -566,11 +569,8 @@ public class OptionShow extends Fragment {
             int comma30_2 = information.indexOf(",", comma29_2 + 1);
 
 
-
-
             int last1comma = information.lastIndexOf(",");
             int last2comma = information.lastIndexOf(",", last1comma - 1);
-
 
 
             buy1.setText(information.substring(comma10_2+1,comma11_2));

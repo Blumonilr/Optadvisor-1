@@ -39,6 +39,7 @@ import utf8.optadvisor.util.LeftAdapter;
 import utf8.optadvisor.util.NetUtil;
 import utf8.optadvisor.util.RightAdapter;
 import utf8.optadvisor.activity.MoreInfoActivity;
+
 import utf8.optadvisor.util.SyncHorizontalScrollView;
 
 
@@ -57,7 +58,9 @@ public class OptionContract extends Fragment {
     private ProgressBar progressBar;
     private RecyclerView center_view;
     private LinearLayout var;
+
     private List<String[]> mlist;
+
     private List<String[]> leftInfo;
     private List<String[]> rightInfo;
     private List<String> centerInfo;
@@ -185,7 +188,6 @@ public class OptionContract extends Fragment {
             }
         });
 
-
         //实现垂直滚动同步
         syncScroll();
 
@@ -250,7 +252,6 @@ public class OptionContract extends Fragment {
                     a.add(list_down.get(0));
 
 
-
                     //获取某月每个期权的数据
                     List<String[]> left=new ArrayList<>();
                     List<String[]> right=new ArrayList<>();
@@ -283,6 +284,7 @@ public class OptionContract extends Fragment {
                 }
             }
         }).start();
+
         return a;
     }
     class AllInfo{
@@ -361,8 +363,5 @@ public class OptionContract extends Fragment {
             }
         });
     }
-
-
-
 }
 
