@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/reset_combination_name"
+            android:icon="@mipmap/ic_rename"
+            android:title="@string/reset_name_text"/>
+        <item
+            android:id="@+id/change_combination_track"
+            android:icon="@mipmap/ic_track"
+            android:title="@string/change_track"/>
+        <item
+            android:id="@+id/delete_combination"
+            android:icon="@mipmap/ic_delete_gray"
+            android:title="@string/delete"/>
+    </group>
+</menu>

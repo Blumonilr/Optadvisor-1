@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorButton"
+    tools:context=".fragment.MyCombination">
+    <LinearLayout
+        android:id="@+id/sub_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLightWhite"
+        tools:ignore="UselessParent">
+
+        <Button
+            android:id="@+id/allocation_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_allocation" />
+
+        <Button
+            android:id="@+id/hedge_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_hedge" />
+
+        <Button
+            android:id="@+id/diy_button"
+            style="@style/MainTopButton"
+            android:text="@string/my_diy" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/combination_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:indeterminateTint="@color/colorAliceBlue"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:alpha="0.9">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/current_portfolio"
+                        android:textAlignment="viewEnd" />
+
+                    <Spinner
+                        android:id="@+id/content_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="7"
+                        android:dropDownWidth="match_parent" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <ExpandableListView
+                android:id="@+id/option_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorLightWhite" />
+
+
+            <LinearLayout
+                android:id="@+id/option_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorLightWhite"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/option_name"
+                    style="@style/OptionValue"
+                    android:text="@string/option_name" />
+
+                <TextView
+                    android:id="@+id/option_code"
+                    style="@style/OptionValue"
+                    android:text="@string/option_code" />
+
+                <TextView
+                    android:id="@+id/theoritic_value"
+                    style="@style/OptionValue"
+                    android:text="@string/theoritic_value" />
+
+                <TextView
+                    android:id="@+id/value_state"
+                    style="@style/OptionValue"
+                    android:text="@string/value_state" />
+
+                <TextView
+                    android:id="@+id/inner_value"
+                    style="@style/OptionValue"
+                    android:text="@string/inner_value" />
+
+                <TextView
+                    android:id="@+id/time_value"
+                    style="@style/OptionValue"
+                    android:text="@string/time_value" />
+
+                <TextView
+                    android:id="@+id/deal_amount"
+                    style="@style/OptionValue"
+                    android:text="@string/deal_amount" />
+
+                <TextView
+                    android:id="@+id/option_delta"
+                    style="@style/OptionValue"
+                    android:text="@string/option_delta" />
+
+                <TextView
+                    android:id="@+id/option_gamma"
+                    style="@style/OptionValue"
+                    android:text="@string/option_gamma" />
+
+                <TextView
+                    android:id="@+id/option_theta"
+                    style="@style/OptionValue"
+                    android:text="@string/option_theta" />
+
+                <TextView
+                    android:id="@+id/option_vega"
+                    style="@style/OptionValue"
+                    android:text="@string/option_vega" />
+
+                <TextView
+                    android:id="@+id/option_volatility"
+                    style="@style/OptionValue"
+                    android:text="@string/option_volatility" />
+
+                <TextView
+                    android:id="@+id/option_max_price"
+                    style="@style/OptionValue"
+                    android:text="@string/option_max_price" />
+
+                <TextView
+                    android:id="@+id/option_min_price"
+                    style="@style/OptionValue"
+                    android:text="@string/option_min_price" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/time_line" />
+
+                <TextView
+                    android:id="@+id/time_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/cost" />
+
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/bond" />
+
+                <TextView
+                    android:id="@+id/bond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/em" />
+
+                <TextView
+                    android:id="@+id/em"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:id="@+id/beta_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/beta" />
+
+                <TextView
+                    android:id="@+id/beta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:id="@+id/return_asset_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/return_asset" />
+
+                <TextView
+                    android:id="@+id/return_asset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart1"
+                style="@style/CombinationChart" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart2"
+                style="@style/CombinationChart" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/linechart3"
+                style="@style/CombinationChart" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

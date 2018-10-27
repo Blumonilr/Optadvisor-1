@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="utf8.optadvisor">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.QuestionnaireActivity" />
+        <activity android:name=".activity.ForgetResetPwdActivity" />
+        <activity android:name=".activity.ForgetPasswordActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"></activity>
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.DetailActivity" />
+        <activity android:name=".activity.InfoActivity" />
+        <activity android:name=".activity.UserInfoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="utf8.optadvisor.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.MessageActivity" />
+        <activity android:name=".activity.ModifyActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="utf8.optadvisor.activity.UserInfoActivity" />
+        </activity>
+        <activity android:name=".activity.ResetPasswordActivity" />
+        <activity android:name=".activity.MessageDetailActivity" />
+        <activity android:name=".activity.GuideActivity"></activity>
+        <activity android:name=".activity.MoreInfoActivity"></activity>
+    </application>
+
+</manifest>

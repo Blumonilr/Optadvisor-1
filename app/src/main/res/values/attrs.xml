@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MenuItemView">
+        <!--布局中左边的icon-->
+        <attr name="leftIcon" format="reference"/>
+        <!--布局中右边的icon-->
+        <attr name="rightIcon" format="reference"/>
+        <!--布局中的文字-->
+        <attr name="text"/>
+        <!--文字的大小-->
+        <attr name="textSize"/>
+        <!--文字的颜色-->
+        <attr name="leftTextColor" format="color"/>
+        <attr name="rightTextColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="InfoItemView">
+        <!--布局中的文字-->
+        <attr name="info_text"/>
+        <!--文字的大小-->
+        <attr name="info_textSize"/>
+        <!--文字的颜色-->
+        <attr name="info_leftTextColor" format="color"/>
+        <attr name="info_rightTextColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ModifyItemView">
+        <!--布局中的文字-->
+        <attr name="modify_text"/>
+        <!--文字的大小-->
+        <attr name="modify_textSize"/>
+        <!--文字的颜色-->
+        <attr name="modify_leftTextColor" format="color"/>
+        <attr name="modify_rightTextColor" format="color"/>
+    </declare-styleable>
+
+        <declare-styleable name="AmountView">
+            <!-- 左右2边+-按钮的宽度 -->
+            <attr name="btnWidth" format="dimension" />
+            <!-- 中间TextView的宽度 -->
+            <attr name="tvWidth" format="dimension" />
+            <!--<attr name="tvColor" format="color"/>-->
+            <attr name="tvTextSize" format="dimension"/>
+            <attr name="btnTextSize" format="dimension"/>
+        </declare-styleable>
+</resources>

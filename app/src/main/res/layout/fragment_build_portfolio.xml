@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.BuildPortfolio">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorButton">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp">
+        <Button
+            android:id="@+id/portfolio"
+            style="@style/MainTopButton"
+            android:text="@string/recommend_text"/>
+        <Button
+            android:id="@+id/hedge"
+            style="@style/MainTopButton"
+            android:text="@string/hedge_text"/>
+        <Button
+            style="@style/MainTopButton"
+            android:id="@+id/DIY"
+            android:text="@string/diy_text"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/build_portfolio_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+</FrameLayout>

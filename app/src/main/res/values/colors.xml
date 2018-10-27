@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorButton">#7EC0EE</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#7EC0EE</color>
+    <color name="colorButtnDark">#3EC1FF</color>
+    <color name="textWhite">#ffffff</color>
+    <color name="pressedIcon">#e53e42</color>
+    <color name="background_color">#f6f6f6</color>
+    <color name="splitline_color">#dddddd</color>
+    <color name="colorGreen">#66FF66</color>
+    <color name="colorLightWhite">#ffffff</color>
+    <color name="transParent">#01000000</color>
+    <color name="colorLightBlue">#19b7a8</color>
+    <color name="colorGraySolid">#80858175</color>
+    <color name="colorGrayBorder">#aea594</color>
+    <color name="colorAliceBlue">#F0F8FF</color>
+    <color name="colorLightSkyBlue">#87CEFA</color>
+    <color name="colorDarkGray">#4d4d4d</color>
+    <color name="darkSlateGray">#2F4F4F</color>
+    <color name="divider">#ffd2d2d2</color>
+</resources>

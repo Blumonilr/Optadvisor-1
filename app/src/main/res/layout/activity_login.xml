@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".activity.LoginActivity"
+    android:background="@drawable/pic_login_bg11">
+
+    <include
+        android:id="@+id/bar"
+        layout="@layout/login_bar"/>
+    <ProgressBar
+        android:id="@+id/login_progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/bar"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp">
+        <EditText
+            android:id="@+id/username"
+            android:hint="@string/login_username_hint_text"
+            style="@style/TransparentInputView"
+            />
+        <EditText
+            android:id="@+id/password"
+            style="@style/TransparentInputView"
+            android:hint="@string/login_pwd_hint_text"
+            android:inputType="textPassword"
+            />
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:text="@string/login_button_text"
+            style="@style/BlueTransparentButtonStyle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/forgetPassword"
+                android:text="@string/forget_pwd_text"
+                android:textAlignment="textStart"
+                style="@style/LoginLittleButton"/>
+            <Button
+                android:id="@+id/register"
+                android:text="@string/register_text"
+                android:textAlignment="textEnd"
+                style="@style/LoginLittleButton"
+                 />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

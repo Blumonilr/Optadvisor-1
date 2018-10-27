@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorButton"
+    tools:context=".fragment.HedgingInfoSetting">
+
+    <LinearLayout
+        android:id="@+id/hedging_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/textWhite">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        >
+
+        <View
+            android:id="@+id/hedging_v_1"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/button_hollow_blue"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="持仓量"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            />
+
+        <EditText
+            android:id="@+id/hedging_et_1"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.7"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            android:hint="请输入持仓量"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="18sp"
+            android:background="@drawable/hedging_edittext_selector"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/hedging_v_2"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/button_hollow_blue"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp" />
+
+        <TextView
+            android:id="@+id/hedging_tv_portion"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="套保比例"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/hedging_v_2"/>
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/hedging_et_sb"
+            android:layout_toRightOf="@+id/hedging_tv_portion"
+            android:layout_marginTop="6dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="12dp"
+            android:max="100"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:progressDrawable="@drawable/hedging_sb_progress"
+            android:thumb="@drawable/hedging_sb_circle" />
+
+        <EditText
+            android:id="@+id/hedging_et_sb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="0"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:textColor="#7EC0EE"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/hedging_v_3"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/button_hollow_blue"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp" />
+
+        <TextView
+            android:id="@+id/hedging_tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="套保期限"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/hedging_v_3"/>
+
+
+        <Spinner
+            android:id="@+id/hedging_spr_validtime"
+            android:layout_width="130dp"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@+id/hedging_tv_date"
+            android:layout_marginLeft="30dp"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp">
+
+        </Spinner>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/hedging_v_4"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/button_hollow_blue"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp" />
+
+        <TextView
+            android:id="@+id/hedging_tv_min"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="预测价格最低值"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/hedging_v_4"/>
+
+        <EditText
+            android:id="@+id/hedging_et_2"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            android:hint="¥0"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            android:layout_toRightOf="@+id/hedging_tv_min"
+            android:background="@drawable/hedging_edittext_selector"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/hedging_bt_next"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:text="查询结果"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+</LinearLayout>
