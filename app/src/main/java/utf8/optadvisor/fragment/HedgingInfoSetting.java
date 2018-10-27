@@ -78,7 +78,7 @@ public class HedgingInfoSetting extends Fragment {
     private String monthList;
 
     private ProgressDialog progressDialog;
-    
+
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {

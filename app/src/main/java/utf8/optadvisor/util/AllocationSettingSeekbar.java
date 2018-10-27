@@ -57,6 +57,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
                     set50ETF(Double.parseDouble(info.substring(info.indexOf(",") + 1, info.indexOf(",") + 6)));
+                    min=(TextView)findViewById(R.id.allocation_sk_min);
                     if (isPrice&&isUp){
                         min.setText(ETF+"");
                         max.setText("4.000");
@@ -80,6 +81,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                             break;
                     }
                     set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
+                    max=(TextView)findViewById(R.id.allocation_sk_max);
                     if (!isPrice&&isUp){
                         min.setText(sigma+"");
                         max.setText(50.00+"");
@@ -107,8 +109,11 @@ public class AllocationSettingSeekbar extends LinearLayout {
         get50Sigma();
 
         title=(TextView)findViewById(R.id.allocation_sk_title);
-        min=(TextView)findViewById(R.id.allocation_sk_min);
-        max=(TextView)findViewById(R.id.allocation_sk_max);
+        if(isPrice){
+            title.setText("预测价格范围");
+        }
+        else
+            title.setText("预测波动率范围");
         seekBar=(DoubleSeekbar)findViewById(R.id.allocation_sk_progress);
 
         seekBar.setOnSeekBarChangeListener(new DoubleSeekbar.OnSeekBarChangeListener(){
@@ -129,22 +134,18 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 }
 
                 if (isPrice&&isUp){
-                    title.setText("预测价格范围");
                     min.setText(df1.format(ETF+(4.0-ETF)*(progressLow/100.0)));
                     max.setText(df1.format(ETF+(4.0-ETF)*(progressHigh/100.0)));
                 }
                 else if (isPrice&&!isUp){
-                    title.setText("预测价格范围");
                     min.setText(df1.format(ETF*(progressLow/100.0)));
                     max.setText(df1.format(ETF*(progressHigh/100.0)));
                 }
                 else if (!isPrice&&isUp){
-                    title.setText("预测波动率范围");
                     min.setText(df2.format(sigma + (50.0 - sigma) * (progressLow / 100.0)));
                     max.setText(df2.format(sigma + (50.0 - sigma) * (progressHigh / 100.0)));
                 }
                 else if (!isPrice&&!isUp){
-                    title.setText("预测波动率范围");
                     min.setText(df2.format(sigma * (progressLow / 100.0)));
                     max.setText(df2.format(sigma * (progressHigh / 100.0)));
                 }
