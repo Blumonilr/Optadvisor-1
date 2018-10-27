@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +65,8 @@ public class HedgingInfoSetting extends Fragment {
     private LinearLayout ll;
     private EditText et1;
     private EditText et2;
+    private TextView tvETF;
+    private TextView tvSIGMA;
 
     private AlertDialog.Builder dialog;
 
@@ -70,6 +74,10 @@ public class HedgingInfoSetting extends Fragment {
     private static final int INFO_FAILURE = 1;
     private static final int MONTH_SUCCESS =2;
     private static final int MONTH_FAILURE=3;
+    private static final int ETF_SUCCESS =4;//获取50etf成功的标识
+    private static final int ETF_FAILURE = 5;
+    private static final int SIGMA_SUCCESS =6;//获取50etf成功的标识
+    private static final int SIGMA_FAILURE = 7;
 
     private String n;
     private String iK;
@@ -78,6 +86,9 @@ public class HedgingInfoSetting extends Fragment {
     private String monthList;
 
     private ProgressDialog progressDialog;
+
+    private double etf;
+    private double sigma;
 
 
     @SuppressLint("HandlerLeak")
@@ -116,6 +127,32 @@ public class HedgingInfoSetting extends Fragment {
                 case MONTH_FAILURE:
                     System.out.println("2fail");
                     break;
+                case ETF_SUCCESS:
+                    String _etf = (String) msg.obj;
+                    etf=Double.parseDouble(_etf.substring(_etf.indexOf(",") + 1, _etf.indexOf(",") + 6));
+                    tvETF=(TextView)getView().findViewById(R.id.hedging_tv2);
+                    tvETF.setText(etf+"");
+                    break;
+                case ETF_FAILURE:
+                    System.out.println("3fail");
+                    break;
+                case SIGMA_SUCCESS:
+                    String response2=(String)msg.obj;
+                    String[] sigams = response2.split("\n");
+                    String temp = "";
+                    for (String s : sigams) {
+                        if ((s.charAt(0)=='9'&&s.length() > 10)||(s.charAt(0)!='9'&&s.length()>11))
+                            temp = s;
+                        else
+                            break;
+                    }
+                    sigma=Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
+                    tvSIGMA=(TextView)getView().findViewById(R.id.hedging_tv4);
+                    tvSIGMA.setText(""+sigma);
+                    break;
+                case SIGMA_FAILURE:
+                    System.out.println("4fail");
+                    break;
             }
         }
     };
@@ -125,6 +162,9 @@ public class HedgingInfoSetting extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_hedging_info_setting, container, false);
+
+        intiETF();
+        initSigma();
 
         initDialog();
 
@@ -177,38 +217,48 @@ public class HedgingInfoSetting extends Fragment {
 
                 HedgingInfoSetting.this.sExp=et2.getText().toString();
                 if (!TextUtils.isEmpty(et1.getText())&&!TextUtils.isEmpty(textView.getText())&&!TextUtils.isEmpty(et2.getText())) {
-                    Map<String, String> values = new HashMap<>();
-                    values.put("n0", et1.getText().toString());
+                    if (Integer.parseInt(et1.getText().toString()) <= 0) {
+                        dialog.setTitle("持仓量填写不符合规则");
+                        dialog.setMessage("请重新填写");
+                        dialogShow();
+                    } else if (Integer.parseInt(et2.getText().toString()) <= 0||Integer.parseInt(et2.getText().toString())>etf) {
+                        dialog.setTitle("预测最低价格填写不符合规则");
+                        dialog.setMessage("请重新填写");
+                        dialogShow();
+                    } else {
+                        Map<String, String> values = new HashMap<>();
+                        values.put("n0", et1.getText().toString());
 
-                    values.put("a", "" + (Double.parseDouble(textView.getText().toString()))/100.0);
+                        values.put("a", "" + (Double.parseDouble(textView.getText().toString())) / 100.0);
 
-                    values.put("s_exp", et2.getText().toString());
+                        values.put("s_exp", et2.getText().toString());
 
-                    values.put("t", date.getSelectedItem().toString());
+                        values.put("t", date.getSelectedItem().toString());
 
 
-                    NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, getContext(), new Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            dialog.setTitle("网络连接错误");
-                            dialog.setMessage("请稍后再试");
-                            dialogShow();
-                            progressDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            progressDialog.dismiss();
-                            ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                            if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
+                        NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, getContext(), new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
                                 dialog.setTitle("网络连接错误");
-                                dialog.setMessage("请重新点击");
+                                dialog.setMessage("请稍后再试");
                                 dialogShow();
-                            } else {
-                                mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
+                                progressDialog.dismiss();
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                progressDialog.dismiss();
+                                ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
+                                if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
+                                    dialog.setTitle("网络连接错误");
+                                    dialog.setMessage("请重新点击");
+                                    dialogShow();
+                                } else {
+                                    mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
+                                }
+                            }
+                        });
+                    }
                 }
                 else {
                     dialog.setTitle("信息未填写完善");
@@ -220,6 +270,40 @@ public class HedgingInfoSetting extends Fragment {
         });
 
         return view;
+    }
+
+    private void initSigma() {
+        NetUtil.INSTANCE.sendGetRequest("http://www.optbbs.com/d/csv/d/data.csv?v=" + Calendar.getInstance().getTimeInMillis(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(SIGMA_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(SIGMA_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
+    }
+
+    private void intiETF() {
+        NetUtil.INSTANCE.sendGetRequest("http://hq.sinajs.cn/list=s_sh510050", new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mHandler.obtainMessage(ETF_FAILURE).sendToTarget();
+                dialog.setTitle("网络连接错误");
+                dialog.setMessage("请稍后再试");
+                dialogShow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                mHandler.obtainMessage(ETF_SUCCESS,response.body().string()).sendToTarget();
+            }
+        });
     }
 
     private boolean isInFive() {

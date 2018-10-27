@@ -85,7 +85,7 @@ public class AllocationInfoPage extends LinearLayout {
 
         for (Option option:allocationResponse.getOptions()){
             OptionButton ob=new OptionButton(context,option);
-            ob.setText(option.getOptionCode(),option.getType()>0?"买入"+Math.abs(option.getType()):"卖出"+Math.abs(option.getType()));
+            ob.setText(option.getName(),option.getType()>0?"买入"+Math.abs(option.getType()):"卖出"+Math.abs(option.getType()));
             ll_buttons.addView(ob);
             buttons.add(ob);
         }
