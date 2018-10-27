@@ -118,6 +118,11 @@
                     android:text="@string/theoritic_value" />
 
                 <TextView
+                    android:id="@+id/cp_value"
+                    style="@style/OptionValue"
+                    android:text="@string/option_cp" />
+
+                <TextView
                     android:id="@+id/value_state"
                     style="@style/OptionValue"
                     android:text="@string/value_state" />
@@ -171,6 +176,10 @@
                     android:id="@+id/option_min_price"
                     style="@style/OptionValue"
                     android:text="@string/option_min_price" />
+
+                <TextView
+                    style="@style/OptionValue"
+                    android:text="@string/appendix" />
             </LinearLayout>
 
             <LinearLayout style="@style/CombinationValue">
@@ -218,20 +227,6 @@
             <LinearLayout style="@style/CombinationValue">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:text="@string/em" />
-
-                <TextView
-                    android:id="@+id/em"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/CombinationValue">
-
-                <TextView
                     android:id="@+id/beta_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -255,6 +250,21 @@
 
                 <TextView
                     android:id="@+id/return_asset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:id="@+id/em_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/em" />
+
+                <TextView
+                    android:id="@+id/em"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

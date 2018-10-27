@@ -113,9 +113,11 @@ public class MyCombination extends Fragment implements View.OnClickListener{
     private TextView optionVolatility;
     private TextView optionMaxPrice;
     private TextView optionMinPrice;
+    private TextView optionCp;
 
     private TextView betaTitle;
     private TextView returnAssetTitle;
+    private TextView emTitle;
 
     private static final int DISTANCE=35;
     private static final int STANDARD_OPTION_RESULT_LENGTH=14;
@@ -163,9 +165,11 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         optionVolatility=view.findViewById(R.id.option_volatility);
         optionMaxPrice=view.findViewById(R.id.option_max_price);
         optionMinPrice=view.findViewById(R.id.option_min_price);
+        optionCp=view.findViewById(R.id.cp_value);
 
         betaTitle=view.findViewById(R.id.beta_title);
         returnAssetTitle=view.findViewById(R.id.return_asset_title);
+        emTitle=view.findViewById(R.id.em_title);
     }
 
     @Override
@@ -484,18 +488,22 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                             returnAssetTitle.setVisibility(View.VISIBLE);
                             beta.setVisibility(View.VISIBLE);
                             betaTitle.setVisibility(View.VISIBLE);
+                            em.setVisibility(View.VISIBLE);
+                            emTitle.setVisibility(View.VISIBLE);
                             break;
                         case Constant.HEDGE:
                             returnAsset.setVisibility(View.GONE);
                             returnAssetTitle.setVisibility(View.GONE);
                             beta.setVisibility(View.GONE);
                             betaTitle.setVisibility(View.GONE);
+                            em.setVisibility(View.GONE);
+                            emTitle.setVisibility(View.GONE);
                             break;
                         case Constant.DIY:
                             returnAsset.setVisibility(View.GONE);
                             returnAssetTitle.setVisibility(View.GONE);
-                            beta.setVisibility(View.VISIBLE);
-                            betaTitle.setVisibility(View.VISIBLE);
+                            em.setVisibility(View.GONE);
+                            emTitle.setVisibility(View.GONE);
                             break;
                     }
                 }else {
@@ -626,6 +634,8 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                         optionVolatility.setText(String.format("隐含波动率 %s", result[6]));
                         optionMaxPrice.setText(String.format("最高价 %s", result[7]));
                         optionMinPrice.setText(String.format("最低价 %s", result[8]));
+                        optionCp.setText("看涨看跌："+type);
+
 
                         final double latestPrice=Double.parseDouble(result[11]);
                         final double usePrice=Double.parseDouble(result[10]);
@@ -665,6 +675,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     timeValue.setText("时间价值");
                     innerValue.setText("内在价值");
                     valueState.setText("价值状态");
+                    optionCp.setText("看涨看跌");
                 }
             }
         });

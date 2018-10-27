@@ -1,6 +1,7 @@
 package utf8.optadvisor.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import utf8.optadvisor.util.CenterAdapter;
 import utf8.optadvisor.util.LeftAdapter;
 import utf8.optadvisor.util.NetUtil;
 import utf8.optadvisor.util.RightAdapter;
+import utf8.optadvisor.activity.MoreInfoActivity;
 import utf8.optadvisor.util.SyncHorizontalScrollView;
 
 
@@ -55,6 +57,7 @@ public class OptionContract extends Fragment {
     private ProgressBar progressBar;
     private RecyclerView center_view;
     private LinearLayout var;
+    private List<String[]> mlist;
     private List<String[]> leftInfo;
     private List<String[]> rightInfo;
     private List<String> centerInfo;
@@ -99,7 +102,7 @@ public class OptionContract extends Fragment {
                         spinner_items.add(((String[])msg.obj)[i]);
                     }
                     spinner_adapter.notifyDataSetChanged();
-                    initOptionInfo(spinner_items.get(0));
+                    mlist=initOptionInfo(spinner_items.get(0));
                     break;
             }
         }
@@ -130,7 +133,7 @@ public class OptionContract extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                initOptionInfo(spinner_items.get(position));
+                mlist=initOptionInfo(spinner_items.get(position));
                 if(progressBar.getVisibility()== View.GONE){
                     progressBar.setVisibility(View.VISIBLE);
                     timer.start();
@@ -159,6 +162,29 @@ public class OptionContract extends Fragment {
         left_view.setAdapter(leftAdapter);
         right_view.setAdapter(rightAdapter);
         center_view.setAdapter(centerAdapter);
+
+        //详情跳转
+        leftAdapter.setOnItemClickListener(new LeftAdapter.OnItemClickListener(){
+        @Override
+        public void onItemClick(View view) {
+            int position = left_view.getChildAdapterPosition(view);
+            Intent intent=new Intent(view.getContext(),MoreInfoActivity.class);
+            intent.putExtra("type",1);
+            intent.putExtra("num",mlist.get(0)[position]);
+            startActivity(intent);
+            }
+        });
+         rightAdapter.setOnItemClickListener(new RightAdapter.OnItemClickListener(){
+        @Override
+        public void onItemClick(View view) {
+            int position = right_view.getChildAdapterPosition(view);
+            Intent intent=new Intent(view.getContext(),MoreInfoActivity.class);
+            intent.putExtra("type",-1);
+            intent.putExtra("num",mlist.get(0)[position]);
+            startActivity(intent);
+            }
+        });
+
 
         //实现垂直滚动同步
         syncScroll();
@@ -200,7 +226,8 @@ public class OptionContract extends Fragment {
     /**
      * 初始化数据
      */
-    private void initOptionInfo(final String month){
+    private List initOptionInfo(final String month){
+       final List<String[]> a=new ArrayList();
         new Thread(new Runnable(){
             @Override
             public void run(){
@@ -219,6 +246,9 @@ public class OptionContract extends Fragment {
                     String response2=client.newCall(request2).execute().body().string();
                     list_up.add(response2.substring(response2.indexOf("=")+2,response2.indexOf(";")-2).split(","));
                     list_down.add(response2.substring(response2.lastIndexOf("=")+2,response2.lastIndexOf(";")-2).split(","));
+                    a.add(list_up.get(0));
+                    a.add(list_down.get(0));
+
 
 
                     //获取某月每个期权的数据
@@ -253,6 +283,7 @@ public class OptionContract extends Fragment {
                 }
             }
         }).start();
+        return a;
     }
     class AllInfo{
         private List<String[]> leftInfo;
@@ -330,6 +361,8 @@ public class OptionContract extends Fragment {
             }
         });
     }
+
+
 
 }
 

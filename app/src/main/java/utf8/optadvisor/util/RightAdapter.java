@@ -14,6 +14,10 @@ import lecho.lib.hellocharts.model.Line;
 import utf8.optadvisor.R;
 
 public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> {
+     public interface OnItemClickListener{
+        void onItemClick(View view);
+    }
+    private RightAdapter.OnItemClickListener mItemClickListener;
     private List<String[]> put_option_info;
     static class ViewHolder extends RecyclerView.ViewHolder{
         LinearLayout click_item;
@@ -46,16 +50,17 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
         View view= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.put_option_layout,parent,false);
         RightAdapter.ViewHolder holder=new RightAdapter.ViewHolder(view);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemClickListener.onItemClick(v);
+            }
+        });
         return holder;
     }
     @Override
     public void onBindViewHolder(RightAdapter.ViewHolder holder, int position){
-        holder.click_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        holder.itemView.setTag(position);
         String[] info=put_option_info.get(position);
         holder.right1.setText(info[0]);
         holder.right2.setText(info[1]);
@@ -69,5 +74,8 @@ public class RightAdapter extends RecyclerView.Adapter<RightAdapter.ViewHolder> 
     @Override
     public int getItemCount(){
         return put_option_info.size();
+    }
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
     }
 }
