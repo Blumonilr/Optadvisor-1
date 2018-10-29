@@ -486,32 +486,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     bond.setText(String.format("%.4f",currentPortfolio.getBond()));
                     em.setText(String.format("%.4f",currentPortfolio.getEm())+"%");
                     returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()));
-                    switch (currentPortfolio.getType()){
-                        case Constant.RECOMMEND_PORTFOLIO:
-                            returnAsset.setVisibility(View.VISIBLE);
-                            returnAssetTitle.setVisibility(View.VISIBLE);
-                            beta.setVisibility(View.VISIBLE);
-                            betaTitle.setVisibility(View.VISIBLE);
-                            em.setVisibility(View.VISIBLE);
-                            emTitle.setVisibility(View.VISIBLE);
-                            break;
-                        case Constant.HEDGE:
-                            returnAsset.setVisibility(View.GONE);
-                            returnAssetTitle.setVisibility(View.GONE);
-                            beta.setVisibility(View.GONE);
-                            betaTitle.setVisibility(View.GONE);
-                            em.setVisibility(View.GONE);
-                            emTitle.setVisibility(View.GONE);
-                            break;
-                        case Constant.DIY:
-                            returnAsset.setVisibility(View.GONE);
-                            returnAssetTitle.setVisibility(View.GONE);
-                            em.setVisibility(View.GONE);
-                            emTitle.setVisibility(View.GONE);
-                            beta.setVisibility(View.VISIBLE);
-                            betaTitle.setVisibility(View.VISIBLE);
-                            break;
-                    }
+
                 }else {
                     cost.setText("");
                     timeLine.setText("");
@@ -520,6 +495,42 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     em.setText("");
                     returnAsset.setText("");
                 }
+
+                int temp=0;
+                for(int i=0;i<buttonChosen.length;i++){
+                    if(buttonChosen[i]==1){
+                        temp= i;
+                    }
+                }
+
+                switch (temp){
+                    case Constant.RECOMMEND_PORTFOLIO:
+                        returnAsset.setVisibility(View.VISIBLE);
+                        returnAssetTitle.setVisibility(View.VISIBLE);
+                        beta.setVisibility(View.VISIBLE);
+                        betaTitle.setVisibility(View.VISIBLE);
+                        em.setVisibility(View.VISIBLE);
+                        emTitle.setVisibility(View.VISIBLE);
+                        break;
+                    case Constant.HEDGE:
+                        returnAsset.setVisibility(View.GONE);
+                        returnAssetTitle.setVisibility(View.GONE);
+                        beta.setVisibility(View.GONE);
+                        betaTitle.setVisibility(View.GONE);
+                        em.setVisibility(View.GONE);
+                        emTitle.setVisibility(View.GONE);
+                        break;
+                    case Constant.DIY:
+                        returnAsset.setVisibility(View.GONE);
+                        returnAssetTitle.setVisibility(View.GONE);
+                        em.setVisibility(View.GONE);
+                        emTitle.setVisibility(View.GONE);
+                        beta.setVisibility(View.VISIBLE);
+                        betaTitle.setVisibility(View.VISIBLE);
+                        break;
+                }
+
+
                 childArray.clear();
                 childArray.add(tempArray);
                 expandableAdapter.notifyDataSetChanged();
