@@ -85,7 +85,7 @@ public class AllocationInfoPage extends LinearLayout {
 
         for (Option option:allocationResponse.getOptions()){
             OptionButton ob=new OptionButton(context,option);
-            ob.setText(option.getOptionCode(),option.getType()>0?"买入"+Math.abs(option.getType()):"卖出"+Math.abs(option.getType()));
+            ob.setText(option.getName(),option.getType()>0?"买入"+Math.abs(option.getType()):"卖出"+Math.abs(option.getType()));
             ll_buttons.addView(ob);
             buttons.add(ob);
         }
@@ -192,19 +192,19 @@ public class AllocationInfoPage extends LinearLayout {
 
         group_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_expectation);
         group_expectation.setInfoTextLeft("组合期望收益率");
-        group_expectation.setInfoTextRight(df1.format(allocationResponse.getEm())+"");
+        group_expectation.setInfoTextRight(df1.format(allocationResponse.getEm()/100.0)+"%");
 
         group_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_risk);
         group_risk.setInfoTextLeft("组合风险率");
-        group_risk.setInfoTextRight(df1.format(allocationResponse.getBeta())+"");
+        group_risk.setInfoTextRight(df1.format(allocationResponse.getBeta()/100)+"%");
 
         property_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_expectation);
         property_expectation.setInfoTextLeft("资产期望收益率");
-        property_expectation.setInfoTextRight(df1.format(allocationResponse.getReturnOnAssets())+"");
+        property_expectation.setInfoTextRight(df1.format(allocationResponse.getReturnOnAssets()/100.0)+"%");
 
         property_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_risk);
         property_risk.setInfoTextLeft("资产风险率");
-        property_risk.setInfoTextRight(df1.format(allocationResponse.getBeta())+"");
+        property_risk.setInfoTextRight(df1.format(allocationResponse.getBeta()/100.0)+"%");
     }
 
     /**

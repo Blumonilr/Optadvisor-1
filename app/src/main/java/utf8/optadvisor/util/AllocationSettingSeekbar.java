@@ -58,6 +58,8 @@ public class AllocationSettingSeekbar extends LinearLayout {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
                     set50ETF(Double.parseDouble(info.substring(info.indexOf(",") + 1, info.indexOf(",") + 6)));
+                    max=(TextView)findViewById(R.id.allocation_sk_max);
+                    min=(TextView)findViewById(R.id.allocation_sk_min);
                     if (isPrice&&isUp){
                         min.setText(ETF+"");
                         max.setText("4.000");
@@ -80,9 +82,9 @@ public class AllocationSettingSeekbar extends LinearLayout {
                         else
                             break;
                     }
-                   // Log.d("!!!AllocationSettingSeekbar","temp:"+temp+"!!!");
-                  //  set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
-                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.lastIndexOf(","))));
+                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
+                    max=(TextView)findViewById(R.id.allocation_sk_max);
+                    min=(TextView)findViewById(R.id.allocation_sk_min);
                     if (!isPrice&&isUp){
                         min.setText(sigma+"");
                         max.setText(50.00+"");
@@ -110,8 +112,11 @@ public class AllocationSettingSeekbar extends LinearLayout {
         get50Sigma();
 
         title=(TextView)findViewById(R.id.allocation_sk_title);
-        min=(TextView)findViewById(R.id.allocation_sk_min);
-        max=(TextView)findViewById(R.id.allocation_sk_max);
+        if(isPrice){
+            title.setText("预测价格范围");
+        }
+        else
+            title.setText("预测波动率范围");
         seekBar=(DoubleSeekbar)findViewById(R.id.allocation_sk_progress);
 
         seekBar.setOnSeekBarChangeListener(new DoubleSeekbar.OnSeekBarChangeListener(){

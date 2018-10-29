@@ -87,7 +87,7 @@
 
         <SeekBar
             android:id="@+id/progress"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/hedging_et_sb"
             android:layout_toRightOf="@+id/hedging_tv_portion"
@@ -104,14 +104,23 @@
             android:id="@+id/hedging_et_sb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/hedging_pron"
             android:gravity="center"
             android:padding="5dp"
             android:text="0"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:singleLine="true"
             android:textColor="#7EC0EE"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/hedging_pron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="5dp"
+            android:text="%"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 
@@ -159,8 +168,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginTop="10dp">
 
         <View
             android:id="@+id/hedging_v_4"
@@ -198,6 +206,42 @@
             android:background="@drawable/hedging_edittext_selector"/>
 
     </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/hedging_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:text="华夏上证50ETF("/>
+            <TextView
+                android:id="@+id/hedging_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/hedging_tv1"/>
+            <TextView
+                android:id="@+id/hedging_tv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/hedging_tv2"
+                android:text="/"/>
+            <TextView
+                android:id="@+id/hedging_tv4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/hedging_tv3"
+                android:text=""/>
+            <TextView
+                android:id="@+id/hedging_tv5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/hedging_tv4"
+                android:text=")"/>
+
+        </RelativeLayout>
 
     <Button
         android:id="@+id/hedging_bt_next"
