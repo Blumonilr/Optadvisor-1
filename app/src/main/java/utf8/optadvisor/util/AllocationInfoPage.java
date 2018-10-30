@@ -15,10 +15,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
@@ -29,9 +32,15 @@ import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import utf8.optadvisor.R;
 import utf8.optadvisor.domain.AllocationResponse;
 import utf8.optadvisor.domain.entity.Option;
+import utf8.optadvisor.domain.entity.Portfolio;
+import utf8.optadvisor.domain.response.MyCombinationResponse;
+import utf8.optadvisor.domain.response.ResponseMsg;
 import utf8.optadvisor.fragment.AllocationSetting;
 import utf8.optadvisor.fragment.MyCombination;
 import utf8.optadvisor.widget.OptionButton;
@@ -195,142 +204,53 @@ public class AllocationInfoPage extends LinearLayout {
         group_expectation.setInfoTextRight(df1.format(allocationResponse.getEm()/100.0)+"%");
 
         group_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_risk);
-        group_risk.setInfoTextLeft("组合风险率");
-        group_risk.setInfoTextRight(df1.format(allocationResponse.getBeta()/100)+"%");
+        group_risk.setInfoTextLeft("组合杠杆");
+        group_risk.setInfoTextRight(df1.format(allocationResponse.getBeta()));
 
         property_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_expectation);
         property_expectation.setInfoTextLeft("资产期望收益率");
-        property_expectation.setInfoTextRight(df1.format(allocationResponse.getReturnOnAssets()/100.0)+"%");
+        property_expectation.setInfoTextRight(df1.format(allocationResponse.getReturnOnAssets()*100.0)+"%");
 
         property_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_property_risk);
-        property_risk.setInfoTextLeft("资产风险率");
-        property_risk.setInfoTextRight(df1.format(allocationResponse.getBeta()/100.0)+"%");
+        property_risk.setInfoTextLeft("资产杠杆");
+        property_risk.setInfoTextRight(df1.format(allocationResponse.getAssertLeverage()));
     }
 
     /**
      * 初始化LineChart的一些设置
      */
     private void initLineChart(){
-        ChartMarkerView markerView1 = new ChartMarkerView(this.getContext(), R.layout.marker_view);
-        markerView1.setChartView(lineChart1);
-        lineChart1.setMarker(markerView1);
-        ChartMarkerView markerView2 = new ChartMarkerView(this.getContext(), R.layout.marker_view);
-        markerView2.setChartView(lineChart2);
-        lineChart2.setMarker(markerView2);
-        ChartMarkerView markerView3 = new ChartMarkerView(this.getContext(), R.layout.marker_view);
-        markerView3.setChartView(lineChart3);
-        lineChart3.setMarker(markerView3);
+        setLineChart(lineChart1);
+        setLineChart(lineChart2);
+        setLineChart(lineChart3);
+        XAxis xAxis=lineChart2.getXAxis();
+        xAxis.setDrawLabels(false);
+        refreshChartData();
 
-        ArrayList<Entry> data1 = new ArrayList<>();
-        ArrayList<Entry> data2=new ArrayList<>();
-        ArrayList<Entry> data3=new ArrayList<>();
-        for (int i = 0; i < allocationResponse.getAssertPrice2Profit()[0].length; i++) {
-            data1.add(new Entry(Float.parseFloat(allocationResponse.getAssertPrice2Profit()[0][i]), Float.parseFloat(allocationResponse.getAssertPrice2Profit()[1][i])));
-        }
-        boolean cancel=true;
-        double base=0;
-        for (int i = 0; i <allocationResponse.getProfit2Probability()[0].length; i++) {
-            float y=Float.parseFloat(allocationResponse.getProfit2Probability()[1][i]);
-            if(cancel){
-                if(y>0.1){
-                    cancel=false;
-                    base=Double.parseDouble(allocationResponse.getProfit2Probability()[0][i]);
-                    ChartMarkerView marker= (ChartMarkerView) lineChart2.getMarkerView();
-                    marker.setMode(1,base);
-                    double dis=(Double.parseDouble(allocationResponse.getProfit2Probability()[0][i])-base)*1000000;
-                    data2.add(new Entry((float) dis, y));
-                }
-            }else {
-                double dis=(Double.parseDouble(allocationResponse.getProfit2Probability()[0][i])-base)*1000000;
-                data2.add(new Entry((float) dis, y));
-            }
-        }
-        for (int i = 0; i <allocationResponse.getHistoryProfit2Probability()[0].length; i++) {
-            data3.add(new Entry(Float.parseFloat(allocationResponse.getHistoryProfit2Probability()[0][i]), Float.parseFloat(allocationResponse.getHistoryProfit2Probability()[1][i])));
-        }
-        LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
-        LineDataSet set2= new LineDataSet(data2,"组合收益在预期市场内的概率分布");
-        LineDataSet set3=new LineDataSet(data3,"组合收益在历史市场内的概率分布");
-
-        setChartDataSet(set1,0);
-        setChartDataSet(set2,1);
-        setChartDataSet(set3,2);
-
-        //保存LineDataSet集合
-        ArrayList<ILineDataSet> dataSets1= new ArrayList<>();
-        dataSets1.add(set1);
-        ArrayList<ILineDataSet> dataSets2= new ArrayList<>();
-        dataSets2.add(set2);
-        ArrayList<ILineDataSet> dataSets3= new ArrayList<>();
-        dataSets3.add(set3);
-        //创建LineData对象 属于LineChart折线图的数据集合
-        LineData lineData1 = new LineData(dataSets1);
-        LineData lineData2 = new LineData(dataSets2);
-        LineData lineData3 = new LineData(dataSets3);
-        // 添加到图表中
-        lineChart1.setData(lineData1);
-        lineChart2.setData(lineData2);
-        lineChart3.setData(lineData3);
-
-        lineChart1.setNoDataText("暂无数据显示");//没有数据时显示的文字
-        lineChart1.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
-        lineChart1.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
-        lineChart1.setDrawBorders(false);//禁止绘制图表边框的线
-        lineChart1.setTouchEnabled(true);
-        lineChart1.setDragEnabled(true);
-        lineChart1.setScaleXEnabled(true);// 缩放
-        lineChart1.setScaleYEnabled(false);
-
-        lineChart2.setNoDataText("暂无数据显示");//没有数据时显示的文字
-        lineChart2.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
-        lineChart2.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
-        lineChart2.setDrawBorders(false);//禁止绘制图表边框的线
-        lineChart2.setTouchEnabled(true);
-        lineChart2.setDragEnabled(true);
-        lineChart2.setScaleXEnabled(true);// 缩放
-        lineChart2.setScaleYEnabled(false);
-
-        lineChart3.setNoDataText("暂无数据显示");//没有数据时显示的文字
-        lineChart3.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
-        lineChart3.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
-        lineChart3.setDrawBorders(false);//禁止绘制图表边框的线
-        lineChart3.setTouchEnabled(true);
-        lineChart3.setDragEnabled(true);
-        lineChart3.setScaleXEnabled(true);// 缩放
-        lineChart3.setScaleYEnabled(false);
-
-        YAxis yAxis1=lineChart1.getAxisRight();
-        yAxis1.setEnabled(false);
-        YAxis yAxis2=lineChart2.getAxisRight();
-        yAxis2.setEnabled(false);
-        YAxis yAxis3=lineChart3.getAxisRight();
-        yAxis3.setEnabled(false);
-
-        XAxis xAxis1=lineChart1.getXAxis();
-        xAxis1.setLabelCount(6,false);
-
-        xAxis1.setAxisLineWidth(1f);
-        xAxis1.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        XAxis xAxis2=lineChart2.getXAxis();
-        xAxis2.setEnabled(false);
-
-        XAxis xAxis3=lineChart3.getXAxis();
-        xAxis3.setLabelCount(6,false);
-
-        xAxis3.setAxisLineWidth(1f);
-        xAxis3.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-
-        //绘制图表
-        lineChart1.invalidate();
-        lineChart2.invalidate();
-        lineChart3.invalidate();
-        lineChart1.setVisibility(View.VISIBLE);
-        lineChart2.setVisibility(View.VISIBLE);
-        lineChart3.setVisibility(View.VISIBLE);
     }
-
+    /**
+     * 刷新数据
+     */
+    private void refreshChartData(){
+        lineChart1.clear();
+        lineChart1.setData(null);
+        lineChart1.invalidate();
+        lineChart1.setVisibility(View.GONE);
+        lineChart2.clear();
+        lineChart2.setData(null);
+        lineChart2.invalidate();
+        lineChart2.setVisibility(View.GONE);
+        lineChart3.clear();
+        lineChart3.setData(null);
+        lineChart3.invalidate();
+        lineChart3.setVisibility(View.GONE);
+        String[][] assertPrice2Profit=allocationResponse.getAssertPrice2Profit();
+        String[][] profit2Probability=allocationResponse.getProfit2Probability();
+        String[][] historyProfit2Probability=allocationResponse.getHistoryProfit2Probability();
+        if(assertPrice2Profit!=null&&profit2Probability!=null&&historyProfit2Probability!=null) {
+            drawRecommend(assertPrice2Profit,profit2Probability,historyProfit2Probability);
+        }
+    }
 
 
     /**
@@ -361,5 +281,91 @@ public class AllocationInfoPage extends LinearLayout {
         lineDataSet.setDrawValues(false);//不显示值
     }
 
+    private void setLineChart(LineChart lineChart){
+        lineChart.setNoDataText("暂无数据显示");//没有数据时显示的文字
+        lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
+        lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
+        lineChart.setDrawBorders(false);//禁止绘制图表边框的线
+        lineChart.setTouchEnabled(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleXEnabled(true);// 缩放
+        lineChart.setScaleYEnabled(false);
+        lineChart.setDescription(null);
+
+        lineChart.setVisibility(View.GONE);
+
+        XAxis xAxis=lineChart.getXAxis();
+        xAxis.setLabelCount(6,false);
+        xAxis.setAxisLineWidth(1f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        YAxis yAxis=lineChart.getAxisRight();
+        yAxis.setEnabled(false);
+
+        ChartMarkerView markerView = new ChartMarkerView(getContext(), R.layout.marker_view);
+        markerView.setChartView(lineChart);
+        lineChart.setMarker(markerView);//设置交互小图标
+    }
+
+    private void drawRecommend(final String[][] assertPrice2Profit, final String[][] profit2Probability, final String[][] historyProfit2Probability){
+                ArrayList<Entry> data1 = new ArrayList<>();
+                ArrayList<Entry> data2=new ArrayList<>();
+                ArrayList<Entry> data3=new ArrayList<>();
+                for (int i = 0; i < assertPrice2Profit[0].length; i++) {
+                    data1.add(new Entry(Float.parseFloat(assertPrice2Profit[0][i]), Float.parseFloat(assertPrice2Profit[1][i])));
+                }
+                boolean cancel=true;
+                double base=0;
+                for (int i = 0; i <profit2Probability[0].length; i++) {
+                    float y=Float.parseFloat(profit2Probability[1][i]);
+                    if(cancel){
+                        if(y>0){
+                            cancel=false;
+                            base=Double.parseDouble(profit2Probability[0][i]);
+                            ChartMarkerView markerView= (ChartMarkerView) lineChart2.getMarkerView();
+                            markerView.setMode(1,base);
+                            double dis=(Double.parseDouble(profit2Probability[0][i])-base)*1000000;
+                            data2.add(new Entry((float) dis, y));
+                        }
+                    }else {
+                        double dis=(Double.parseDouble(profit2Probability[0][i])-base)*1000000;
+                        data2.add(new Entry((float) dis, y));
+                    }
+                }
+                for (int i = 0; i <historyProfit2Probability[0].length; i++) {
+                    data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
+                }
+                LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益(单位：元)");
+                LineDataSet set2= new LineDataSet(data2,"组合收益在预期市场内的概率分布");
+                LineDataSet set3=new LineDataSet(data3,"组合收益在历史市场内的概率分布");
+
+                setChartDataSet(set1,0);
+                setChartDataSet(set2,1);
+                setChartDataSet(set3,2);
+
+                //保存LineDataSet集合
+                ArrayList<ILineDataSet> dataSets1= new ArrayList<>();
+                dataSets1.add(set1);
+                ArrayList<ILineDataSet> dataSets2= new ArrayList<>();
+                dataSets2.add(set2);
+                ArrayList<ILineDataSet> dataSets3= new ArrayList<>();
+                dataSets3.add(set3);
+                //创建LineData对象 属于LineChart折线图的数据集合
+                LineData lineData1 = new LineData(dataSets1);
+                LineData lineData2 = new LineData(dataSets2);
+                LineData lineData3 = new LineData(dataSets3);
+                // 添加到图表中
+                lineChart1.setData(lineData1);
+                lineChart2.setData(lineData2);
+                lineChart3.setData(lineData3);
+
+                //绘制图表
+                lineChart1.invalidate();
+                lineChart2.invalidate();
+                lineChart3.invalidate();
+                lineChart1.setVisibility(View.VISIBLE);
+                lineChart2.setVisibility(View.VISIBLE);
+                lineChart3.setVisibility(View.VISIBLE);
+            }
 
 }

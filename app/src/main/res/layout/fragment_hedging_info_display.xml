@@ -98,6 +98,19 @@
                 android:orientation="horizontal">
 
                 <utf8.optadvisor.util.HedgingMenuItem
+                    android:id="@+id/hedging_inum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leftIcon="@mipmap/ic_left"
+                    app:text="数量"
+                    app:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <utf8.optadvisor.util.HedgingMenuItem
                     android:id="@+id/hedging_wave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

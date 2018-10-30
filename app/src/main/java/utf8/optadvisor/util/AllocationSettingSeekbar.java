@@ -96,7 +96,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     }
                     break;
                 case SIGMA_FAILURE:
-                    System.out.println("2fail");
+                    System.out.println("sigmaFail");
             }
         }
     };

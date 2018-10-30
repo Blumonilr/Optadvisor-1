@@ -29,6 +29,7 @@ public class AllocationResponse implements Serializable {
     private double sigma1;
     private double sigma2;
     private double returnOnAssets;
+    private double assertLeverage;
 
 
     public int[] getBuyAndSell() {
@@ -120,5 +121,9 @@ public class AllocationResponse implements Serializable {
 
     public String[][] getHistoryProfit2Probability() {
         return historyProfit2Probability;
+    }
+
+    public double getAssertLeverage() {
+        return assertLeverage;
     }
 }

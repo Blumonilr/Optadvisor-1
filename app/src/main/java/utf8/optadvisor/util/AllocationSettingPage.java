@@ -80,6 +80,7 @@ public class AllocationSettingPage extends LinearLayout {
             switch (msg.what) {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
+                    Log.d("Allocation",info);
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
                     allocationSetting.setView(responseAllocation);
                     break;
@@ -351,7 +352,7 @@ public class AllocationSettingPage extends LinearLayout {
                                 progressDialog.dismiss();
                                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
                                 if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
-                                    dialog.setTitle("网络连接错误");
+                                    dialog.setTitle("数据返回错误");
                                     dialog.setMessage("请重新点击");
                                     dialogShow();
                                 } else {

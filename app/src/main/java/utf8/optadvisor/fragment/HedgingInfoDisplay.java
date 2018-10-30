@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,7 @@ public class HedgingInfoDisplay extends ScrollView {
     private HedgingMenuItem id ;
     private HedgingMenuItem name;
     private HedgingMenuItem purchase;
+    private HedgingMenuItem num;
     private HedgingMenuItem wave;
     private HedgingMenuItem date;
     private HedgingMenuItem soldPrice;
@@ -80,6 +82,7 @@ public class HedgingInfoDisplay extends ScrollView {
         id = findViewById(R.id.hedging_id);
         name =findViewById(R.id.hedging_name);
         purchase = findViewById(R.id.hedging_purchase);
+        num=findViewById(R.id.hedging_inum);
         wave=findViewById(R.id.hedging_wave);
         date=findViewById(R.id.hedging_date);
         soldPrice=findViewById(R.id.hedging_soldprice);
@@ -185,6 +188,9 @@ public class HedgingInfoDisplay extends ScrollView {
             purchase.setMenuTextRight("买入");
         purchase.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         purchase.setIconLeft(R.mipmap.ic_purchase);
+        num.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
+        num.setMenuTextRight(response.getiNum()+"");
+        num.setIconLeft(R.mipmap.ic_param);
         if (response.getOption().getCp()<0)
             wave.setMenuTextRight("看跌");
         else
@@ -215,7 +221,8 @@ public class HedgingInfoDisplay extends ScrollView {
         rho.setMenuTextRight(df1.format(response.getOption().getRho())+"");
         rho.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         rho.setIconLeft(R.mipmap.ic_param);
-        maxLoss.setMenuTextRight(df1.format(response.getIk())+"");
+        Log.d("ik",response.getIk()+"");
+        maxLoss.setMenuTextRight(df1.format(response.getIk())+"%");
         maxLoss.getMenuLeft().setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/msyhbd.ttc"));
         maxLoss.setIconLeft(R.mipmap.ic_loss);
     }
