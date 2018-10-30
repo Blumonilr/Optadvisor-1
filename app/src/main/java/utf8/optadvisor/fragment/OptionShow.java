@@ -55,6 +55,26 @@ import utf8.optadvisor.util.OptionXFormatter;
 
 
 public class OptionShow extends Fragment {
+    TextView sale1;
+    TextView sale1_2;
+    TextView sale2;
+    TextView sale2_2;
+    TextView sale3;
+    TextView sale3_2;
+    TextView sale4;
+    TextView sale4_2;
+    TextView sale5;
+    TextView sale5_2;
+    TextView buy1;
+    TextView buy1_2;
+    TextView buy2;
+    TextView buy2_2;
+    TextView buy3;
+    TextView buy3_2;
+    TextView buy4;
+    TextView buy4_2;
+    TextView buy5;
+    TextView buy5_2;
     TextView present_price;
     TextView ups_and_downs;
     TextView yesterday_end;
@@ -122,6 +142,27 @@ public class OptionShow extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_option_show, container, false);
+        sale1=view.findViewById(R.id.sale1);
+        sale1_2=view.findViewById(R.id.sale1_2);
+        sale2=view.findViewById(R.id.sale2);
+        sale2_2=view.findViewById(R.id.sale2_2);
+        sale3=view.findViewById(R.id.sale3);
+        sale3_2=view.findViewById(R.id.sale3_2);
+        sale4=view.findViewById(R.id.sale4);
+        sale4_2=view.findViewById(R.id.sale4_2);
+        sale5=view.findViewById(R.id.sale5);
+        sale5_2=view.findViewById(R.id.sale5_2);
+        buy1=view.findViewById(R.id.buy1);
+        buy1_2=view.findViewById(R.id.buy1_2);
+        buy2=view.findViewById(R.id.buy2);
+        buy2_2=view.findViewById(R.id.buy2_2);
+        buy3=view.findViewById(R.id.buy3);
+        buy3_2=view.findViewById(R.id.buy3_2);
+        buy4=view.findViewById(R.id.buy4);
+        buy4_2=view.findViewById(R.id.buy4_2);
+        buy5=view.findViewById(R.id.buy5);
+        buy5_2=view.findViewById(R.id.buy5_2);
+
         present_price= view.findViewById(R.id.present_price);
         ups_and_downs= view.findViewById(R.id.ups_and_downs);
         yesterday_end=view.findViewById(R.id.yesterday_end);
@@ -487,21 +528,71 @@ public class OptionShow extends Fragment {
     }
     private void draw50ETF(String information){
         if(information!=null) {
+            int next = information.indexOf("var hq_str_sh510050");
+
             int comma1 = information.indexOf(",");
             int comma2 = information.indexOf(",", comma1 + 1);
             int comma3 = information.indexOf(",", comma2 + 1);
             int comma4 = information.indexOf(",", comma3 + 1);
             int comma5 = information.indexOf(",", comma4 + 1);
-            int next = information.indexOf("var hq_str_sh510050");
+
             int comma1_2 = information.indexOf(",", next);
             int comma2_2 = information.indexOf(",", comma1_2 + 1);
             int comma3_2 = information.indexOf(",", comma2_2 + 1);
             int comma4_2 = information.indexOf(",", comma3_2 + 1);
             int comma5_2 = information.indexOf(",", comma4_2 + 1);
             int comma6_2 = information.indexOf(",", comma5_2 + 1);
+
+            int comma7_2 = information.indexOf(",", comma6_2 + 1);
+            int comma8_2 = information.indexOf(",", comma7_2 + 1);
+            int comma9_2 = information.indexOf(",", comma8_2 + 1);
+            int comma10_2 = information.indexOf(",", comma9_2 + 1);
+            int comma11_2 = information.indexOf(",", comma10_2 + 1);
+            int comma12_2 = information.indexOf(",", comma11_2 + 1);
+            int comma13_2 = information.indexOf(",", comma12_2 + 1);
+            int comma14_2 = information.indexOf(",", comma13_2 + 1);
+            int comma15_2 = information.indexOf(",", comma14_2 + 1);
+            int comma16_2 = information.indexOf(",", comma15_2 + 1);
+            int comma17_2 = information.indexOf(",", comma16_2 + 1);
+            int comma18_2 = information.indexOf(",", comma17_2 + 1);
+            int comma19_2 = information.indexOf(",", comma18_2 + 1);
+            int comma20_2 = information.indexOf(",", comma19_2 + 1);
+            int comma21_2 = information.indexOf(",", comma20_2 + 1);
+            int comma22_2 = information.indexOf(",", comma21_2 + 1);
+            int comma23_2 = information.indexOf(",", comma22_2 + 1);
+            int comma24_2 = information.indexOf(",", comma23_2 + 1);
+            int comma25_2 = information.indexOf(",", comma24_2 + 1);
+            int comma26_2 = information.indexOf(",", comma25_2 + 1);
+            int comma27_2 = information.indexOf(",", comma26_2 + 1);
+            int comma28_2 = information.indexOf(",", comma27_2 + 1);
+            int comma29_2 = information.indexOf(",", comma28_2 + 1);
+            int comma30_2 = information.indexOf(",", comma29_2 + 1);
+
+
             int last1comma = information.lastIndexOf(",");
             int last2comma = information.lastIndexOf(",", last1comma - 1);
 
+
+            buy1.setText(information.substring(comma10_2+1,comma11_2));
+            buy1_2.setText(information.substring(comma11_2+1,comma12_2));
+            buy2.setText(information.substring(comma12_2+1,comma13_2));
+            buy2_2.setText(information.substring(comma13_2+1,comma14_2));
+            buy3.setText(information.substring(comma14_2+1,comma15_2));
+            buy3_2.setText(information.substring(comma15_2+1,comma16_2));
+            buy4.setText(information.substring(comma16_2+1,comma17_2));
+            buy4_2.setText(information.substring(comma17_2+1,comma18_2));
+            buy5.setText(information.substring(comma18_2+1,comma19_2));
+            buy5_2.setText(information.substring(comma19_2+1,comma20_2));
+            sale1.setText(information.substring(comma20_2+1,comma21_2));
+            sale1_2.setText(information.substring(comma21_2+1,comma22_2));
+            sale2.setText(information.substring(comma22_2+1,comma23_2));
+            sale2_2.setText(information.substring(comma23_2+1,comma24_2));
+            sale3.setText(information.substring(comma24_2+1,comma25_2));
+            sale3_2.setText(information.substring(comma25_2+1,comma26_2));
+            sale4.setText(information.substring(comma26_2+1,comma27_2));
+            sale4_2.setText(information.substring(comma27_2+1,comma28_2));
+            sale5.setText(information.substring(comma28_2+1,comma29_2));
+            sale5_2.setText(information.substring(comma29_2+1,comma30_2));
 
             present_price.setText(information.substring(comma1 + 1, comma2));
             ups_and_downs.setText(information.substring(comma2 + 1, comma3));

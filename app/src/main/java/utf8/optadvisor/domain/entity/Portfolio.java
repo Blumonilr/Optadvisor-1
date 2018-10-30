@@ -11,16 +11,20 @@ public class Portfolio {
 
     private int type; //type指0：资产配置组合 1：套期保值组合 2：DIY组合
     private boolean trackingStatus;
-
+    private String buildTime;//构建时间
     //期权组合和DIY要有的东西
-    private double M0;//警报需要
-    private double k;//警报需要
-    private double sigma1;
-    private double sigma2;
-    private double p1;
-    private double p2;
+    //下面是用户之前的输入
+    private double m0;//本金
+    private double k;//允许最大损失
+    private double sigma1;//波动范围下界
+    private double sigma2;//波动范围上届
+    private double p1;//预测价格范围 下界
+    private double p2;//预测价格范围 上界
+
+    //下面不是之前的输入
     private double cost;//成本p1-p2
     private double bond;//保证金
+    //组合希腊值
     private double z_delta;
     private double z_gamma;
     private double z_vega;
@@ -28,14 +32,17 @@ public class Portfolio {
     private double z_rho;
     private double returnOnAssets; //资产收益率
     private double em;//组合的期望收益率
-    private double beta;//组合杠杆值
+    private double beta;//组合风险值
 
     //套期保值需要的量
     private int N;//套期保值中的N
     private double iK;//套期保值中的iK
     private double pAsset;//套期保值中的pAsset
-    private double sExp;
-    private boolean flag;
+    private double sExp; //预期价格
+    private boolean flag; //没用
+    private double iNum;
+    private int n0; //持仓量
+    private double a; //比例
 
     public Long getId() {
         return id;
@@ -86,11 +93,11 @@ public class Portfolio {
     }
 
     public double getM0() {
-        return M0;
+        return m0;
     }
 
     public void setM0(double m0) {
-        M0 = m0;
+        this.m0 = m0;
     }
 
     public double getK() {
@@ -253,4 +260,35 @@ public class Portfolio {
         this.returnOnAssets = returnOnAssets;
     }
 
+    public String getBuildTime() {
+        return buildTime;
+    }
+
+    public void setBuildTime(String buildTime) {
+        this.buildTime = buildTime;
+    }
+
+    public double getiNum() {
+        return iNum;
+    }
+
+    public void setiNum(double iNum) {
+        this.iNum = iNum;
+    }
+
+    public int getN0() {
+        return n0;
+    }
+
+    public void setN0(int n0) {
+        this.n0 = n0;
+    }
+
+    public double getA() {
+        return a;
+    }
+
+    public void setA(double a) {
+        this.a = a;
+    }
 }

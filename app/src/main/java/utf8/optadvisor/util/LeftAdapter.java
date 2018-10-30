@@ -1,6 +1,11 @@
 package utf8.optadvisor.util;
 
 import android.support.v7.widget.RecyclerView;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +14,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import lecho.lib.hellocharts.model.Line;
 import utf8.optadvisor.R;
+import utf8.optadvisor.activity.MainActivity;
+import utf8.optadvisor.activity.MoreInfoActivity;
 
 
 public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.ViewHolder> {
+    public interface OnItemClickListener{
+        void onItemClick(View view);
+    }
     private List<String[]> call_option_info;
+    private OnItemClickListener mItemClickListener;
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView left1;
         TextView left2;
@@ -23,9 +35,11 @@ public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.ViewHolder> {
         TextView left6;
         TextView left7;
         TextView left8;
+        LinearLayout click_item;
 
         public ViewHolder(View view){
             super(view);
+            click_item=(LinearLayout) view.findViewById(R.id.click_area);
             left1=(TextView) view.findViewById(R.id.left1);
             left2=(TextView) view.findViewById(R.id.left2);
             left3=(TextView) view.findViewById(R.id.left3);
@@ -44,10 +58,18 @@ public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.ViewHolder> {
         View view= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.call_option_layout,parent,false);
         ViewHolder holder=new ViewHolder(view);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemClickListener.onItemClick(v);
+            }
+        });
+
         return holder;
     }
     @Override
     public void onBindViewHolder(ViewHolder holder,int position){
+        holder.itemView.setTag(position);
         String[] info=call_option_info.get(position);
         holder.left1.setText(info[0]);
         holder.left2.setText(info[1]);
@@ -61,5 +83,8 @@ public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.ViewHolder> {
     @Override
     public int getItemCount(){
         return call_option_info.size();
+    }
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
     }
 }

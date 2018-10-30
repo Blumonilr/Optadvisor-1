@@ -82,7 +82,8 @@ public class AllocationSettingSeekbar extends LinearLayout {
                         else
                             break;
                     }
-                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" "))));
+                    Log.d("资产配置",temp);
+                    set50sigma(Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.lastIndexOf(","))));
                     max=(TextView)findViewById(R.id.allocation_sk_max);
                     min=(TextView)findViewById(R.id.allocation_sk_min);
                     if (!isPrice&&isUp){

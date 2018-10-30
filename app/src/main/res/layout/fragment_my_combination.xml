@@ -118,6 +118,11 @@
                     android:text="@string/theoritic_value" />
 
                 <TextView
+                    android:id="@+id/cp_value"
+                    style="@style/OptionValue"
+                    android:text="@string/option_cp" />
+
+                <TextView
                     android:id="@+id/value_state"
                     style="@style/OptionValue"
                     android:text="@string/value_state" />
@@ -171,6 +176,34 @@
                     android:id="@+id/option_min_price"
                     style="@style/OptionValue"
                     android:text="@string/option_min_price" />
+
+                <TextView
+                    android:id="@+id/option_cost"
+                    style="@style/OptionValue"
+                    android:text="@string/option_cost" />
+
+                <TextView
+                    android:id="@+id/option_lastest_price"
+                    style="@style/OptionValue"
+                    android:text="@string/option_latest_price" />
+
+                <TextView
+                    style="@style/OptionValue"
+                    android:text="@string/appendix" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/build_time" />
+
+                <TextView
+                    android:id="@+id/build_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout style="@style/CombinationValue">
@@ -187,7 +220,8 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout style="@style/CombinationValue">
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/cost_title">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -201,7 +235,8 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout style="@style/CombinationValue">
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/bond_title">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -215,7 +250,43 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout style="@style/CombinationValue">
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/beta_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/beta" />
+
+                <TextView
+                    android:id="@+id/beta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/return_asset_title">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/return_asset" />
+
+                <TextView
+                    android:id="@+id/return_asset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/em_title">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -226,37 +297,122 @@
                 <TextView
                     android:id="@+id/em"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
             </LinearLayout>
 
-            <LinearLayout style="@style/CombinationValue">
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/hold_quantity_title">
 
                 <TextView
-                    android:id="@+id/beta_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
-                    android:text="@string/beta" />
+                    android:text="@string/hold_quantity" />
 
                 <TextView
-                    android:id="@+id/beta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/CombinationValue">
-
-                <TextView
-                    android:id="@+id/return_asset_title"
+                    android:id="@+id/hold_quantity_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
-                    android:text="@string/return_asset" />
+                    />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/hedge_ratio_title">
 
                 <TextView
-                    android:id="@+id/return_asset"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/hedge_ratio" />
+
+                <TextView
+                    android:id="@+id/hedge_ratio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/expect_price_title">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/expect_price" />
+
+                <TextView
+                    android:id="@+id/expect_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/capital_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/capital" />
+
+                <TextView
+                    android:id="@+id/capital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/max_loss_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/max_loss" />
+
+                <TextView
+                    android:id="@+id/max_loss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/expect_price_range_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/expect_price_range" />
+
+                <TextView
+                    android:id="@+id/except_price_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CombinationValue"
+                android:id="@+id/expect_fluctuation_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/expect_fluctuation" />
+
+                <TextView
+                    android:id="@+id/expect_fluctuation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp" />
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart

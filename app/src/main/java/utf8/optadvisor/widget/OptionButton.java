@@ -47,7 +47,7 @@ public class OptionButton extends LinearLayout {
                         ob.getBt().setActivated(false);
                 }
 
-                id.setInfoTextRight(option.getName());
+                id.setInfoTextRight(option.getTradeCode());
                 date.setInfoTextRight(option.getExpireTime());
                 soldPrice.setInfoTextRight(df1.format(option.getK())+"");
                 finalPrice.setInfoTextRight(option.getType()>0?df1.format(option.getPrice1())+"":df1.format(option.getPrice2())+"");

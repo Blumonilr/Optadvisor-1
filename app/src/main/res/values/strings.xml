@@ -176,6 +176,19 @@
     <string name="option_volatility">隐含波动率</string>
     <string name="option_max_price">最高价</string>
     <string name="option_min_price">最低价</string>
+    <string name="option_cp">看涨看跌</string>
+    <string name="option_cost">成本价</string>
+    <string name="option_latest_price">最新价</string>
+    <string name="build_time">创建时间</string>
+    <string name="hold_quantity">持仓量</string>
+    <string name="hedge_ratio">套保比例</string>
+    <string name="expect_price">预期价格最低值</string>
+    <string name="capital">本金</string>
+    <string name="max_loss">最大允许损失</string>
+    <string name="expect_price_range">预期价格范围</string>
+    <string name="expect_fluctuation">预期价格波动率范围</string>
+
+    <string name="appendix">注：Delta,Theta,Gamma,Vega，Rho分别表示标的证券价格，时间，Delta，波动率，利率等因素变化时期权合约的价格变化。表中数值根据当日收盘数据计算</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
