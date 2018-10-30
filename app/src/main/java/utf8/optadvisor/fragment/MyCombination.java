@@ -97,6 +97,27 @@ public class MyCombination extends Fragment implements View.OnClickListener{
     private TextView em;
     private TextView beta;
     private TextView returnAsset;
+    private TextView buildTime;
+    private TextView holdQuantity;
+    private TextView hedgeRatio;
+    private TextView expectPrice;
+    private TextView capital;
+    private TextView maxLoss;
+    private TextView priceRange;
+    private TextView fluctuation;
+
+    private LinearLayout betaTitle;
+    private LinearLayout returnAssetTitle;
+    private LinearLayout emTitle;
+    private LinearLayout holdQuantityTitle;
+    private LinearLayout hedgeRatioTitle;
+    private LinearLayout expectPriceTitle;
+    private LinearLayout capitalTitle;
+    private LinearLayout maxLossTitle;
+    private LinearLayout priceRangeTitle;
+    private LinearLayout fluctuationTitle;
+    private LinearLayout costTitle;
+    private LinearLayout bondTitle;
 
     private LinearLayout optionInformation;
     private TextView optionName;
@@ -114,10 +135,10 @@ public class MyCombination extends Fragment implements View.OnClickListener{
     private TextView optionMaxPrice;
     private TextView optionMinPrice;
     private TextView optionCp;
+    private TextView optionCost;
+    private TextView optionLastestPrice;
 
-    private TextView betaTitle;
-    private TextView returnAssetTitle;
-    private TextView emTitle;
+    private LinearLayout[] extraPortfolioDetail;
 
     private static final int DISTANCE=35;
     private static final int STANDARD_OPTION_RESULT_LENGTH=14;
@@ -147,6 +168,15 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         em=view.findViewById(R.id.em);
         beta=view.findViewById(R.id.beta);
         returnAsset=view.findViewById(R.id.return_asset);
+        buildTime=view.findViewById(R.id.build_time);
+        holdQuantity=view.findViewById(R.id.hold_quantity_text);
+        hedgeRatio=view.findViewById(R.id.hedge_ratio);
+        expectPrice=view.findViewById(R.id.expect_price);
+        capital=view.findViewById(R.id.capital);
+        maxLoss=view.findViewById(R.id.max_loss);
+        priceRange=view.findViewById(R.id.except_price_range);
+        fluctuation=view.findViewById(R.id.expect_fluctuation);
+
 
         optionInformation=view.findViewById(R.id.option_information);
         optionInformation.setVisibility(View.GONE);
@@ -166,14 +196,24 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         optionMaxPrice=view.findViewById(R.id.option_max_price);
         optionMinPrice=view.findViewById(R.id.option_min_price);
         optionCp=view.findViewById(R.id.cp_value);
+        optionLastestPrice=view.findViewById(R.id.option_lastest_price);
+        optionCost=view.findViewById(R.id.option_cost);
 
         betaTitle=view.findViewById(R.id.beta_title);
         returnAssetTitle=view.findViewById(R.id.return_asset_title);
         emTitle=view.findViewById(R.id.em_title);
+        holdQuantityTitle=view.findViewById(R.id.hold_quantity_title);
+        hedgeRatioTitle=view.findViewById(R.id.hedge_ratio_title);
+        expectPriceTitle=view.findViewById(R.id.expect_price_title);
+        capitalTitle=view.findViewById(R.id.capital_title);
+        maxLossTitle=view.findViewById(R.id.max_loss_title);
+        priceRangeTitle=view.findViewById(R.id.expect_price_range_title);
+        fluctuationTitle=view.findViewById(R.id.expect_fluctuation_title);
+        costTitle=view.findViewById(R.id.cost_title);
+        bondTitle=view.findViewById(R.id.bond_title);
 
-
-        betaTitle=view.findViewById(R.id.beta_title);
-        returnAssetTitle=view.findViewById(R.id.return_asset_title);
+        extraPortfolioDetail=new LinearLayout[]{returnAssetTitle,betaTitle,emTitle,holdQuantityTitle,hedgeRatioTitle,
+        expectPriceTitle,capitalTitle,maxLossTitle,priceRangeTitle,fluctuationTitle,costTitle,bondTitle};
     }
 
     @Override
@@ -476,6 +516,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                         tempArray.add(option.getName());
                     }
 
+
                     cost.setText(String.format("%.4f",currentPortfolio.getCost()));
                     if(currentPortfolio.getOptions()!=null&&currentPortfolio.getOptions().length>0){
                         timeLine.setText(currentPortfolio.getOptions()[0].getExpireTime());
@@ -486,32 +527,25 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     bond.setText(String.format("%.4f",currentPortfolio.getBond()));
                     em.setText(String.format("%.4f",currentPortfolio.getEm())+"%");
                     returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()));
-                    switch (currentPortfolio.getType()){
-                        case Constant.RECOMMEND_PORTFOLIO:
-                            returnAsset.setVisibility(View.VISIBLE);
-                            returnAssetTitle.setVisibility(View.VISIBLE);
-                            beta.setVisibility(View.VISIBLE);
-                            betaTitle.setVisibility(View.VISIBLE);
-                            em.setVisibility(View.VISIBLE);
-                            emTitle.setVisibility(View.VISIBLE);
-                            break;
-                        case Constant.HEDGE:
-                            returnAsset.setVisibility(View.GONE);
-                            returnAssetTitle.setVisibility(View.GONE);
-                            beta.setVisibility(View.GONE);
-                            betaTitle.setVisibility(View.GONE);
-                            em.setVisibility(View.GONE);
-                            emTitle.setVisibility(View.GONE);
-                            break;
-                        case Constant.DIY:
-                            returnAsset.setVisibility(View.GONE);
-                            returnAssetTitle.setVisibility(View.GONE);
-                            em.setVisibility(View.GONE);
-                            emTitle.setVisibility(View.GONE);
-                            beta.setVisibility(View.VISIBLE);
-                            betaTitle.setVisibility(View.VISIBLE);
-                            break;
-                    }
+
+                    Log.d("我的组合，创建时间",currentPortfolio.getBuildTime());
+                    String bulidTime=currentPortfolio.getBuildTime().replace("T"," ").replace("$",":");
+                    int timeIndex=bulidTime.indexOf(".");
+                    buildTime.setText(bulidTime.substring(0,timeIndex));
+                    double temp=currentPortfolio.getN0();
+                    holdQuantity.setText(temp+"");
+                    hedgeRatio.setText(currentPortfolio.getA()+"");
+                    expectPrice.setText(currentPortfolio.getsExp()+"");
+                    capital.setText(currentPortfolio.getM0()+"");
+
+                    double sigma1=currentPortfolio.getSigma1()*100;
+                    double sigma2=currentPortfolio.getSigma2()*100;
+                    double p1=currentPortfolio.getP1();
+                    double p2=currentPortfolio.getP2();
+                    double k=currentPortfolio.getK()*100;
+                    maxLoss.setText(k+"%");
+                    fluctuation.setText(String.format("%s%%-%s%%", sigma1, sigma2));
+                    priceRange.setText(String.format("%s-%s", p1, p2));
                 }else {
                     cost.setText("");
                     timeLine.setText("");
@@ -519,7 +553,46 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     bond.setText("");
                     em.setText("");
                     returnAsset.setText("");
+
+                    buildTime.setText("");
+                    buildTime.setText("");
+                    holdQuantity.setText("");
+                    hedgeRatio.setText("");
+                    expectPrice.setText("");
+                    capital.setText("");
+                    maxLoss.setText("");
+                    priceRange.setText("");
+                    fluctuation.setText("");
                 }
+
+                int temp=0;
+                for(int i=0;i<buttonChosen.length;i++){
+                    if(buttonChosen[i]==1){
+                        temp= i;
+                    }
+                }
+                int[] visibility={};
+                //不同的组合类型要展示不同的信息
+                switch (temp){
+                    case Constant.RECOMMEND_PORTFOLIO:
+                        visibility=new int[]{1,1,1,0,0,0,1,1,1,1,1,1};
+                        break;
+                    case Constant.HEDGE:
+                        visibility=new int[]{0,0,0,1,1,1,0,0,0,0,0,0};
+                        break;
+                    case Constant.DIY:
+                        visibility=new int[]{0,1,0,0,0,0,0,0,0,0,1,1};
+                        break;
+                }
+
+                for(int i=0;i<visibility.length;i++){
+                    if(visibility[i]==1){
+                        extraPortfolioDetail[i].setVisibility(View.VISIBLE);
+                    }else {
+                        extraPortfolioDetail[i].setVisibility(View.GONE);
+                    }
+                }
+
                 childArray.clear();
                 childArray.add(tempArray);
                 expandableAdapter.notifyDataSetChanged();
@@ -529,6 +602,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
         });
         refreshChartData();//更新图片
     }
+
 
     /**
      * 显示弹窗
@@ -582,7 +656,9 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                 intent.putExtra("fromMyCombination",true);
                 StringBuilder optionDetail=new StringBuilder("");
                 final Option option=currentPortfolio.getOptions()[i1];
-                final int type=option.getCp();
+                final int type=option.getType();
+                final int cp=option.getCp();
+                final double transationPrice=option.getTransactionPrice();
 
                 String optionCodePart=option.getOptionCode().replace("OP","SO");
 
@@ -597,7 +673,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String optionDetail=response.body().string();
-                        currentOptionChange(optionDetail,type);
+                        currentOptionChange(optionDetail,type,cp,transationPrice);
                     }
                 });
 
@@ -620,7 +696,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
 
     }
 
-    private void currentOptionChange(final String optionDetail, final int type){
+    private void currentOptionChange(final String optionDetail, final int type, final int cp, final double transationPrice){
         Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -629,7 +705,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     int index = optionDetail.indexOf("\"");
                     String str1 = optionDetail.substring(index + 1).replace(",,,,", ",");
                     String[] result = str1.split(",");
-                    if(result.length==14) {
+                    if(result.length==STANDARD_OPTION_RESULT_LENGTH) {
                         optionName.setText(String.format("合约简称 %s", result[0]));
                         optionCode.setText(String.format("交易代码 %s", result[9]));
                         dealAmount.setText(String.format("成交量 %s", result[1]));
@@ -640,8 +716,13 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                         optionVolatility.setText(String.format("隐含波动率 %s", result[6]));
                         optionMaxPrice.setText(String.format("最高价 %s", result[7]));
                         optionMinPrice.setText(String.format("最低价 %s", result[8]));
-                        optionCp.setText("看涨看跌："+type);
-
+                        optionLastestPrice.setText(String.format("最新价 %s", result[11]));
+                        optionCost.setText(String.format("成本价 %s", transationPrice));
+                        if(type>=0){
+                            optionCp.setText("买入卖出：买"+type+"手");
+                        }else {
+                            optionCp.setText("买入卖出：卖" + (-type)+"手");
+                        }
                         final double latestPrice=Double.parseDouble(result[11]);
                         final double usePrice=Double.parseDouble(result[10]);
 
@@ -656,7 +737,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                             public void onResponse(Call call, Response response) throws IOException {
                                 String etfValue = response.body().string();
                                 try {
-                                    setOtherOptionValue(latestPrice, usePrice, etfValue, type);
+                                    setOtherOptionValue(latestPrice, usePrice, etfValue, cp);
                                 }catch (NumberFormatException e){
                                     dialog.setTitle("网络错误");
                                     dialog.setMessage("期权数据计算可能存在误差");
@@ -668,6 +749,8 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                 }else {
                     optionName.setText("合约简称");
                     optionCode.setText("交易代码");
+                    optionCost.setText("成本价");
+                    optionLastestPrice.setText("最新价");
                     dealAmount.setText("成交量");
                     optionDelta.setText("Delta");
                     optionGamma.setText("Gamma");
@@ -680,13 +763,13 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     timeValue.setText("时间价值");
                     innerValue.setText("内在价值");
                     valueState.setText("价值状态");
-                    optionCp.setText("看涨看跌");
+                    optionCp.setText("买入卖出");
                 }
             }
         });
     }
 
-    private void setOtherOptionValue(final double latestPrice, final double usePrice, final String etfValue, final int type)throws NumberFormatException{
+    private void setOtherOptionValue(final double latestPrice, final double usePrice, final String etfValue, final int cp)throws NumberFormatException{
         Objects.requireNonNull(this.getActivity()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -695,7 +778,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                 index=temp1.indexOf(",");
                 double priceMark=Double.parseDouble(temp1.substring(0,index))-usePrice;
                 double innerPrice;
-                if(type==1){
+                if(cp==1){
                     if(priceMark>0){
                         valueState.setText("价值状态 实值");
                         innerPrice=priceMark;
@@ -711,7 +794,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     double timeValueText=((latestPrice-innerPrice)<=0)?0:latestPrice-innerPrice;
                     innerValue.setText(String.format("内在价值 %.4f", innerPrice));
                     timeValue.setText(String.format("时间价值 %.4f", timeValueText));
-                }else if(type==-1){
+                }else if(cp==-1){
                     if(priceMark<0){
                         valueState.setText("价值状态 实值");
                         innerPrice=-priceMark;
@@ -929,7 +1012,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                 for (int i = 0; i <historyProfit2Probability[0].length; i++) {
                     data3.add(new Entry(Float.parseFloat(historyProfit2Probability[0][i]), Float.parseFloat(historyProfit2Probability[1][i])));
                 }
-                LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益");
+                LineDataSet set1= new LineDataSet(data1, "不同标的价格下组合收益(单位：元)");
                 LineDataSet set2= new LineDataSet(data2,"组合收益在预期市场内的概率分布");
                 LineDataSet set3=new LineDataSet(data3,"组合收益在历史市场内的概率分布");
 
