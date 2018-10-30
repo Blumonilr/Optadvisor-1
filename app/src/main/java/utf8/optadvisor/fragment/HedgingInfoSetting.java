@@ -146,7 +146,7 @@ public class HedgingInfoSetting extends Fragment {
                         else
                             break;
                     }
-                    sigma=Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.indexOf(" ")));
+                    sigma=Double.parseDouble(temp.substring(temp.indexOf(",")+1,temp.lastIndexOf(",")));
                     tvSIGMA=(TextView)getView().findViewById(R.id.hedging_tv4);
                     tvSIGMA.setText(""+sigma);
                     break;
