@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -79,7 +80,6 @@ public class AllocationSettingPage extends LinearLayout {
             switch (msg.what) {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
-                    System.out.println(info);
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
                     allocationSetting.setView(responseAllocation);
                     break;
@@ -334,7 +334,9 @@ public class AllocationSettingPage extends LinearLayout {
                         values.put("p2", getP2());
                         values.put("sigma1", getSigma1());
                         values.put("sigma2", getSigma2());
+//
 
+                        //
                         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/recommendPortfolio", values, getContext(), new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {

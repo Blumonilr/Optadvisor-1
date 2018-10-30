@@ -2,9 +2,12 @@ package utf8.optadvisor.activity;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -94,6 +97,7 @@ public class MoreInfoActivity extends AppCompatActivity {
         m_sale4_2=findViewById(R.id.m_sale4_2);
         m_sale5=findViewById(R.id.m_sale5);
         m_sale5_2=findViewById(R.id.m_sale5_2);
+        initToolbar();
         Intent intent=getIntent();
         final int type=intent.getIntExtra("type",1);
         String num=intent.getStringExtra("num");
@@ -258,4 +262,39 @@ public class MoreInfoActivity extends AppCompatActivity {
         m_buy5.setText(s[31]);
 
     }
+    private void initToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+    /**
+     * 重写Home键实现滑动切换界面
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                exit();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+    /**
+     * 滑动退出
+     */
+    private void exit(){
+        finish();
+        overridePendingTransition(R.anim.activity_left_enter,R.anim.activity_right_exit);
+    }
+
 }
