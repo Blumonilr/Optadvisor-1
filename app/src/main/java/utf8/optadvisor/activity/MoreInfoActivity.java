@@ -116,7 +116,6 @@ public class MoreInfoActivity extends AppCompatActivity {
         NetUtil.INSTANCE.sendGetRequest("http://hq.sinajs.cn/list=CON_SO_"+num.substring(7) ,new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("000");
                 //
             }
 
@@ -124,7 +123,6 @@ public class MoreInfoActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String optionDetail=response.body().string();
                 currentOptionChange(optionDetail,type);
-                System.out.println(optionDetail);
 
             }
         });
@@ -145,7 +143,7 @@ public class MoreInfoActivity extends AppCompatActivity {
 
     }
 
-    private void currentOptionChange(final String optionDetail, final int type){
+    private void currentOptionChange(final String optionDetail, final int cp){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -178,7 +176,7 @@ public class MoreInfoActivity extends AppCompatActivity {
                             public void onResponse(Call call, Response response) throws IOException {
                                 String etfValue = response.body().string();
                                 try {
-                                    setOtherOptionValue(latestPrice, usePrice, etfValue, type);
+                                    setOtherOptionValue(latestPrice, usePrice, etfValue, cp);
                                 }catch (NumberFormatException e){
                                     /*dialog.setTitle("网络错误");
                                     dialog.setMessage("期权数据计算可能存在误差");
@@ -192,7 +190,7 @@ public class MoreInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void setOtherOptionValue(final double latestPrice, final double usePrice, final String etfValue, final int type)throws NumberFormatException{
+    private void setOtherOptionValue(final double latestPrice, final double usePrice, final String etfValue, final int cp)throws NumberFormatException{
             runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -201,7 +199,7 @@ public class MoreInfoActivity extends AppCompatActivity {
                 index=temp1.indexOf(",");
                 double priceMark=Double.parseDouble(temp1.substring(0,index))-usePrice;
                 double innerPrice;
-                if(type==1){
+                if(cp==1){
                     if(priceMark>0){
                         valueState.setText("实值");
                         innerPrice=priceMark;
@@ -217,7 +215,7 @@ public class MoreInfoActivity extends AppCompatActivity {
                     double timeValueText=((latestPrice-innerPrice)<=0)?0:latestPrice-innerPrice;
                     innerValue.setText(String.format("%.4f", innerPrice));
                     timeValue.setText(String.format("%.4f", timeValueText));
-                }else if(type==-1){
+                }else if(cp==-1){
                     if(priceMark<0){
                         valueState.setText("实值");
                         innerPrice=-priceMark;
