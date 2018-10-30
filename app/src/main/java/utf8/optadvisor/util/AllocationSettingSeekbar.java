@@ -117,6 +117,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
         }
         else
             title.setText("预测波动率范围");
+
         seekBar=(DoubleSeekbar)findViewById(R.id.allocation_sk_progress);
 
         seekBar.setOnSeekBarChangeListener(new DoubleSeekbar.OnSeekBarChangeListener(){

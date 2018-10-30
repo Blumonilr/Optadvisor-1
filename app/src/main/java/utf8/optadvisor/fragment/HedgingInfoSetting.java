@@ -221,10 +221,12 @@ public class HedgingInfoSetting extends Fragment {
                         dialog.setTitle("持仓量填写不符合规则");
                         dialog.setMessage("请重新填写");
                         dialogShow();
-                    } else if (Integer.parseInt(et2.getText().toString()) <= 0||Integer.parseInt(et2.getText().toString())>etf) {
+                        return;
+                    } else if (Double.parseDouble(et2.getText().toString()) <= 0||Double.parseDouble(et2.getText().toString())>etf) {
                         dialog.setTitle("预测最低价格填写不符合规则");
                         dialog.setMessage("请重新填写");
                         dialogShow();
+                        return;
                     } else {
                         Map<String, String> values = new HashMap<>();
                         values.put("n0", et1.getText().toString());
