@@ -183,7 +183,7 @@ public class OptionContract extends Fragment {
             int position = right_view.getChildAdapterPosition(view);
             Intent intent=new Intent(view.getContext(),MoreInfoActivity.class);
             intent.putExtra("type",-1);
-            intent.putExtra("num",mlist.get(0)[position]);
+            intent.putExtra("num",mlist.get(1)[position]);
             startActivity(intent);
             }
         });
