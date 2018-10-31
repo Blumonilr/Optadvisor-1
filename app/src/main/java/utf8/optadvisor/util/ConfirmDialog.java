@@ -104,6 +104,7 @@ public class ConfirmDialog extends Dialog {
                     values.put("z_rho", "\"" +  allocationResponse.getZ_rho()+"\"");
                     values.put("em", "\"" +  allocationResponse.getEm()+"\"");
                     values.put("beta", "\"" + allocationResponse.getBeta()+"\"");
+                    values.put("returnOnAssets","\"" + allocationResponse.getReturnOnAssets()+"\"");
 
                     NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override

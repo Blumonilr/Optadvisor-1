@@ -349,11 +349,15 @@ public class AllocationSettingPage extends LinearLayout {
                             public void onResponse(Call call, Response response) throws IOException {
                                 progressDialog.dismiss();
                                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                                if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
+                                if (responseMsg.getData() == null ) {
                                     dialog.setTitle("数据返回错误");
-                                    dialog.setMessage("请重新点击");
+                                    dialog.setMessage("请稍后再试");
                                     dialogShow();
-                                } else {
+                                } else if(responseMsg.getCode() == 1008){
+                                    dialog.setTitle("用户未登录");
+                                    dialog.setMessage("请先登录");
+                                    dialogShow();
+                                } else{
                                     mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
                                 }
                             }
