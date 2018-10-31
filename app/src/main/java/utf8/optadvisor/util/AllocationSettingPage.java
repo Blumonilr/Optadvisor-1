@@ -80,7 +80,6 @@ public class AllocationSettingPage extends LinearLayout {
             switch (msg.what) {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
-                    Log.d("Allocation",info);
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
                     allocationSetting.setView(responseAllocation);
                     break;
@@ -100,7 +99,6 @@ public class AllocationSettingPage extends LinearLayout {
                     if (isInFive()){
                         array.remove(0);
                     }
-                    System.out.println(array);
                     time=(Spinner)findViewById(R.id.allocation_spr_validtime);
                     SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
                     time.setAdapter(adapter);

@@ -110,6 +110,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
         this.setting=setting;
 
         get50ETF();
+        System.out.println("http://www.optbbs.com/d/csv/d/data.csv?v=" + Calendar.getInstance().getTimeInMillis());
         get50Sigma();
 
         title=(TextView)findViewById(R.id.allocation_sk_title);

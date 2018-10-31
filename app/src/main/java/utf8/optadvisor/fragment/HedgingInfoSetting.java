@@ -220,11 +220,13 @@ public class HedgingInfoSetting extends Fragment {
                         dialog.setTitle("持仓量填写不符合规则");
                         dialog.setMessage("请重新填写");
                         dialogShow();
+                        progressDialog.dismiss();
                         return;
                     } else if (Double.parseDouble(et2.getText().toString()) <= 0||Double.parseDouble(et2.getText().toString())>etf) {
                         dialog.setTitle("预测最低价格填写不符合规则");
                         dialog.setMessage("请重新填写");
                         dialogShow();
+                        progressDialog.dismiss();
                         return;
                     } else {
                         Map<String, String> values = new HashMap<>();
@@ -235,7 +237,6 @@ public class HedgingInfoSetting extends Fragment {
                         values.put("s_exp", et2.getText().toString());
                         sExp=et2.getText().toString();
                         values.put("t", date.getSelectedItem().toString());
-
 
                         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, getContext(), new Callback() {
                             @Override
