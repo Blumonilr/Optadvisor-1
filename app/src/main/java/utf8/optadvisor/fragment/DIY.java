@@ -296,7 +296,12 @@ public class DIY extends Fragment {
                             progressDialog=new ProgressDialog(getContext());
                             progressDialog.setTitle("请稍等");
                             progressDialog.setMessage("Loading...");
-                            progressDialog.show();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.show();
+                                }
+                            });
                             progressDialog.setCancelable(true);
                             Looper.loop();
                         }catch (Exception e){

@@ -1,5 +1,6 @@
 package utf8.optadvisor.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        initDialog();
 
         edit_userName=(EditText) findViewById(R.id.edit_userName);
         edit_password=(EditText) findViewById(R.id.edit_password);
@@ -135,19 +139,12 @@ public class RegisterActivity extends AppCompatActivity {
                 Info.setGender(gender);
                 Info.setTelephone(telephone);
                 Info.setEmail(email);
+                Info.setW1(0);
+                Info.setW2(0);
 
 
-                final Map<String, String> value = new HashMap<String, String>();
-                value.put("username", username);
-                value.put("password", password);
-                value.put("name", name);
-                value.put("birthday", birthday);
-                value.put("telephone", telephone);
-                value.put("email", email);
-                value.put("gender", gender);
-                value.put("avatarPath", "");
-                value.put("w1", "");
-                value.put("w2", "");
+                Gson gson=new Gson();
+                String value=gson.toJson(Info);
                 NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/isUsernameUsed", value, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -157,7 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                        if (responseMsg.getCode() == 0) {
+                        if (responseMsg.getData().equals("false")) {
                             Intent intent = new Intent(RegisterActivity.this, QuestionnaireActivity.class);
                             intent.putExtra("Info", Info);
                             startActivity(intent);
@@ -184,6 +181,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void run() {
                 dialog.show();
+            }
+        });
+    }
+    private void initDialog(){
+        dialog=new AlertDialog.Builder(RegisterActivity.this);
+        dialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
             }
         });
     }
