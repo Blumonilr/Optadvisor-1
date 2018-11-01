@@ -90,7 +90,7 @@ public class ModifyActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ImageView userHead = (ImageView) findViewById(R.id.user_modify_head);
-        Glide.with(this).load(R.drawable.default_user_head).bitmapTransform(new CropCircleTransformation(this)).into(userHead);
+        Glide.with(this).load(R.mipmap.home).bitmapTransform(new CropCircleTransformation(this)).into(userHead);
         intiMenuItem();
         initDialog();
 
