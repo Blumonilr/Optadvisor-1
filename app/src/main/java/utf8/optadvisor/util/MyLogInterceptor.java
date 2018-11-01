@@ -61,12 +61,12 @@ public class MyLogInterceptor implements Interceptor {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     Headers headers = response.headers();
-                    Log.d("来自Net拦截器的消息:info_headers", "header " + headers);
+                    //Log.d("来自Net拦截器的消息:info_headers", "header " + headers);
                     List<String> cookies = headers.values("Set-Cookie");
                     String session = cookies.get(0);
-                    Log.d("来自Net拦截器的消息:info_cookies", "onResponse-size: " + cookies);
+                    //Log.d("来自Net拦截器的消息:info_cookies", "onResponse-size: " + cookies);
                     cookie = session.substring(0, session.indexOf(";"));
-                    Log.i("来自Net拦截器的消息:info_s", "session is  :" + cookie);
+                    //Log.i("来自Net拦截器的消息:info_s", "session is  :" + cookie);
                     editor.putString("cookie",cookie);
                     editor.apply();
                 }

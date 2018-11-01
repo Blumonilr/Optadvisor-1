@@ -236,28 +236,33 @@ public class MoreInfoActivity extends AppCompatActivity {
 
         });
     }
-    private void drawPan(String optionInfo){
-        String[] s=optionInfo.split(",");
-        m_sale5_2.setText(s[12]);
-        m_sale5.setText(s[13]);
-        m_sale4_2.setText(s[14]);
-        m_sale4.setText(s[15]);
-        m_sale3_2.setText(s[16]);
-        m_sale3.setText(s[17]);
-        m_sale2_2.setText(s[18]);
-        m_sale2.setText(s[19]);
-        m_sale1_2.setText(s[20]);
-        m_sale1.setText(s[21]);
-        m_buy1_2.setText(s[22]);
-        m_buy1.setText(s[23]);
-        m_buy2_2.setText(s[24]);
-        m_buy2.setText(s[25]);
-        m_buy3_2.setText(s[26]);
-        m_buy3.setText(s[27]);
-        m_buy4_2.setText(s[28]);
-        m_buy4.setText(s[29]);
-        m_buy5_2.setText(s[30]);
-        m_buy5.setText(s[31]);
+    private void drawPan(final String optionInfo){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String[] s=optionInfo.split(",");
+                m_sale5_2.setText(s[12]);
+                m_sale5.setText(s[13]);
+                m_sale4_2.setText(s[14]);
+                m_sale4.setText(s[15]);
+                m_sale3_2.setText(s[16]);
+                m_sale3.setText(s[17]);
+                m_sale2_2.setText(s[18]);
+                m_sale2.setText(s[19]);
+                m_sale1_2.setText(s[20]);
+                m_sale1.setText(s[21]);
+                m_buy1_2.setText(s[22]);
+                m_buy1.setText(s[23]);
+                m_buy2_2.setText(s[24]);
+                m_buy2.setText(s[25]);
+                m_buy3_2.setText(s[26]);
+                m_buy3.setText(s[27]);
+                m_buy4_2.setText(s[28]);
+                m_buy4.setText(s[29]);
+                m_buy5_2.setText(s[30]);
+                m_buy5.setText(s[31]);
+            }
+        });
 
     }
     private void initToolbar(){

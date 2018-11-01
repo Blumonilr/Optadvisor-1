@@ -40,15 +40,15 @@ public class ChartMarkerView extends MarkerView {
                     CandleEntry ce = (CandleEntry) e;
 
                     if (Math.abs(ce.getHigh()) < 1) {
-                        tvContent.setText(String.format("%s ,%s", ce.getX()/1000000+base, Utils.formatNumber(ce.getHigh(), 4, true)));
+                        tvContent.setText(String.format("%.4f ,%s", ce.getX()/1000000+base, Utils.formatNumber(ce.getHigh(), 4, true)));
                     } else {
-                        tvContent.setText(String.format("%s ,%s", ce.getX()/1000000+base, Utils.formatNumber(ce.getHigh(), 2, true)));
+                        tvContent.setText(String.format("%.4f ,%s", ce.getX()/1000000+base, Utils.formatNumber(ce.getHigh(), 2, true)));
                     }
                 } else {
                     if (Math.abs(e.getY()) < 1) {
-                        tvContent.setText(String.format("%s ,%s", e.getX()/1000000+base, Utils.formatNumber(e.getY(), 4, true)));
+                        tvContent.setText(String.format("%.4f ,%s", e.getX()/1000000+base, Utils.formatNumber(e.getY(), 4, true)));
                     } else {
-                        tvContent.setText(String.format("%s ,%s", e.getX()/1000000+base, Utils.formatNumber(e.getY(), 2, true)));
+                        tvContent.setText(String.format("%.4f ,%s", e.getX()/1000000+base, Utils.formatNumber(e.getY(), 2, true)));
                     }
                 }
             }else {
@@ -57,15 +57,15 @@ public class ChartMarkerView extends MarkerView {
                     CandleEntry ce = (CandleEntry) e;
 
                     if (Math.abs(ce.getHigh()) < 1) {
-                        tvContent.setText(String.format("%s ,%s", ce.getX(), Utils.formatNumber(ce.getHigh(), 4, true)));
+                        tvContent.setText(String.format("%.4f ,%s", ce.getX(), Utils.formatNumber(ce.getHigh(), 4, true)));
                     } else {
-                        tvContent.setText(String.format("%s ,%s", ce.getX(), Utils.formatNumber(ce.getHigh(), 2, true)));
+                        tvContent.setText(String.format("%.4f ,%s", ce.getX(), Utils.formatNumber(ce.getHigh(), 2, true)));
                     }
                 } else {
                     if (Math.abs(e.getY()) < 1) {
-                        tvContent.setText(String.format("%s ,%s", e.getX(), Utils.formatNumber(e.getY(), 4, true)));
+                        tvContent.setText(String.format("%.4f ,%s", e.getX(), Utils.formatNumber(e.getY(), 4, true)));
                     } else {
-                        tvContent.setText(String.format("%s ,%s", e.getX(), Utils.formatNumber(e.getY(), 2, true)));
+                        tvContent.setText(String.format("%.4f ,%s", e.getX(), Utils.formatNumber(e.getY(), 2, true)));
                     }
                 }
             }

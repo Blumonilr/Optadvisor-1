@@ -283,6 +283,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
             public void run() {
                 progressBar.setVisibility(View.GONE);
                 spinnerAdapter.notifyDataSetChanged();
+                spinner.setSelection(0);
                 if(currentPortfolioList.size()>0){
                     currentPortfolio=currentPortfolioList.get(0);
                 }else{
@@ -864,6 +865,7 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                 default:break;
         }
         refreshCombination();
+
     }
 
     /**********************************************************************************************************************
