@@ -81,6 +81,7 @@ public class AllocationSettingPage extends LinearLayout {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
+                    System.out.println(info.substring(info.indexOf("profit2Probability")));
                     allocationSetting.setView(responseAllocation);
                     break;
                 case INFO_FAILURE:
