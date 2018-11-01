@@ -79,9 +79,8 @@ public class HedgingInfoSetting extends Fragment {
     private static final int SIGMA_SUCCESS =6;//获取50etf成功的标识
     private static final int SIGMA_FAILURE = 7;
 
-    private String n;
-    private String iK;
-    private String pAsset;
+    private String n0;
+    private String a;
     private String sExp;
     private String monthList;
 
@@ -151,7 +150,7 @@ public class HedgingInfoSetting extends Fragment {
                     tvSIGMA.setText(""+sigma);
                     break;
                 case SIGMA_FAILURE:
-                    System.out.println("4fail");
+                    System.out.println("sigmaFail");
                     break;
             }
         }
@@ -221,25 +220,28 @@ public class HedgingInfoSetting extends Fragment {
                         dialog.setTitle("持仓量填写不符合规则");
                         dialog.setMessage("请重新填写");
                         dialogShow();
-                    } else if (Integer.parseInt(et2.getText().toString()) <= 0||Integer.parseInt(et2.getText().toString())>etf) {
+                        progressDialog.dismiss();
+                        return;
+                    } else if (Double.parseDouble(et2.getText().toString()) <= 0||Double.parseDouble(et2.getText().toString())>etf) {
                         dialog.setTitle("预测最低价格填写不符合规则");
                         dialog.setMessage("请重新填写");
                         dialogShow();
+                        progressDialog.dismiss();
+                        return;
                     } else {
                         Map<String, String> values = new HashMap<>();
                         values.put("n0", et1.getText().toString());
-
+                        n0=et1.getText().toString();
                         values.put("a", "" + (Double.parseDouble(textView.getText().toString())) / 100.0);
-
+                        a="" + (Double.parseDouble(textView.getText().toString())) / 100.0;
                         values.put("s_exp", et2.getText().toString());
-
+                        sExp=et2.getText().toString();
                         values.put("t", date.getSelectedItem().toString());
-
 
                         NetUtil.INSTANCE.sendPostRequest(NetUtil.SERVER_BASE_ADDRESS + "/recommend/hedging", values, getContext(), new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                                dialog.setTitle("网络连接错误");
+                                dialog.setTitle("服务器连接错误");
                                 dialog.setMessage("请稍后再试");
                                 dialogShow();
                                 progressDialog.dismiss();
@@ -249,9 +251,13 @@ public class HedgingInfoSetting extends Fragment {
                             public void onResponse(Call call, Response response) throws IOException {
                                 progressDialog.dismiss();
                                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                                if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
-                                    dialog.setTitle("网络连接错误");
-                                    dialog.setMessage("请重新点击");
+                                if (responseMsg.getData() == null) {
+                                    dialog.setTitle("服务器连接错误");
+                                    dialog.setMessage("请稍后再试");
+                                    dialogShow();
+                                }else if (responseMsg.getCode() == 1008){
+                                    dialog.setTitle("用户未登录");
+                                    dialog.setMessage("请先登录");
                                     dialogShow();
                                 } else {
                                     mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
@@ -316,7 +322,7 @@ public class HedgingInfoSetting extends Fragment {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day<=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
     }
 
     private void getMonth(){
@@ -364,17 +370,12 @@ public class HedgingInfoSetting extends Fragment {
         });
     }
 
-    public String getN(){
-        return n;
+    public String getA(){return a;}
+
+    public String getN0(){
+        return n0;
     }
 
-    public String getiK() {
-        return iK;
-    }
-
-    public String getpAsset() {
-        return pAsset;
-    }
 
     public String getsExp() {
         return sExp;

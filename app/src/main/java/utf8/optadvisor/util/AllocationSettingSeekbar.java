@@ -65,7 +65,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                         max.setText("4.000");
                     }
                     else if (isPrice&&!isUp){
-                        min.setText("0.000");
+                        min.setText("1.000");
                         max.setText(ETF+"");
                     }
                     break;
@@ -74,10 +74,10 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     break;
                 case SIGMA_SUCCESS:
                     String response2=(String)msg.obj;
-                    String[] sigams = response2.split("\n");
+                    String[] sigmas = response2.split("\n");
                     String temp = "";
-                    for (String s : sigams) {
-                        if ((s.charAt(0)=='9'&&s.length() > 10)||(s.charAt(0)!='9'&&s.length()>11))
+                    for (String s : sigmas) {
+                        if ((s.charAt(0)=='9'&&s.length() > 10)||(s.charAt(0)!='9'&&s.length()>11)&&!s.contains("N"))
                             temp = s;
                         else
                             break;
@@ -96,7 +96,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     }
                     break;
                 case SIGMA_FAILURE:
-                    System.out.println("2fail");
+                    System.out.println("sigmaFail");
             }
         }
     };
@@ -118,6 +118,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
         }
         else
             title.setText("预测波动率范围");
+
         seekBar=(DoubleSeekbar)findViewById(R.id.allocation_sk_progress);
 
         seekBar.setOnSeekBarChangeListener(new DoubleSeekbar.OnSeekBarChangeListener(){
@@ -142,8 +143,8 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     max.setText(df1.format(ETF+(4.0-ETF)*(progressHigh/100.0)));
                 }
                 else if (isPrice&&!isUp){
-                    min.setText(df1.format(ETF*(progressLow/100.0)));
-                    max.setText(df1.format(ETF*(progressHigh/100.0)));
+                    min.setText(df1.format(1+(ETF-1.0)*(progressLow/100.0)));
+                    max.setText(df1.format(1+(ETF-1.0)*(progressHigh/100.0)));
                 }
                 else if (!isPrice&&isUp){
                     min.setText(df2.format(sigma + (50.0 - sigma) * (progressLow / 100.0)));
@@ -200,11 +201,11 @@ public class AllocationSettingSeekbar extends LinearLayout {
     }
 
     public double getETF() {
-        return Double.parseDouble(max.getText().toString());
+        return ETF;
     }
 
     public double getSigma() {
-        return Double.parseDouble(max.getText().toString());
+        return sigma;
     }
 
     private void set50ETF(double a50ETF) {

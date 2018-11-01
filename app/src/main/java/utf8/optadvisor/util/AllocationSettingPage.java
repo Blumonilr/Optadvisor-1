@@ -81,6 +81,7 @@ public class AllocationSettingPage extends LinearLayout {
                 case INFO_SUCCESS:
                     String info = (String) msg.obj;
                     AllocationSettingPage.this.responseAllocation=new Gson().fromJson(info,AllocationResponse.class);
+                    System.out.println(info.substring(info.indexOf("profit2Probability")));
                     allocationSetting.setView(responseAllocation);
                     break;
                 case INFO_FAILURE:
@@ -88,18 +89,22 @@ public class AllocationSettingPage extends LinearLayout {
                     break;
                 case MONTH_SUCCESS:
                     String str = ((String) msg.obj).replace("\"","");
+                    System.out.println(str);
                     String month=str.substring(str.indexOf("contractMonth")+15,str.lastIndexOf("]"));
                     System.out.println(month);
                     List<String> array=new ArrayList<>();
                     String[] monthlist=month.split(",");
                     for (String s:monthlist){
-                        if (array.isEmpty()||!array.contains(s))
+                        if (array.isEmpty()) {
+                            array.add(s);
+                            continue;
+                        }
+                        if (!array.contains(s))
                             array.add(s);
                     }
                     if (isInFive()){
                         array.remove(0);
                     }
-                    System.out.println(array);
                     time=(Spinner)findViewById(R.id.allocation_spr_validtime);
                     SpinnerAdapter adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_dropdown_item_1line,array);
                     time.setAdapter(adapter);
@@ -350,11 +355,15 @@ public class AllocationSettingPage extends LinearLayout {
                             public void onResponse(Call call, Response response) throws IOException {
                                 progressDialog.dismiss();
                                 ResponseMsg responseMsg = NetUtil.INSTANCE.parseJSONWithGSON(response);
-                                if (responseMsg.getData() == null || responseMsg.getCode() == 1008) {
-                                    dialog.setTitle("网络连接错误");
-                                    dialog.setMessage("请重新点击");
+                                if (responseMsg.getData() == null ) {
+                                    dialog.setTitle("数据返回错误");
+                                    dialog.setMessage("请稍后再试");
                                     dialogShow();
-                                } else {
+                                } else if(responseMsg.getCode() == 1008){
+                                    dialog.setTitle("用户未登录");
+                                    dialog.setMessage("请先登录");
+                                    dialogShow();
+                                } else{
                                     mHandler.obtainMessage(INFO_SUCCESS, responseMsg.getData().toString()).sendToTarget();
                                 }
                             }
@@ -381,7 +390,7 @@ public class AllocationSettingPage extends LinearLayout {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day<=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
     }
 
     private void getMonth(){

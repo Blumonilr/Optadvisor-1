@@ -94,6 +94,9 @@ public class AddDialog extends Dialog {
                     values.put("iK","\""+hedgingResponse.getIk()+"\"");
                     values.put("sExp","\""+hedgingInfoSetting.getsExp()+"\"");
                     values.put("pAsset","\""+hedgingResponse.getpAsset()+"\"");
+                    values.put("n0","\""+hedgingInfoSetting.getN0()+"\"");
+                    values.put("a","\""+hedgingInfoSetting.getA()+"\"");
+
 
                     NetUtil.INSTANCE.sendPostRequestForOptions(NetUtil.SERVER_BASE_ADDRESS + "/portfolio", values,getContext(), new Callback() {
                         @Override

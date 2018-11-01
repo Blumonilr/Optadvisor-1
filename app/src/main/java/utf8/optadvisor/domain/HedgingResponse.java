@@ -6,7 +6,8 @@ import utf8.optadvisor.domain.entity.Option;
 
 public class HedgingResponse implements Serializable{
     private Option option=null;
-    private double ik;
+    private double iK;
+    private int iNum;
     private String[][] graph;
     private double pAsset;
 
@@ -22,11 +23,11 @@ public class HedgingResponse implements Serializable{
     }
 
     public double getIk() {
-        return ik;
+        return iK;
     }
 
     public void setIk(double ik) {
-        this.ik = ik;
+        this.iK = ik;
     }
 
     public String[][] getGraph() {
@@ -39,5 +40,9 @@ public class HedgingResponse implements Serializable{
 
     public double getpAsset() {
         return pAsset;
+    }
+
+    public int getiNum() {
+        return iNum;
     }
 }
