@@ -322,7 +322,7 @@ public class HedgingInfoSetting extends Fragment {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day<=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
     }
 
     private void getMonth(){

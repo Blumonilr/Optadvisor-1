@@ -65,7 +65,7 @@ public class AllocationSettingSeekbar extends LinearLayout {
                         max.setText("4.000");
                     }
                     else if (isPrice&&!isUp){
-                        min.setText("0.000");
+                        min.setText("1.000");
                         max.setText(ETF+"");
                     }
                     break;
@@ -143,8 +143,8 @@ public class AllocationSettingSeekbar extends LinearLayout {
                     max.setText(df1.format(ETF+(4.0-ETF)*(progressHigh/100.0)));
                 }
                 else if (isPrice&&!isUp){
-                    min.setText(df1.format(ETF*(progressLow/100.0)));
-                    max.setText(df1.format(ETF*(progressHigh/100.0)));
+                    min.setText(df1.format(1+(ETF-1.0)*(progressLow/100.0)));
+                    max.setText(df1.format(1+(ETF-1.0)*(progressHigh/100.0)));
                 }
                 else if (!isPrice&&isUp){
                     min.setText(df2.format(sigma + (50.0 - sigma) * (progressLow / 100.0)));

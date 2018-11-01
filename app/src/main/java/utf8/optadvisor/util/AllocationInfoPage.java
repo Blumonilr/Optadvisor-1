@@ -201,7 +201,7 @@ public class AllocationInfoPage extends LinearLayout {
 
         group_expectation=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_expectation);
         group_expectation.setInfoTextLeft("组合期望收益率");
-        group_expectation.setInfoTextRight(df1.format(allocationResponse.getEm()/100.0)+"%");
+        group_expectation.setInfoTextRight(df1.format(allocationResponse.getEm()*100.0)+"%");
 
         group_risk=(UserInfoMenuItem)findViewById(R.id.allocation_item_group_risk);
         group_risk.setInfoTextLeft("组合杠杆");

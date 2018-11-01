@@ -89,12 +89,17 @@ public class AllocationSettingPage extends LinearLayout {
                     break;
                 case MONTH_SUCCESS:
                     String str = ((String) msg.obj).replace("\"","");
+                    System.out.println(str);
                     String month=str.substring(str.indexOf("contractMonth")+15,str.lastIndexOf("]"));
                     System.out.println(month);
                     List<String> array=new ArrayList<>();
                     String[] monthlist=month.split(",");
                     for (String s:monthlist){
-                        if (array.isEmpty()||!array.contains(s))
+                        if (array.isEmpty()) {
+                            array.add(s);
+                            continue;
+                        }
+                        if (!array.contains(s))
                             array.add(s);
                     }
                     if (isInFive()){
@@ -385,7 +390,7 @@ public class AllocationSettingPage extends LinearLayout {
         week.set(year,month-1,1);
         weekDay=week.get(Calendar.DAY_OF_WEEK);
         int theFourthWeek=weekDay<=3?24-weekDay:31-weekDay;
-        return (day<=theFourthWeek-4)&&(day<=theFourthWeek+1);
+        return (day>=theFourthWeek-4)&&(day<=theFourthWeek+1);
     }
 
     private void getMonth(){
