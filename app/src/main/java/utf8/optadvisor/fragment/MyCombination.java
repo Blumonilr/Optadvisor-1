@@ -526,10 +526,10 @@ public class MyCombination extends Fragment implements View.OnClickListener{
                     }
                     beta.setText(String.format("%.4f",currentPortfolio.getBeta()));
                     bond.setText(String.format("%.4f",currentPortfolio.getBond()));
-                    em.setText(String.format("%.4f",currentPortfolio.getEm())+"%");
-                    returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()));
+                    em.setText(String.format("%.4f",currentPortfolio.getEm()*100)+"%");
+                    returnAsset.setText(String.format("%.4f",currentPortfolio.getReturnOnAssets()*100)+"%");
 
-                    Log.d("我的组合，创建时间",currentPortfolio.getBuildTime());
+                   // Log.d("我的组合，创建时间",currentPortfolio.getBuildTime());
                     String bulidTime=currentPortfolio.getBuildTime().replace("T"," ").replace("$",":");
                     int timeIndex=bulidTime.indexOf(".");
                     buildTime.setText(bulidTime.substring(0,timeIndex));
